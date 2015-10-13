@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<!-- html manifest="./cache.manifest" -->
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+		<meta http-equiv="Content-Style-Type" content="text/css">
+		<meta http-equiv="Content-Script-Type" content="text/javascript">
+		<script type="text/javascript" src="common.js"></script>
+		<script type="text/javascript" src="codons.js"></script>
+		<script>
+			window.onload = function() {
+				var svgs = document.getElementsByTagName('svg');
+				for (var i=0; i<svgs.length; i++) svgs[i].pauseAnimations();
+			}
+		</script>
+		<link rel="stylesheet" type="text/css" href="common.css">
+		<style media="all">
+			input, textarea, .codons td, #codontable table { font-family: scp, 'Andale Mono', Menlo, Courier, monospace; font-size:medium; }
+			#codons, #aatable, #aa, #codontable, #iubtable, #translator, #untranslator, #tmcalc, div#toc { display:none; }
+			th, td { border:1px #888 solid; padding:0.2em; }
+			th { background-color:#eee; font-weight:normal; }
+			td { background-color:#fff; }
+			table { border-collapse:collapse; border:none; white-space:nowrap; line-height:1.1em; margin:auto; }
+			#codontable th, #codontable td, td#mcodon { padding:.15em; }
+			/* #codontable td.short { border:none; padding:0; width:3px; height:3px; } */
+			td#aas { min-width:10em; padding:0.2em; line-height:.8em; }
+			.codons td { width:1.1em; padding:.4em; line-height:1.4em; font-size:large; }
+			#iubtable th, #iubtable td { border-left:none; border-right:none; text-align:left; padding:.2em .5em; }
+			#aas div { float:left; margin:0.2em; padding:0.5em; cursor:pointer; }
+			#aa img { max-width:21em; max-height:7em; margin-top:.5em; }
+			.mOn { background-color:#fa5; font-weight:bold; cursor:pointer; }
+			.mOn:hover { background-color:#fc7; }
+			.mOff { background-color:#ddd; font-weight:normal; cursor:pointer; }
+			.mOff:hover { background-color:#fff; }
+			.aromatic { background-color:#f66; }
+			.nonpolar { background-color:#f6f; }
+			.polar { background-color:#bbb; }
+			.amide { background-color:#66f; }
+			.acidic { background-color:#6ff; }
+			.basic { background-color:#6f6; }
+			.cysteine { background-color:#ff6; }
+			.stop { background-color:#fff; }
+			.futo { font-weight:700; }
+			b { font-weight:600; }
+			#mode { color:#00d; cursor:pointer; text-decoration:underline; margin:0; padding:.4em .2em; }
+			#mode:hover { background-color:#ffa; text-decoration:none; }
+		</style>
+		<title> Codons </title>
+	</head>
+
+	<body>
+		<header id="header">
+			<div id="tool" onclick="document.getElementById('toc').style.display='block';">Molecular Biology Tools</div>
+			<div id="toc" class="ac">
+				<div onclick="chgView(this)" title="codons">Codon Viewer</div>
+				<div onclick="chgView(this)" title="aatable">AA Viewer</div>
+				<div onclick="chgView(this)" title="codontable">Codon Table</div>
+				<div onclick="chgView(this)" title="iubtable">IUB Codes</div>
+				<div onclick="chgView(this)" title="translator">Translator</div>
+				<div onclick="chgView(this)" title="untranslator">Untranslator</div>
+				<div onclick="chgView(this)" title="tmcalc">Tm Calculator</div>
+				<div onclick="location.href='index.html'" title="home"><img src="images/home.svg"></div>
+				<div onclick="chgView()" class="hidetoc">dummy</div>
+			</div>
+		</header>
+		<noscript>
+			このWebサイトの全ての機能を利用するためにはJavaScriptを有効にする必要があります。
+			<a href="http://www.enable-javascript.com/ja/" target="_blank">あなたのWebブラウザーでJavaScriptを有効にする方法</a>
+			を参照してください。
+		</noscript>
+		<article>
+			<section id="init">
+				<div>
+					<!--
+					<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" onmouseover="this.unpauseAnimations();" onmouseout="this.pauseAnimations();">
+					<g>
+					<path d="M5,-5c0,6 20,10 20,16s-20,10 -20,16 20,10 20,16 -20,10 -20,16v5c0,-6 20,-10 20,-16s-20,-10 -20,-16 20,-10 20,-16 -20,-10 -20,-16"/>
+					<path d="M5,14v5h1.1v-5zm20,-3v5h-1.1v-5zm-20,16v5h1.1v-5zm20,3v5h-1.1v-5zm-20,16v5h1.1v-5zm20,-3v5h-1.1v-5z"/>
+					<path d="M25,-2c0,6 -20,10 -20,16s20,10 20,16 -20,10 -20,16 20,10 20,16v5c0,-6 -20,-10 -20,-16s20,-10 20,-16 -20,-10 -20,-16 20,-10 20,-16"/>
+					<animateTransform attributeName="transform" type="translate" begin="0s" dur="2s" fill="freeze" from="0,0" to="0,-32" repeatCount="indefinite"/>
+					</g>
+					</svg>
+					-->
+					<svg xmlns="http://www.w3.org/2000/svg" width="90" height="89" onmouseover="this.unpauseAnimations();" onmouseout="this.pauseAnimations();">
+					<g>
+					<path d="M15,-15c0,18 60,30 60,48s-60,30 -60,48 60,30 60,48 -60,30 -60,48v15c0,-18 60,-30 60,-48s-60,-30 -60,-48 60,-30 60,-48 -60,-30 -60,-48"/>
+					<path d="M15,42v15h3.3v-15zm60,-9v15h-3.3v-15zm-60,48v15h3.3v-15zm60,9v15h-3.3v-15zm-60,48v15h3.3v-15zm60,-9v15h-3.3v-15z"/>
+					<path d="M75,-6c0,18 -60,30 -60,48s60,30 60,48 -60,30 -60,48 60,30 60,48v15c0,-18 -60,-30 -60,-48s60,-30 60,-48 -60,-30 -60,-48 60,-30 60,-48"/>
+					<animateTransform attributeName="transform" type="translate" begin="0s" dur="2s" fill="freeze" from="0,0" to="0,-96" repeatCount="indefinite"/>
+					</g>
+					</svg>
+				</div>
+				<div>Select a tool from the menu.</div>
+			</section>
+			<section id="codons">
+				<table class="codons">
+					<thead>
+						<tr>
+							<th colspan="3" id="mode" title="codon selection mode" onclick="
+								single = !single;
+								this.innerHTML = (single ? 'Single Codon' : 'Multi Codons');
+								">Single Codon</th>
+							<th>amino acid(s)</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th>1</th>
+							<th>2</th>
+							<th>3</th>
+							<td id="aas" rowspan="6">AAs</td>
+						</tr>
+						<tr>
+							<td class="mOff" id="m1t" onClick="togglePB(0,0)">t</td>
+							<td class="mOff" id="m2t" onClick="togglePB(1,0)">t</td>
+							<td class="mOff" id="m3t" onClick="togglePB(2,0)">t</td>
+						</tr>
+						<tr>
+							<td class="mOff" id="m1c" onClick="togglePB(0,1)">c</td>
+							<td class="mOff" id="m2c" onClick="togglePB(1,1)">c</td>
+							<td class="mOff" id="m3c" onClick="togglePB(2,1)">c</td>
+						</tr>
+						<tr>
+							<td class="mOff" id="m1a" onClick="togglePB(0,2)">a</td>
+							<td class="mOff" id="m2a" onClick="togglePB(1,2)">a</td>
+							<td class="mOff" id="m3a" onClick="togglePB(2,2)">a</td>
+						</tr>
+						<tr>
+							<td class="mOff" id="m1g" onClick="togglePB(0,3)">g</td>
+							<td class="mOff" id="m2g" onClick="togglePB(1,3)">g</td>
+							<td class="mOff" id="m3g" onClick="togglePB(2,3)">g</td>
+						</tr>
+						<tr>
+							<td id="mcodon" colspan="3">nnn</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+			<section id="aatable">
+				ref: <a href="http://en.wikipedia.org/wiki/Proteinogenic_amino_acid" target="_blank">Wikipedia</a>
+				<br>
+				<table class="codons">
+					<tr>
+						<td id="selA" class="mOff" onClick="selectAA('A')">A</td>
+						<td id="selB" class="mOff" onClick="selectAA('B')">B</td>
+						<td id="selC" class="mOff" onClick="selectAA('C')">C</td>
+						<td id="selD" class="mOff" onClick="selectAA('D')">D</td>
+						<td id="selE" class="mOff" onClick="selectAA('E')">E</td>
+						<td id="selF" class="mOff" onClick="selectAA('F')">F</td>
+						<td id="selG" class="mOff" onClick="selectAA('G')">G</td>
+						<td id="selH" class="mOff" onClick="selectAA('H')">H</td>
+						<td id="selI" class="mOff" onClick="selectAA('I')">I</td>
+					</tr>
+					<tr>
+						<td id="selJ" class="mOff" onClick="selectAA('J')">J</td>
+						<td id="selK" class="mOff" onClick="selectAA('K')">K</td>
+						<td id="selL" class="mOff" onClick="selectAA('L')">L</td>
+						<td id="selM" class="mOff" onClick="selectAA('M')">M</td>
+						<td id="selN" class="mOff" onClick="selectAA('N')">N</td>
+						<td id="selO" class="mOff" onClick="selectAA('O')">O</td>
+						<td id="selP" class="mOff" onClick="selectAA('P')">P</td>
+						<td id="selQ" class="mOff" onClick="selectAA('Q')">Q</td>
+						<td id="selR" class="mOff" onClick="selectAA('R')">R</td>
+					</tr>
+					<tr>
+						<td id="selS" class="mOff" onClick="selectAA('S')">S</td>
+						<td id="selT" class="mOff" onClick="selectAA('T')">T</td>
+						<td id="selU" class="mOff" onClick="selectAA('U')">U</td>
+						<td id="selV" class="mOff" onClick="selectAA('V')">V</td>
+						<td id="selW" class="mOff" onClick="selectAA('W')">W</td>
+						<td id="selX" class="mOff" onClick="selectAA('X')">X</td>
+						<td id="selY" class="mOff" onClick="selectAA('Y')">Y</td>
+						<td id="selZ" class="mOff" onClick="selectAA('Z')">Z</td>
+						<td id="sel0" class="mOff" onClick="selectAA('0')">*</td>
+					</tr>
+				</table>
+			</section>
+			<section id="aa">
+				<span class="aa" id="aa_A">Alanine                     (A/Ala)<br>codons: GCN (GC[T/C/A/G])<br><img src="images/A.svg" alt="A"><br>pI=6.01<br>(hydrophobic), tiny</span>
+				<span class="aa" id="aa_C">Cysteine                    (C/Cys)<br>codons: TGY (TG[T/C])<br><img src="images/C.svg" alt="C"><br>pI=5.05<br>(hydrophobic), tiny, S-S bond, semi-essential</span>
+				<span class="aa" id="aa_D">Aspartic acid               (D/Asp)<br>codons: GAY (GA[T/C])<br><img src="images/D.svg" alt="D"><br>pI=2.85<br>acidic, small</span>
+				<span class="aa" id="aa_E">Glutamic acid               (E/Glu)<br>codons: GAR (GA[A/G])<br><img src="images/E.svg" alt="E"><br>pI=3.15<br>acidic</span>
+				<span class="aa" id="aa_F">Phenylalanine               (F/Phe)<br>codons: TTY (TT[T/C])<br><img src="images/F.svg" alt="F"><br>pI=5.49<br>hydrophobic, aromatic, essential</span>
+				<span class="aa" id="aa_G">Glycine                     (G/Gly)<br>codons: GGN (GG[T/C/A/G])<br><img src="images/G.svg" alt="G"><br>pI=6.06<br>(hydrophobic), tiny</span>
+				<span class="aa" id="aa_H">Histidine                   (H/His)<br>codons: CAY (CA[T/C])<br><img src="images/H.svg" alt="H"><br>pI=7.60<br>weak basic, aromatic, (semi‑)essential</span>
+				<span class="aa" id="aa_I">Isoleucine                  (I/Ile)<br>codons: ATH (AT[T/C/A])<br><img src="images/I.svg" alt="I"><br>pI=6.05<br>hydrophobic, aliphatic, essential</span>
+				<span class="aa" id="aa_K">Lysine                      (K/Lys)<br>codons: AAR (AA[A/G])<br><img src="images/K.svg" alt="K"><br>pI=9.60<br>basic, essential</span>
+				<span class="aa" id="aa_L">Leucine                     (L/Leu)<br>codons: TTR, CTN<br>(TT[A/G], CT[T/C/A/G])<br><img src="images/L.svg" alt="L"><br>pI=6.01<br>hydrophobic, aliphatic, essential</span>
+				<span class="aa" id="aa_M">Methionine                  (M/Met)<br>codons: ATG <br><img src="images/M.svg" alt="M"><br>pI=5.74<br>hydrophobic, essential</span>
+				<span class="aa" id="aa_N">Asparagine                  (N/Asn)<br>codons: AAY (AA[T/C])<br><img src="images/N.svg" alt="N"><br>pI=5.41<br>polar, small</span>
+				<span class="aa" id="aa_O">Pyrrolysine                 (O/Pyl)<br>codons: (TAG + PylIS)<br><img src="images/O.svg" alt="O"><br>polar</span>
+				<span class="aa" id="aa_P">Proline                     (P/Pro)<br>codons: CCN (CC[T/C/A/G])<br><img src="images/P.svg" alt="P"><br>pI=6.30<br>(hydrophobic), small</span>
+				<span class="aa" id="aa_Q">Glutamine                   (Q/Gln)<br>codons: CAR (CA[A/G])<br><img src="images/Q.svg" alt="Q"><br>pI=5.65<br>polar</span>
+				<span class="aa" id="aa_R">Arginine                    (R/Arg)<br>codons: CGN, AGR<br>(CG[T/C/A/G], AG[A/G])<br><img src="images/R.svg" alt="R"><br>pI=10.76<br>basic, semi-essential</span>
+				<span class="aa" id="aa_S">Serine                      (S/Ser)<br>codons: TCN, AGY<br>(TC[T/C/A/G], AG[T/C])<br><img src="images/S.svg" alt="S"><br>pI=5.68<br>polar, tiny</span>
+				<span class="aa" id="aa_T">Threonine                   (T/Thr)<br>codons: ACN (AC[T/C/A/G])<br><img src="images/T.svg" alt="T"><br>pI=5.60<br>polar, small, essential</span>
+				<span class="aa" id="aa_U">Selenocysteine              (U/Sec)<br>codons: (TGA + SecIS)<br><img src="images/U.svg" alt="U"><br>pI=5.47<br>(acidic)</span>
+				<span class="aa" id="aa_V">Valine                      (V/Val)<br>codons: GTN (GT[T/C/A/G])<br><img src="images/V.svg" alt="V"><br>pI=6.00<br>hydrophobic, small, aliphatic, essential</span>
+				<span class="aa" id="aa_W">Tryptophan                  (W/Trp)<br>codons: TGG <br><img src="images/W.svg" alt="W"><br>pI=5.89<br>hydrophobic, aromatic, essential</span>
+				<span class="aa" id="aa_X">Unknown/Any                 (X/Xaa)<br>codons: NNN <br><img src="images/X.svg" alt="X"></span>
+				<span class="aa" id="aa_Y">Tyrosine                    (Y/Tyr)<br>codons: TAY (TA[T/C])<br><img src="images/Y.svg" alt="Y"><br>pI=5.64<br>polar, aromatic, semi-essential</span>
+				<span class="aa" id="aa_J">Leucine or Isoleucine       (J/Xle)<br>codons: ATH, TTR, CTN<br>(AT[T/C/A], TT[A/G], CT[T/C/A/G])<br><img src="images/J.svg" alt="J"><br>hydrophobic, aliphatic, essential</span>
+				<span class="aa" id="aa_B">Aspartic acid or Asparagine (B/Asx)<br>codons: RAY ([A/G]A[T/C])<br><img src="images/B.svg" alt="B"><br>small<br>D/Asp: X=OH, N/Asn: X=NH<sub>2</sub></span>
+				<span class="aa" id="aa_Z">Glutamic acid or Glutamine  (Z/Glx)<br>codons: SAR ([C/G]A[A/G])<br><img src="images/Z.svg" alt="Z"><br>E/Glu: X=OH, Q/Gln: X=NH<sub>2</sub></span>
+				<span class="aa" id="aa_0">Stop codons (*/Term)<br>TAA (Ochre),<br>TAG (Amber),<br>TGA (Opal)</span>
+			</section>
+			<section id="codontable">
+				ref: <a href="http://en.wikipedia.org/wiki/Genetic_code#RNA_codon_table" target="_blank">Wikipedia</a> and
+				<a href="http://www.ncbi.nlm.nih.gov/Taxonomy/Utils/wprintgc.cgi" target="_blank">NCBI</a>
+				<!--
+				https://en.wikipedia.org/wiki/Stop_codon
+				<a href="http://www.ncbi.nlm.nih.gov/Taxonomy/taxonomyhome.html/index.cgi?chapter=cgencodes" target="_blank">NCBI</a>. 
+				-->
+				<br>
+				<table class="codont">
+					<tr>
+						<!-- <th rowspan="2" colspan="2"> </th> -->
+						<th rowspan="2">1</th>
+						<th colspan="7">2</th>
+						<th rowspan="2">3</th>
+					</tr>
+					<tr>
+						<th colspan="1">t</th>
+						<td rowspan="20" class="short"></td>
+						<th colspan="1">c</th>
+						<td rowspan="20" class="short"></td>
+						<th colspan="1">a</th>
+						<td rowspan="20" class="short"></td>
+						<th colspan="1">g</th>
+					</tr>
+					<tr>
+						<th rowspan="4">t</th>
+						<td class="aromatic">F/Phe</td>
+						<td class="polar">S/Ser</td>
+						<td class="aromatic">Y/Tyr</td>
+						<td class="cysteine">C/Cys</td>
+						<th>t</th>
+					</tr>
+					<tr>
+						<td class="aromatic">F/Phe</td>
+						<td class="polar">S/Ser</td>
+						<td class="aromatic">Y/Tyr</td>
+						<td class="cysteine">C/Cys</td>
+						<th>c</th>
+					</tr>
+					<tr>
+						<td class="nonpolar" id="tta">L/Leu</td>
+						<td class="polar" id="tca">S/Ser</td>
+						<td class="stop" id="taa">Ochre</td>
+						<td class="stop" id="tga">Opal</td>
+						<th>a</th>
+					</tr>
+					<tr>
+						<td class="nonpolar">L/Leu</td>
+						<td class="polar">S/Ser</td>
+						<td class="stop" id="tag">Amber</td>
+						<td class="aromatic">W/Trp</td>
+						<th>g</th>
+					</tr>
+					<tr>
+						<td colspan="2" class="short"></td>
+						<td colspan="1" class="short"></td>
+						<td colspan="1" class="short"></td>
+						<td colspan="2" class="short"></td>
+					</tr>
+					<tr>
+						<th rowspan="4">c</th>
+						<td class="nonpolar" id="ctt">L/Leu</td>
+						<td class="polar">P/Pro</td>
+						<td class="basic">H/His</td>
+						<td class="basic">R/Arg</td>
+						<th>t</th>
+					</tr>
+					<tr>
+						<td class="nonpolar" id="ctc">L/Leu</td>
+						<td class="polar">P/Pro</td>
+						<td class="basic">H/His</td>
+						<td class="basic">R/Arg</td>
+						<th>c</th>
+					</tr>
+					<tr>
+						<td class="nonpolar" id="cta">L/Leu</td>
+						<td class="polar">P/Pro</td>
+						<td class="amide">Q/Gln</td>
+						<td class="basic">R/Arg</td>
+						<th>a</th>
+					</tr>
+					<tr>
+						<td class="nonpolar" id="ctg">L/Leu</td>
+						<td class="polar">P/Pro</td>
+						<td class="amide">Q/Gln</td>
+						<td class="basic">R/Arg</td>
+						<th>g</th>
+					</tr>
+					<tr>
+						<td colspan="2" class="short"></td>
+						<td colspan="1" class="short"></td>
+						<td colspan="1" class="short"></td>
+						<td colspan="2" class="short"></td>
+					</tr>
+					<tr>
+						<th rowspan="4">a</th>
+						<td class="nonpolar">I/Ile</td>
+						<td class="polar">T/Thr</td>
+						<td class="amide">N/Asn</td>
+						<td class="polar">S/Ser</td>
+						<th>t</th>
+					</tr>
+					<tr>
+						<td class="nonpolar">I/Ile</td>
+						<td class="polar">T/Thr</td>
+						<td class="amide">N/Asn</td>
+						<td class="polar">S/Ser</td>
+						<th>c</th>
+					</tr>
+					<tr>
+						<td class="nonpolar" id="ata">I/Ile</td>
+						<td class="polar">T/Thr</td>
+						<td class="basic" id="aaa">K/Lys</td>
+						<td class="basic" id="aga">R/Arg</td>
+						<th>a</th>
+					</tr>
+					<tr>
+						<td class="nonpolar">M/Met</td>
+						<td class="polar">T/Thr</td>
+						<td class="basic">K/Lys</td>
+						<td class="basic" id="agg">R/Arg</td>
+						<th>g</th>
+					</tr>
+					<tr>
+						<td colspan="2" class="short"></td>
+						<td colspan="1" class="short"></td>
+						<td colspan="1" class="short"></td>
+						<td colspan="2" class="short"></td>
+					</tr>
+					<tr>
+						<th rowspan="4">g</th>
+						<td class="nonpolar">V/Val</td>
+						<td class="polar">A/Ala</td>
+						<td class="acidic">D/Asp</td>
+						<td class="polar">G/Gly</td>
+						<th>t</th>
+					</tr>
+					<tr>
+						<td class="nonpolar">V/Val</td>
+						<td class="polar">A/Ala</td>
+						<td class="acidic">D/Asp</td>
+						<td class="polar">G/Gly</td>
+						<th>c</th>
+					</tr>
+					<tr>
+						<td class="nonpolar">V/Val</td>
+						<td class="polar">A/Ala</td>
+						<td class="acidic">E/Glu</td>
+						<td class="polar">G/Gly</td>
+						<th>a</th>
+					</tr>
+					<tr>
+						<td class="nonpolar">V/Val</td>
+						<td class="polar">A/Ala</td>
+						<td class="acidic">E/Glu</td>
+						<td class="polar">G/Gly</td>
+						<th>g</th>
+					</tr>
+				</table>
+				genetic code:
+				<select onChange="switchCode(this.value)" title="Select a genetic code.">
+					<option value="1" selected>Standard</option>
+					<option value="2">Vertebrate Mitochondrial</option>
+					<option value="3">Yeast Mitochondrial (mt)</option>
+					<option value="4">Mycoplasma etc.</option>
+					<option value="5">Invertebrate mt</option>
+					<option value="6">Ciliate etc. Nuclear</option>
+					<option value="9">Echinoderm etc. mt</option>
+					<option value="10">Euplotid Nuclear</option>
+					<option value="12">Alternative Yeast Nuclear</option>
+					<option value="13">Ascidian mt</option>
+					<option value="14">Alternative Flatworm mt</option>
+					<option value="16">Chlorophycean mt</option>
+					<option value="21">Trematode mt</option>
+					<option value="22">Scenedesmus obliquus mt</option>
+					<option value="23">Thraustochytrium mt</option>
+					<option value="24">Pterobranchia mt</option>
+					<option value="25">Gracilibacteria etc.</option>
+				</select>
+			</section>
+			<section id="iubtable">
+				<table>
+					<tr>
+						<th>code</th> <th>bases</th> <th>comment</th>
+					</tr>
+					<tr>
+						<td>T</td> <td>T</td> <td><B>T</B>hymine</td>
+					</tr>
+					<tr>
+						<td>U</td> <td>U</td> <td><B>U</B>racil</td>
+					</tr>
+					<tr>
+						<td>C</td> <td>C</td> <td><B>C</B>ytosine</td>
+					</tr>
+					<tr>
+						<td>A</td> <td>A</td> <td><B>A</B>denine</td>
+					</tr>
+					<tr>
+						<td>G</td> <td>G</td> <td><B>G</B>uanine</td>
+					</tr>
+					<tr>
+						<td>Y</td> <td>C, T/U</td> <td>p<B>Y</B>rimidines</td>
+					</tr>
+					<tr>
+						<td>R</td> <td>A, G</td> <td>pu<B>R</B>ines</td>
+					</tr>
+					<tr>
+						<td>K</td> <td>G, T/U </td> <td><B>K</B>eto</td>
+					</tr>
+					<tr>
+						<td>M</td> <td>A, C</td> <td>a<B>M</B>ino</td>
+					</tr>
+					<tr>
+						<td>W</td> <td>A, T/U</td> <td><B>W</B>eak</td>
+					</tr>
+					<tr>
+						<td>S</td> <td>C, G</td> <td><B>S</B>trong</td>
+					</tr>
+					<tr>
+						<td>V</td> <td>A, C, G</td> <td>not T/U &rarr; <b>V</b></td>
+					</tr>
+					<tr>
+						<td>D</td> <td>A, G, T/U</td> <td>not C &rarr; <b>D</b></td>
+					</tr>
+					<tr>
+						<td>B</td> <td>C, G, T/U</td> <td>not A &rarr; <b>B</b></td>
+					</tr>
+					<tr>
+						<td>H</td> <td>A, C, T/U</td> <td>not G &rarr; <b>H</b></td>
+					</tr>
+					<tr>
+						<td>N</td> <td>A, C, G, T/U</td> <td>a<B>N</B>y</td>
+					</tr>
+				</table>
+			</section>
+			<section id="translator">
+				<form action="javascript:;">
+					<div>DNA:<br>
+						<textarea id="seq" cols="30" rows="4" placeholder="nucleotide sequence"></textarea>
+						<br>
+						frame:
+						<input id="tr1" type="submit" value="1" formaction="javascript:translate(1)">
+						<input id="tr2" type="submit" value="2" formaction="javascript:translate(2)">
+						<input id="tr3" type="submit" value="3" formaction="javascript:translate(3)">
+						<input id="tr0" type="submit" value="all" formaction="javascript:translate(0)">
+					</div>
+					<br>
+					<div>translated protein(s):<br>
+						<textarea id="translation" cols="30" rows="9" placeholder="Translation result" readonly></textarea>
+					</div>
+				</form>
+			</section>
+			<section id="untranslator">
+				<form action="javascript:untranslate()">
+					<div>protein:<br>
+						<textarea id="prot" cols="30" rows="4" placeholder="amino acid sequence"></textarea>
+						<br>
+						<input type="submit" value="Untranslate">
+					</div>
+					<br>
+					<div>untranslated DNA:<br>
+						<textarea id="untranslation" cols="30" rows="9" placeholder="Untranslation result" readonly></textarea>
+					</div>
+				</form>
+			</section>
+			<section id="tmcalc">
+				<div>
+					<!-- <input type="text" id="tmseq" size="40" maxlength="200" placeholder="塩基配列を入力" onkeyup="javascript:tmcalc()"> -->
+					<textarea id="tmseq" cols="30" rows="3" placeholder="Enter nucleotide sequence." onkeyup="javascript:tmcalc()"></textarea>
+					<br>
+					<span id="tmresult">
+						Tm value will be shown here.
+					</span>
+				</div>
+			</section>
+		</article>
+		<footer>
+			<span onclick="chgView(this)" title="init">Molecular Biology Tools</span>
+			&copy; 2013–2015 Goh Sasaki
+		</footer>
+	</body>
+</html>

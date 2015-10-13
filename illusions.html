@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<!-- html manifest="./cache.manifest" -->
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+	<meta http-equiv="Content-Style-Type" content="text/css">
+	<meta http-equiv="Content-Script-Type" content="text/javascript">
+	<script type="text/javascript" src="common.js"></script>
+	<link rel="stylesheet" type="text/css" href="common.css">
+	<style>
+		#barber, #kanizsa, #brightness, #ske, #quartet { display:none; }
+		p{text-align:left;margin:1em}
+	</style>
+	<script>
+		window.onload = function() {
+			var svgs = document.getElementsByTagName('svg');
+			for (var i=0; i<svgs.length; i++){
+				svgs[i].onmouseover = function(){this.unpauseAnimations();}
+				svgs[i].onmouseout = function(){this.pauseAnimations();}
+				svgs[i].pauseAnimations();
+			}
+		}
+	</script>
+</head>
+<body>
+<header>
+	<nav>
+		<div id="tool" onclick="document.getElementById('toc').style.display='block';">
+			Illusions
+		</div>
+		<div id="toc" class="ac">
+			<div onclick="chgView(this)" title="barber">Sliding Stripes</div>
+			<div onclick="chgView(this)" title="kanizsa">Kanizsa’s Triangle</div>
+			<div onclick="chgView(this)" title="brightness">Brightness contrast</div>
+			<div onclick="chgView(this)" title="ske">Stereokinetic effect</div>
+			<div onclick="chgView(this)" title="quartet">Quartet symmetry</div>
+			<div onclick="location.href='index.html'" title="home"><img src="images/home.svg"></div>
+			<div onclick="chgView()" class="hidetoc">dummy</div>
+		</div>
+	</nav>
+</header>
+<article>
+	<section id="init">
+		<div>
+			<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">
+			<path d="M15,15h45v45h-45zm20,20v50h50v-50z">
+			<animate attributeName="fill" begin="0s" dur="4s" values="#888;#000;#000;#888;#888" keyTimes="0;0.25;0.5;0.75;1" repeatCount="indefinite"/>
+			</path>
+			<path d="M35,35h25v25h-25z" fill="#fff">
+			<animate attributeName="fill" begin="0s" dur="4s" values="#444;#fff;#fff;#444;#444" keyTimes="0;0.25;0.5;0.75;1" repeatCount="indefinite"/>
+			</path>
+			</svg>
+		</div>
+		<div>Point or tap images to animate.</div>
+	</section>
+	<section id="barber">
+		<p>
+			丸い穴の奥に赤と白の縞模様が右下に向かって動いて見える。
+		</p>
+		<svg xmlns="http://www.w3.org/2000/svg" width="110" height="120">
+		<clipPath id="circleclip">
+		<circle cx="70" cy="40" r="30"/>
+		</clipPath>
+		<line clip-path="url(#circleclip)" x1="30" x2="110" y1="0" y2="70" stroke="red" stroke-width="100" stroke-dasharray="10 10">
+		<animate attributeName="x1" from="30" to="44" dur="1s" repeatCount="indefinite"/>
+		<animate attributeName="y1" from="0" to="14" dur="1s" repeatCount="indefinite"/>
+		</line>
+		<g stroke-width="2" stroke="black" fill="none">
+		<circle cx="70" cy="40" r="30"/>
+		<path d="M10,50l57,57m-14,0l14,0 0,-14"/>
+		</g>
+		</svg>
+		<p>
+			穴を長方形にすると縞模様は長辺に沿った方向に動いて見える。
+			(barberpole illusion)
+		</p>
+		<svg xmlns="http://www.w3.org/2000/svg" width="290" height="120">
+		<clipPath id="rectclip">
+		<rect x="10" y="20" width="35" height="80"/>
+		<rect x="200" y="40" width="80" height="35"/>
+		</clipPath>
+		<line clip-path="url(#rectclip)" x1="0" x2="300" y1="-90" y2="210" stroke="red" stroke-width="300" stroke-dasharray="10 10">
+		<animate attributeName="x1" from="0" to="14" dur="1s" repeatCount="indefinite"/>
+		<animate attributeName="y1" from="-90" to="-76" dur="1s" repeatCount="indefinite"/>
+		</line>
+		<g stroke-width="2" stroke="black" fill="none">
+		<rect x="10" y="20" width="35" height="80"/>
+		<rect x="200" y="40" width="80" height="35"/>
+		<path d="M65,20v80m-10,-10l10,10 10,-10M200,95h80m-10,-10l10,10 -10,10"/>
+		</g>
+		</svg>
+		<p>
+			縦横ランダムに配置するとはじめは個々の長方形の長辺に沿って動いて見えるが、しばらくすると全ての縞模様が一体化して縦または横の一方向に動いて見えるようになる。
+		</p>
+		<svg xmlns="http://www.w3.org/2000/svg" width="320" height="260">
+		<clipPath id="pathclip">
+		<path d="M30,20h35v80h-35zm210,0h35v80h-35zm-130,90h35v80h-35zm60,50h35v80h-35zM10,160h80v35h-80zm120,-95h80v35h-80zm60,45h80v35h-80zm40,70h80v35h-80z"/>
+		</clipPath>
+		<line clip-path="url(#pathclip)" x1="0" x2="320" y1="0" y2="320" stroke="red" stroke-width="400" stroke-dasharray="10 10">
+		<animate attributeName="x1" from="0" to="14" dur="1s" repeatCount="indefinite"/>
+		<animate attributeName="y1" from="0" to="14" dur="1s" repeatCount="indefinite"/>
+		</line>
+		<path stroke-width="2" stroke="black" fill="none" d="M30,20h35v80h-35zm210,0h35v80h-35zm-130,90h35v80h-35zm60,50h35v80h-35zM10,160h80v35h-80zm120,-95h80v35h-80zm60,45h80v35h-80zm40,70h80v35h-80z"/>
+		</svg>
+		<p>
+			2つの方向に動く縞模様を重ねた動きは2つの動きベクトルの和となるようにも見えるが…
+		</p>
+		<svg width="310" height="340" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<defs>
+		<clipPath id="clip1"><circle id="c1" cx="70" cy="90" r="60"/></clipPath>
+		<clipPath id="clip2"><circle id="c2" cx="240" cy="90" r="60"/></clipPath>
+		<clipPath id="clip3"><circle id="c3" cx="155" cy="270" r="60"/></clipPath>
+		<path id="arrow" d="M0,0h25m-10,-10l10,10 -10,10"/>
+		</defs>
+		<line clip-path="url(#clip1)" x1="0" x2="130" y1="20" y2="150" stroke="#000" stroke-width="140" stroke-dasharray="3 17">
+		<animate attributeName="x1" from="0" to="14" dur="1s" repeatCount="indefinite"/>
+		<animate attributeName="y1" from="20" to="34" dur="1s" repeatCount="indefinite"/>
+		</line>
+		<line clip-path="url(#clip2)" x1="180" x2="300" y1="150" y2="30" stroke="#000" opacity="0.5" stroke-width="140" stroke-dasharray="3 17">
+		<animate attributeName="x1" from="180" to="194" dur="1s" repeatCount="indefinite"/>
+		<animate attributeName="y1" from="150" to="136" dur="1s" repeatCount="indefinite"/>
+		</line>
+		<line clip-path="url(#clip3)" x1="95" x2="215" y1="210" y2="330" stroke="#000" stroke-width="140" stroke-dasharray="3 17">
+		<animate attributeName="x1" from="95" to="109" dur="1s" repeatCount="indefinite"/>
+		<animate attributeName="y1" from="210" to="224" dur="1s" repeatCount="indefinite"/>
+		</line>
+		<line clip-path="url(#clip3)" x1="95" x2="215" y1="330" y2="210" stroke="#000" opacity="0.5" stroke-width="140" stroke-dasharray="3 17">
+		<animate attributeName="x1" from="95" to="109" dur="1s" repeatCount="indefinite"/>
+		<animate attributeName="y1" from="330" to="316" dur="1s" repeatCount="indefinite"/>
+		</line>
+		<g stroke-width="2" stroke="black" fill="none">
+		<use xlink:href="#c1"/>
+		<use xlink:href="#c2"/>
+		<use xlink:href="#c3"/>
+		<use xlink:href="#arrow" transform="rotate(45,70,90) translate(140,90)"/>
+		<use xlink:href="#arrow" transform="rotate(-45,240,90) translate(310,90)"/>
+		<use xlink:href="#arrow" transform="translate(225,270) scale(1.414,1)"/>
+		<path d="M145,90h20m-10,-10v20"/>
+		<path d="M55,265h20m-20,10h20"/>
+		</g>
+		</svg>
+		<p>
+			角度を変えると、ベクトルの和ではないことがわかる。
+		</p>
+		<svg xmlns="http://www.w3.org/2000/svg" width="310" height="340">
+		<line clip-path="url(#clip1)" x1="0" x2="100" y1="20" y2="193" stroke="#000" stroke-width="200" stroke-dasharray="3 17">
+		<animate attributeName="x1" from="0" to="10" dur="1s" repeatCount="indefinite"/>
+		<animate attributeName="y1" from="20" to="37" dur="1s" repeatCount="indefinite"/>
+		</line>
+		<line clip-path="url(#clip2)" x1="180" x2="280" y1="193" y2="20" stroke="#000" opacity="0.5" stroke-width="200" stroke-dasharray="3 17">
+		<animate attributeName="x1" from="180" to="190" dur="1s" repeatCount="indefinite"/>
+		<animate attributeName="y1" from="193" to="176" dur="1s" repeatCount="indefinite"/>
+		</line>
+		<line clip-path="url(#clip3)" x1="100" x2="200" y1="200" y2="373" stroke="#000" stroke-width="200" stroke-dasharray="3 17">
+		<animate attributeName="x1" from="100" to="110" dur="1s" repeatCount="indefinite"/>
+		<animate attributeName="y1" from="200" to="217" dur="1s" repeatCount="indefinite"/>
+		</line>
+		<line clip-path="url(#clip3)" x1="100" x2="200" y1="373" y2="200" stroke="#000" opacity="0.5" stroke-width="200" stroke-dasharray="3 17">
+		<animate attributeName="x1" from="100" to="110" dur="1s" repeatCount="indefinite"/>
+		<animate attributeName="y1" from="373" to="356" dur="1s" repeatCount="indefinite"/>
+		</line>
+		<g stroke-width="2" stroke="black" fill="none">
+		<use xlink:href="#c1"/>
+		<use xlink:href="#c2"/>
+		<use xlink:href="#c3"/>
+		<use xlink:href="#arrow" transform="rotate(60,70,90) translate(140,90)"/>
+		<use xlink:href="#arrow" transform="rotate(-60,240,90) translate(310,90)"/>
+		<use xlink:href="#arrow" transform="translate(225,270) scale(2,1)"/>
+		<path d="M145,90h20m-10,-10v20"/>
+		<path d="M55,265h20m-20,10h20"/>
+		</g>
+		</svg>
+		<p>もしそれぞれの縞の動きベクトルの和であれば、水平方向の移動ベクトルの大きさは上図と下図とで逆になるはずである。</p>
+		<svg xmlns="http://www.w3.org/2000/svg" width="330" height="340">
+		<line clip-path="url(#clip1)" x1="0" x2="173" y1="20" y2="120" stroke="#000" stroke-width="200" stroke-dasharray="3 17">
+		<animate attributeName="x1" from="0" to="17" dur="1s" repeatCount="indefinite"/>
+		<animate attributeName="y1" from="20" to="30" dur="1s" repeatCount="indefinite"/>
+		</line>
+		<line clip-path="url(#clip2)" x1="180" x2="353" y1="120" y2="20" stroke="#000" opacity="0.5" stroke-width="200" stroke-dasharray="3 17">
+		<animate attributeName="x1" from="180" to="197" dur="1s" repeatCount="indefinite"/>
+		<animate attributeName="y1" from="120" to="110" dur="1s" repeatCount="indefinite"/>
+		</line>
+		<line clip-path="url(#clip3)" x1="100" x2="273" y1="200" y2="300" stroke="#000" stroke-width="200" stroke-dasharray="3 17">
+		<animate attributeName="x1" from="100" to="117" dur="1s" repeatCount="indefinite"/>
+		<animate attributeName="y1" from="200" to="210" dur="1s" repeatCount="indefinite"/>
+		</line>
+		<line clip-path="url(#clip3)" x1="100" x2="273" y1="300" y2="200" stroke="#000" opacity="0.5" stroke-width="200" stroke-dasharray="3 17">
+		<animate attributeName="x1" from="100" to="117" dur="1s" repeatCount="indefinite"/>
+		<animate attributeName="y1" from="300" to="290" dur="1s" repeatCount="indefinite"/>
+		</line>
+		<g stroke-width="2" stroke="black" fill="none">
+		<use xlink:href="#c1"/>
+		<use xlink:href="#c2"/>
+		<use xlink:href="#c3"/>
+		<use xlink:href="#arrow" transform="rotate(30,70,90) translate(140,90)"/>
+		<use xlink:href="#arrow" transform="rotate(-30,240,90) translate(310,90)"/>
+		<use xlink:href="#arrow" transform="translate(225,270)"/>
+		<path d="M145,90h20m-10,-10v20"/>
+		<path d="M55,265h20m-20,10h20"/>
+		</g>
+		</svg>
+		<p>
+			出典：「別冊日経サイエンス174 知覚は幻—ラマチャンドランが語る錯覚の脳科学」V.S.ラマチャンドラン他 著、北岡 明佳 監修／日経サイエンス編集部 訳、第20話 床屋マークと窓問題<br>
+			Sliding Stripes (Scientific American Mind June/July 2008)
+		</p>
+	</section>
+	<section id="kanizsa">
+		<img src="images/kanizsa.svg">
+		<p>主観的輪郭（白い三角形）が手前に浮き上がって、周囲よりもさらに白く見える。</p>
+		<img src="images/kanizsa2.svg">
+		<p>白黒反転すると黒い三角形の主観的輪郭が見える。</p>
+		<img src="images/kanizsa3.svg">
+		<p>長方形の主観的輪郭が、複数の黒い丸テーブルの上に置いた半透明な板に見えたり、丸い穴の向こう側にある不透明な長方形のテーブルに見えたりする。</p>
+	</section>
+	<section id="brightness">
+		<p>Koffka ring: 均一な灰色のリングが、左右に分断されるだけで明るさが違って見える。縦にずらすと同様の効果と透明視もみられる。</p>
+		<svg xmlns="http://www.w3.org/2000/svg" width="320" height="360">
+		<rect fill="#000" width="150" height="300"/>
+		<path stroke="#888" stroke-width="60" fill="none" d="M150,90a60,60 0 1,0 0,120"/>
+		<g>
+		<rect fill="#ddd" x="150" y="0" width="150" height="300"/>
+		<path stroke="#888" stroke-width="60" fill="none" d="M150,90a60,60 0 1,1 0,120"/>
+		<animateMotion begin="0s" dur="15s" calcMode="linear" keyTimes="0;0.05;0.25;0.3;0.4;0.5;0.8;0.9;1" keyPoints="0;0.125;0.125;0.25;0.25;0.625;0.625;1;1" path="M0,0h20,0 -20,0v60z" repeatCount="indefinite"/>
+		</g>
+		</svg>
+		<p>White’s illusion: All gray areas are equally bright.</p>
+		<svg width="300" height="300" xmlns="http://www.w3.org/2000/svg">
+		<line x1="0" x2="300" y1="150" y2="150" stroke="#000000" stroke-width="300" stroke-dasharray="15 15"/>
+		<line x1="15" x2="300" y1="80" y2="80" stroke="#808080" stroke-width="60" stroke-dasharray="15 15">
+		<animate attributeName="y1" begin="0s" dur="10s" values="80;120;120;150;150;120;120;80;80" keyTimes="0;0.1;0.2;0.3;0.5;0.6;0.7;0.8;1" repeatCount="indefinite"/>
+		<animate attributeName="y2" begin="0s" dur="10s" values="80;120;120;150;150;120;120;80;80" keyTimes="0;0.1;0.2;0.3;0.5;0.6;0.7;0.8;1" repeatCount="indefinite"/>
+		</line>
+		<line x1="0" x2="300" y1="220" y2="220" stroke="#808080" stroke-width="60" stroke-dasharray="15 15">
+		<animate attributeName="y1" begin="0s" dur="10s" values="220;180;180;150;150;180;180;220;220" keyTimes="0;0.1;0.2;0.3;0.5;0.6;0.7;0.8;1" repeatCount="indefinite"/>
+		<animate attributeName="y2" begin="0s" dur="10s" values="220;180;180;150;150;180;180;220;220" keyTimes="0;0.1;0.2;0.3;0.5;0.6;0.7;0.8;1" repeatCount="indefinite"/>
+		</line>
+		</svg>
+	</section>
+	<section id="ske">
+		<p>静止していると平面図形にしか見えないが、回転すると立体的に知覚できる。SKE, stereokinetic effect; KDE, kinetic depth effect</p>
+		<p>Benussi: 回転するターンテーブルの上で、はじめは楕円が自転しているように見える。それから自転しないで形を変える平面図形または輪ゴムのように見えるようになり、最後には奥行きのある円盤またはリングが自転しているように見える。</p>
+		<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300">
+		<g stroke-width="2" stroke="#000" fill="none">
+		<circle cx="150" cy="150" r="140"/>
+		<ellipse cx="50" cy="150" rx="20" ry="30"/>
+		<animateTransform attributeName="transform" type="rotate" begin="0s" dur="4s" fill="freeze" from="0,150,150" to="360,150,150" repeatCount="indefinite"/>
+		</g>
+		</svg>
+		<p>円盤とリングが土星の輪のように見える。</p>
+		<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300">
+		<g stroke-width="2" stroke="#000" fill="none">
+		<circle cx="150" cy="150" r="140"/>
+		<g transform="rotate(45,50,150)">
+		<ellipse cx="50" cy="150" rx="20" ry="30"/>
+		<ellipse fill="#000" stroke="none" cx="50" cy="150" rx="30" ry="20"/>
+		</g>
+		<animateTransform attributeName="transform" type="rotate" begin="0s" dur="4s" fill="freeze" from="0,150,150" to="360,150,150" repeatCount="indefinite"/>
+		</g>
+		</svg>
+		<p>下の図では回転するとコーン状の立体を知覚できる。</p>
+		<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300">
+		<g stroke-width="2" stroke="#000" fill="none">
+		<circle cx="150" cy="150" r="140"/>
+		<circle cx="240" cy="150" r="40"/>
+		<circle fill="#000" cx="260" cy="160" r="3"/>
+		<animateTransform attributeName="transform" type="rotate" begin="0s" dur="4s" fill="freeze" from="0,150,150" to="360,150,150" repeatCount="indefinite"/>
+		</g>
+		</svg>
+		<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300">
+		<g>
+		<circle fill="#000" cx="150" cy="150" r="140"/>
+		<circle fill="#ddd" cx="137" cy="150" r="125"/>
+		<circle fill="#000" cx="124" cy="150" r="110"/>
+		<circle fill="#ddd" cx="111" cy="150" r="95"/>
+		<circle fill="#000" cx="98" cy="150" r="80"/>
+		<circle fill="#ddd" cx="85" cy="150" r="65"/>
+		<circle fill="#000" cx="72" cy="150" r="50"/>
+		<circle fill="#ddd" cx="59" cy="150" r="35"/>
+		<circle fill="#000" cx="46" cy="150" r="20"/>
+		<animateTransform attributeName="transform" type="rotate" begin="0s" dur="4s" fill="freeze" from="0,150,150" to="360,150,150" repeatCount="indefinite"/>
+		</g>
+		</svg>
+		<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300">
+		<g>
+		<circle fill="#777" cx="150" cy="150" r="140"/>
+		<circle fill="#ddd" cx="115" cy="150" r="105"/>
+		<circle fill="#000" cx="150" cy="150" r="70"/>
+		<circle fill="#777" cx="130" cy="150" r="50"/>
+		<circle fill="#ddd" cx="115" cy="150" r="35"/>
+		<circle fill="#000" cx="128" cy="150" r="22"/>
+		<circle fill="#777" cx="121" cy="150" r="15"/>
+		<circle fill="#bbb" cx="115" cy="150" r="9"/>
+		<animateTransform attributeName="transform" type="rotate" begin="0s" dur="4s" fill="freeze" from="0,150,150" to="360,150,150" repeatCount="indefinite"/>
+		</g>
+		</svg>
+	</section>
+	<section id="quartet">
+		<svg viewBox="-200 0 400 400" width="400" height="400" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<rect x="-200" y="0" width="400" height="400"/>
+		<defs>
+		<g id="g0">
+		<g>
+		<circle cx="0" cy="0" r="5"/><circle cx="0" cy="40" r="5"/>
+		<animate calcMode="discrete" attributeName="fill" from="#fff" to="#000" begin="0s" dur="1s" repeatCount="indefinite"/>
+		</g>
+		<g>
+		<circle cx="-20" cy="20" r="5"/><circle cx="20" cy="20" r="5"/>
+		<animate calcMode="discrete" attributeName="fill" from="#000" to="#fff" begin="0s" dur="1s" repeatCount="indefinite"/>
+		</g>
+		</g>
+		</defs>
+		<use xlink:href="#g0" transform="translate(100,30)"/>
+		<use xlink:href="#g0" transform="translate(50,150)"/>
+		<use xlink:href="#g0" transform="translate(150,130)"/>
+		<use xlink:href="#g0" transform="translate(130,230)"/>
+		<use xlink:href="#g0" transform="translate(70,330)"/>
+		<use xlink:href="#g0" transform="translate(-150,30)"/>
+		<use xlink:href="#g0" transform="translate(-30,120)"/>
+		<use xlink:href="#g0" transform="translate(-100,160)"/>
+		<use xlink:href="#g0" transform="translate(-60,250)"/>
+		<use xlink:href="#g0" transform="translate(-120,330)"/>
+		</svg>
+		<p></p>
+		<svg viewBox="-200 0 400 400" width="400" height="400" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<rect x="-200" y="0" width="400" height="400"/>
+		<defs>
+		<g id="g0">
+		<g>
+		<circle cx="0" cy="0" r="5"/><circle cx="0" cy="40" r="5"/>
+		<animate calcMode="discrete" attributeName="fill" from="#fff" to="#000" begin="0s" dur="1s" repeatCount="indefinite"/>
+		</g>
+		<g>
+		<circle cx="-20" cy="20" r="5"/><circle cx="20" cy="20" r="5"/>
+		<animate calcMode="discrete" attributeName="fill" from="#000" to="#fff" begin="0s" dur="1s" repeatCount="indefinite"/>
+		</g>
+		</g>
+		</defs>
+		<use xlink:href="#g0" transform="translate(100,30)"/>
+		<use xlink:href="#g0" transform="translate(50,130)"/>
+		<use xlink:href="#g0" transform="translate(150,130)"/>
+		<use xlink:href="#g0" transform="translate(130,230)"/>
+		<use xlink:href="#g0" transform="translate(70,330)"/>
+		<use xlink:href="#g0" transform="translate(-100,30)"/>
+		<use xlink:href="#g0" transform="translate(-50,130)"/>
+		<use xlink:href="#g0" transform="translate(-150,130)"/>
+		<use xlink:href="#g0" transform="translate(-130,230)"/>
+		<use xlink:href="#g0" transform="translate(-70,330)"/>
+		</svg>
+	</section>
+</article>
+</body>
+</html>
