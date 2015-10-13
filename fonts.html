@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Fonts</title>
+<link rel="stylesheet" type="text/css" href="fonts/1406-fonts.css">
+<link rel="stylesheet" type="text/css" href="common.css">
+<script type="text/javascript" src="common.js"></script>
+<script type="text/javascript" src="fonts.js"></script>
+<style media="all">
+	html,body{height:100%}
+	*{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
+	body{
+		color:#222;
+		padding:0;
+		margin:0;
+		position:relative;
+		cursor:auto;
+		max-width:none;
+	}
+	div,ul,li{background:#fff;margin:0;padding:0}
+	.branding{color:#fff;background:#bb0505;font-weight:100;margin:0;padding-left:.5em;}
+	/* nav{position:fixed;top:0;left:0;right:0;opacity:.96;margin:0;padding:.5em;background:#fcfcfd} */
+	.row{width:100%;margin:0 auto 0;max-width:65rem;}
+	div.row{padding-left:1rem;cursor:pointer;}
+
+	input{
+		width:100%;
+		font-family:"SourceHanSansJP-Regular",ssp,sans-serif;
+		font-size:.8em;
+		height:2em;
+		margin:0;
+		padding-left:.5rem;
+	}
+	select{
+		float:left;
+		width:50%;
+		-webkit-appearance:none!important;
+		cursor:pointer;
+		background:#fafafa url(images/selectb.svg) no-repeat right center;
+		border-radius:0;
+		border-style:solid;
+		border-width:1px;
+		border-color:#ccc;
+		padding-left:.5rem;
+		font-family:ssp,sans-serif;
+		font-size:.8em;
+		color:rgba(0,0,0,.75);
+		height:2em;
+		margin:0;
+	}
+	select:hover{background-color:#f3f3f3;border-color:#999}
+	.font-name{font-weight:300;color:#222;background:#f1f1f8;padding-left:.5em}
+	span{margin-right:.3em}
+	.liga{-webkit-font-feature-settings:"liga"}
+	.dlig{-webkit-font-feature-settings:"dlig"}
+	.hist{-webkit-font-feature-settings:"hist"}
+	.hlig{-webkit-font-feature-settings:"hlig"}
+	.init{-webkit-font-feature-settings:"init"}
+	.ital{-webkit-font-feature-settings:"ital"}
+	.lnum{-webkit-font-feature-settings:"lnum"}
+	.onum{-webkit-font-feature-settings:"onum"}
+	.pnum{-webkit-font-feature-settings:"pnum"}
+	.tnum{-webkit-font-feature-settings:"tnum"}
+	.frac{-webkit-font-feature-settings:"frac"}
+	.afrc{-webkit-font-feature-settings:"afrc"}
+	.dnom{-webkit-font-feature-settings:"dnom"}
+	.numr{-webkit-font-feature-settings:"numr"}
+	.sinf{-webkit-font-feature-settings:"sinf"}
+	.zero{-webkit-font-feature-settings:"zero"}
+	.mgrk{-webkit-font-feature-settings:"mgrk"}
+	.smcp{-webkit-font-feature-settings:"smcp"}
+	.swsh{-webkit-font-feature-settings:"swsh"}
+	ul{width:100%;margin:0 auto 0 auto;max-width:65rem; padding-top:3em}
+	li{margin-bottom:1em;list-style-type:none}
+	li:hover{background:#fafafb}
+	li div.row:hover{background:#d9d9e6}
+	li div.checked {font-size:2em; background-color:#ffe; }
+	li div.checked:hover {background-color:#ee9}
+	footer{text-align:right;font-size:.5em;padding-right:1em;}
+</style>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+</head>
+
+<body>
+<header>
+<nav class="row" id="filters">
+<!--
+<div id="tool">List of System &amp; User Fonts</div>
+-->
+<div id="tool" onclick="document.getElementById('toc').style.display='block';">List of System &amp; User Fonts</div>
+<div id="toc" class="ac">
+	<div onclick="chgView(this)" title="all">List of System &amp; User Fonts</div>
+	<!--
+	<div onclick="chgView(this)" title="codons">Mac OS X</div>
+	<div onclick="chgView(this)" title="aatable">iOS</div>
+	<div onclick="chgView(this)" title="codontable">Windows</div>
+	<div onclick="chgView(this)" title="iubtable">Webfonts</div>
+	-->
+	<div onclick="location.href='index.html'" title="home"><img src="images/home.svg"></div>
+	<div onclick="chgView()" class="hidetoc">dummy</div>
+</div>
+<div>
+<select onchange="show(this.selectedIndex);">
+	<option value="none" selected="">font class…</option>
+	<optgroup label="Serif">
+		<option value="oldstyle">Old Style Serif</option>
+		<option value="transitional">Transitional Serif</option>
+		<option value="modern">Modern Serif</option>
+	</optgroup>
+	<optgroup label="Sans-serif">
+		<option value="grotesque">Grotesque San-serif</option>
+		<option value="realist">Realist San-serif</option>
+		<option value="humanist">Humanist San-serif</option>
+		<option value="geometric">Geometric San-serif</option>
+	</optgroup>
+	<optgroup label="Others">
+		<option value="monospaced">Monospaced</option>
+		<option value="jp">Japanese</option>
+	</optgroup>
+	<optgroup label="Custom"> <!-- TODO: checkbox -->
+		<option value="selection">Selection</option>
+	</optgroup>
+</select>
+</div>
+<select onchange="otf = this.value; setotf();">
+	<option value="none" selected="">OpenType Features…</option>
+	<option value="liga">liga: Standard Ligatures</option>
+	<option value="dlig">dlig: Discretionary Ligatures</option>
+	<option value="hist">hist: Historical Forms</option>
+	<option value="hlig">hlig: Historical Ligatures</option>
+	<option value="init">init: Initial Forms</option>
+	<option value="ital">ital: Italics</option>
+	<option value="lnum">lnum: Lining Figures</option>
+	<option value="onum">onum: Oldstyle Figures</option>
+	<option value="pnum">pnum: Propotional Figures</option>
+	<option value="tnum">tnum: Tabular Figures</option>
+	<option value="frac">frac: Fractions </option>
+	<option value="afrc">afrc: Alternative fractions</option>
+	<option value="dnom">dnom: Denominator</option>
+	<option value="numr">numr: Numerator</option>
+	<option value="sinf">sinf: Scientific inferiors</option>
+	<option value="zero">zero: Slashed Zero</option>
+	<option value="mgrk">mgrk: Mathematical Greek</option>
+	<option value="smcp">smcp: Small Capitals</option>
+	<option value="swsh">swsh: Swash</option>
+</select>
+<div>
+	<input type="text" size="40" maxlength="100" placeholder="Preview" onkeyup="txt = this.value; setotf();">
+</div>
+</nav>
+</header>
+
+<ul id="show">
+	<div class="row"><div style="text-align:center;cursor:auto;padding:5em 0;line-height:5em;"><img width="100" src="images/fi.svg"><br>Select font class from the menu.</div></div>
+</ul>
+
+<footer class="row">
+	2015. 09. 01. inspired by <a href="http://www.iosfonts.com">iOS Fonts</a>
+</footer>
+</body>
+</html>

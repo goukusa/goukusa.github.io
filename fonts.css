@@ -1,0 +1,32 @@
+/* Source Code Pro 1.017 by Adobe
+	https://github.com/adobe-fonts/source-code-pro
+	license: SIL OFL 1.1 */
+@font-face {
+	font-family: 'scp';
+	font-weight: normal;
+	src: /* local('SourceCodePro-Light'), */
+		url('fonts/SourceCodePro-Light.ttf.woff2') format('woff2'),
+		url('fonts/SourceCodePro-Light.otf.woff') format('woff');
+}
+@font-face {
+	font-family: 'scp';
+	font-weight: bold;
+	src: /* local('SourceCodePro-Semibold'), */
+		url('fonts/SourceCodePro-Semibold.ttf.woff2') format('woff2'),
+		url('fonts/SourceCodePro-Semibold.otf.woff') format('woff');
+}
+/* Source Sans Pro 2.010 by Adobe
+https://github.com/adobe-fonts/source-sans-pro
+license: SIL OFL 1.1 */
+@font-face {
+	font-family: 'ssp';
+	font-weight: normal;
+	src: /* local('SourceSansPro-Light'), */
+	url('fonts/SourceSansPro-Light.ttf.woff') format('woff');
+}
+@font-face {
+	font-family: 'ssp';
+	font-weight: bold;
+	src: /* local('SourceSansPro-Semibold'), */
+	url('fonts/SourceSansPro-Semibold.ttf.woff') format('woff');
+}
