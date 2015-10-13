@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=400,initial-scale=1,user-scalable=no">
+	<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
+	<link rel="stylesheet" type="text/css" href="common.css">
+	<style>
+		html,body{height:100%}
+		section{background:#ffe; padding:0 0 auto 0; }
+		/* #note{font-size:6em;} */
+		*{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
+		th { background-color:#000; }
+		td { background-color:#fff; }
+		td { border:1px #888 solid; padding:0.2em; }
+		table { border-collapse:collapse; border:none; line-height:1.1em; margin:auto; }
+		.kb {width:100%}
+		.bk {width: 9%; height:15%; position:absolute; bottom:20%; background-color:#000; border-radius:0 0 8px 8px}
+		.wk {width:12%; height:35%; position:absolute; bottom:0; background-color:#fff; border:3px #000 solid; border-radius:0 0 8px 8px}
+		.wk:hover{background-color:#eee}
+		#b0 {left:15%}
+		#b1 {left:28%}
+		#b2 {left:50%}
+		#b3 {left:63%}
+		#b4 {left:76%}
+		#w0 {left:8%}
+		#w1 {left:20%}
+		#w2 {left:32%}
+		#w3 {left:44%}
+		#w4 {left:56%}
+		#w5 {left:68%}
+		#w6 {left:80%}
+		.red, .red:hover {background-color:#f55}
+		.green, .green:hover {background-color:#5f5}
+		#scores{font-size:1.5em}
+		footer{height:30em}
+	</style>
+	<title>Musical Notes</title>
+	<!-- 参考にしたサイト
+	<a href="http://achapi2718.blogspot.jp/2014/05/javascript_30.html">
+		あちゃぴーの自転車通勤: ギターで五線譜読譜トレーニング JavaScript
+	</a> -->
+<script type="text/javascript">
+var min = 7, max = 19, clef = 0, y=0, score=0, maxscore=0;
+var notes = ["ド C","レ D","ミ E","ファ F","ソ G","ラ A","シ B"];
+var clefs = ['<path d="M40,200c-19,-10 -6,-31 9,-29s17,16 16,21 -8,18 -23,17 -26,-11 -26,-28 15,-27 27,-37 15,-20 9,-26 -5,-9 -3,-10 9,9 9,20 -8,25 -16,30 -23,18 -21,32 16,17 23,17 15,-3 15,-14 -9,-12 -13,-12 -19,5 -6,19"/><path d="M32,235c5,0 8,-3 8,-7s-3,-8 -7,-8 -8,4 -8,10 5,10 15,10 14,-8 14,-12 -14,-80 -14,-88 5,-27 13,-21 0,-5 -1,-6 -1,-5 -3,-5 -7,6 -9,12 -3,15 -2,20 13,82 14,86 -3,12 -11,12 -7,-2 -9,-3"/>',
+	'<rect x="14" y="130" width="11" height="80"/><rect x="31" y="130" width="5" height="80"/><circle cx="45" cy="141" r="5"/><circle cx="45" cy="199" r="5"/><path d="M40,141c0,-2 1,-12 14,-12s 17,10 17,20 -8,17 -13,17 -6,-1 -11,-4c -3,5 -3,11 0,16 5,-3 6,-4 11,-4s 13,7 13,17 -4,20 -17,20 -14,-10 -14,-12 3,-3 3,1 2,8 10,8 9,-11 9,-16 -2,-15 -8,-15 -9,6 -9,10c 0,-3 -2,-13 -7,-17 5,-4 7,-14 7,-17 0,4 3,10 9,10s 8,-10 8,-15 -1,-16 -9,-16 -10,4 -10,8 -3,4 -3,1"/>',
+	'<circle cx="22" cy="150" r="8"/><circle cx="63" cy="140" r="4"/><circle cx="63" cy="160" r="4"/><path d="M14,150c0,-15 12,-20 20,-20s20,9 20,21 -9,32 -29,42 3,-5 5,-7 16,-15 15,-33 -11,-19 -16,-19 -10,3 -9,7 4,1 5,2z"/>']
+function chgmax(value) {
+	y = 0;
+	max = Number(value);
+	if (min > max) {
+		min = max;
+		document.getElementById('selmin').value = min;
+	}
+	drawNote();
+}
+function chgmin(value) {
+	y = 0;
+	min = Number(value);
+	if (max < min) {
+		max = min;
+		document.getElementById('selmax').value = max;
+	}
+	drawNote();
+}
+function generateSelect() {
+	function options(selected) {
+		var i, note, octave, tag = "";
+		for(i=28; i>=0; i--) {
+			note = (i + clef) % 7;
+			octave = 3 - clef + (i + clef - note)/7;
+			tag += '<option value=' + i + (i==selected ? ' selected="selected"' : ' ') + '>' + notes[note] + octave + '</option>';
+		}
+		return tag;
+	}
+	document.getElementById('selmin').innerHTML = options(min);
+	document.getElementById('selmax').innerHTML = options(max);
+}
+function chgclef(value) {
+	y = 0;
+	clef = Number(value);
+	generateSelect();
+	drawNote();
+}
+
+function wk() {
+	var arr = document.getElementsByClassName('wk');
+	for(var i = 0; i < arr.length; i++) arr[i].className = 'wk';
+}
+function touch(k){
+	var sound, sounds = ['pc','pd','pe','pf','pg','pa','pb'];
+	if(Number(k) == (28+clef-(y-20)/10) % 7) {
+		document.getElementById('w'+k).className = 'wk green';
+		score += 1;
+		if(maxscore < score) maxscore = score;
+		drawNote();
+		sound = document.getElementById('s'+k);
+	} else {
+		score = 0;
+		document.getElementById('w'+k).className = 'wk red';
+		sound = document.getElementById('sx');
+	}
+	document.getElementById('scores').innerHTML = 'score: ' + score + '  max: ' + maxscore;
+	if(typeof(sound.currentTime)) sound.currentTime = 0;
+	sound.play();
+	setTimeout(wk,300);
+}
+
+function drawNote(){
+generateSelect();
+var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="330">';
+	//document.getElementById('note').innerHTML = notes[(28+clef-(y-20)/10) % 7];
+	y = 300 - 10 * min - 10 * Math.floor( Math.random() * (max - min + 1) );
+	//clef = 3;
+	//if (!clef[0] && !clef[2]) {clef[0] = true; clef[2] = true;}
+	//while(!clef[clef]) clef = Math.floor( Math.random() * 3 );
+	svg += '<g stroke="black">' + clefs[clef] + '</g>';
+	svg += '<path stroke="black" fill="none" stroke-width="2" d="';
+	//upper ledger, staff (stave), lower ledger
+	for(var i = 110; i>y-10; i-=20) svg += 'M194,' + i + 'h44';
+	for(var i = 130; i<230; i+=20) svg += 'M0,' + i + 'h400';
+	for(var i = 230; i<y+10; i+=20) svg += 'M194,' + i + 'h44';
+	//note
+	if(y<175) svg += 'M204,' + y + 'v70"/>';
+	else svg += 'M228,' + y + 'v-70"/>';
+	svg += '<ellipse cx="216" cy="' + y + '" rx="14" ry="10" transform="rotate(330,216,' + y + ')"/></svg>';
+	//display SVG
+	//document.getElementById('note').innerHTML = '　';
+	document.getElementById('draw').innerHTML = svg;
+}
+window.onload = drawNote;
+</script>
+</head>
+
+<body class='loading'>
+<header></header>
+<section>
+<form name="control">
+	clef:
+	<select onchange="chgclef(this.value)">
+		<option value=0 selected="selected">ト音記号 G-clef</option>
+		<option value=1>ハ音記号 C-clef</option>
+		<option value=2>ヘ音記号 F-clef</option>
+	</select>
+	min:
+	<select onchange="chgmin(this.value)" id="selmin"></select>
+	max:
+	<select onchange="chgmax(this.value)" id="selmax"></select>
+</form>
+<span id="scores"></span>
+<div id="draw"></div>
+<!-- <div id="note"></div> -->
+<div class="kb" style="display:block">
+<div class="wk" id="w0" onclick="touch(0);"></div>
+<div class="wk" id="w1" onclick="touch(1);"></div>
+<div class="wk" id="w2" onclick="touch(2);"></div>
+<div class="wk" id="w3" onclick="touch(3);"></div>
+<div class="wk" id="w4" onclick="touch(4);"></div>
+<div class="wk" id="w5" onclick="touch(5);"></div>
+<div class="wk" id="w6" onclick="touch(6);"></div>
+<div class="bk" id="b0"></div>
+<div class="bk" id="b1"></div>
+<div class="bk" id="b2"></div>
+<div class="bk" id="b3"></div>
+<div class="bk" id="b4"></div>
+</div>
+<audio id="s0" preload="auto"> <source src="sounds/c.mp3" type="audio/mp3"> </audio>
+<audio id="s1" preload="auto"> <source src="sounds/d.mp3" type="audio/mp3"> </audio>
+<audio id="s2" preload="auto"> <source src="sounds/e.mp3" type="audio/mp3"> </audio>
+<audio id="s3" preload="auto"> <source src="sounds/f.mp3" type="audio/mp3"> </audio>
+<audio id="s4" preload="auto"> <source src="sounds/g.mp3" type="audio/mp3"> </audio>
+<audio id="s5" preload="auto"> <source src="sounds/a.mp3" type="audio/mp3"> </audio>
+<audio id="s6" preload="auto"> <source src="sounds/b.mp3" type="audio/mp3"> Your browser does not support the audio element.  </audio>
+<audio id="sx" preload="auto"> <source src="sounds/x.mp3" type="audio/mp3"> </audio>
+<!-- Piano sounds are from http://maoudamashii.jokersounds.com -->
+<!-- x.mp3 is from "Music is VFR" http://musicisvfr.com -->
+</section>
+
+<footer>
+</footer>
+</body>
+</html>

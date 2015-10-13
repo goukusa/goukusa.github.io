@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="160" height="185">
+	<title>Glycine</title>
+	<path d="M110,30 v50 l-43.3,25 v50 -45 l-43.3,-25 m4.33,-7.5 l43.3,25" fill="none" stroke="gray" stroke-width="3"/>
+	<g font-family="Verdana" font-size="32" stroke="none" fill="gray">
+		<circle cx="110" cy="80" r="6"/>
+		<text x="98" y="27">NH</text>
+		<text x="144" y="30" font-size="22">2</text>
+		<text x="0" y="85">O</text>
+		<text x="54" y="182">OH</text>
+	</g>
+</svg>

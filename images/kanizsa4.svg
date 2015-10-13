@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<svg width="300" height="300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs>
+<path id="p1" fill="none" d="M100,50l-50,50v100h100l50,-50v-100h-100zm-50,50h100v100m-50,-150v100h100m-100,0l-50,50m100,-100l50,-50"/>
+</defs>
+<use xlink:href="#p1" stroke="#000" stroke-width="10"/>
+<use xlink:href="#p1" stroke="#fff" stroke-width="8"/>
+<path fill="none" stroke="#fff" stroke-width="30" d="M0,100l150,150m-100,-200l150,150m-100,-200l150,150"/>
+</svg>

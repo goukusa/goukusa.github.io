@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="495" height="185">
+	<title>Pyrrolysine</title>
+	<g stroke-width="3" stroke="black" fill="none">
+		<path d="M110,80 l-43.3,25 v50 -45 l-43.3,-25 m4.33,-7.5 l43.3,25" stroke="gray"/>
+		<path d="M110,80 l-3,-50 h6z" stroke="gray" fill="gray"/>
+		<path d="M110,80 l43.3,25 43.3,-25 43.3,25 43.3,-25 32.48,18.75 m21.64,0 l32.48,-18.75 43.3,25
+		3.66,34.81 m16.23,18.04 l34.24,7.28 25,-43.3 -33.46,-37.16 -45.67,20.33
+		m-38.97,-22.5 v-50 m-8.66,0 v50 m97.69,73.49 l-29.93,-6.36"/> <!-- m25.54,-64.96 l10.4,-48.91"/ -->
+		<path d="M413.1,105 l2.16,34.81 h3z" fill="black"/>
+		<path d="M458.77,84.67 l10.4,-48.91" stroke-dasharray="3" stroke-width="6"/>
+		<!--
+		<path d="M458.77,84.67 l7.1,-49.54 l5.88,1.26z" fill="black"/>
+		<path d="M458.77,84.67 l11.4,-53.8" stroke="white" stroke-dasharray="4,3" stroke-width="10"/>
+		-->
+	</g>
+	<g font-family="Verdana" font-size="32" stroke="none" fill="gray">
+		<circle cx="110" cy="80" r="6"/>
+		<text x="98" y="27">NH</text>
+		<text x="144" y="30" font-size="22">2</text>
+		<text x="0" y="85">O</text>
+		<text x="54" y="182">OH</text>
+		<g fill="black">
+			<text x="357" y="30">O</text>
+			<text x="315" y="118">N</text>
+			<text x="315" y="145">H</text>
+			<text x="409" y="167">N</text>
+		</g>
+	</g>
+</svg>
