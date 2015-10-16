@@ -35,14 +35,14 @@ license: SIL OFL 1.1 */
 	url('fonts/SourceSansPro-Bold.ttf.woff') format('woff');
 }
 body {
-	font-family: ssp, 'Avenir Next', 'YuGothic', 'Yu Gothic', '游ゴシック', '游ゴシック体', 'HiraKakuProN-W3',sans-serif;
+	font-family: ssp, 'Avenir Next', 'YuGothic', 'Yu Gothic', '游ゴシック', '游ゴシック体', 'HiraKakuProN-W3', 'Meiryo', sans-serif;
 	background-color: #ffc;
 	margin: 0;
 	padding: 0;
 	max-width: 30em;
 	margin: auto;
 }
-header { font-size: 1.5em; line-height:1.5em; font-family: sspl, Optima, sans-serif; }
+header { font-size: 1.5em; line-height:1.5em; font-family: sspl, Optima, 'Source Han Sans JP', 'Noto Sans Japanese', 'YuGothic', 'Yu Gothic', '游ゴシック', '游ゴシック体', '.HiraKakuInterface-W1', 'HiraKakuProN-W3', 'Meiryo', sans-serif; font-weight:300; }
 header, section {text-align:center;}
 h1 { padding:0; margin:5px; font-weight: normal; font-size: 1.5em; }
 h2,h3 { padding: 0 1em; font-weight: normal; }

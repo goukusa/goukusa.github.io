@@ -2,7 +2,13 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=400,initial-scale=1,user-scalable=no">
+	<script type="text/javascript">
+		if (navigator.userAgent.indexOf("iPhone")!=-1 || navigator.userAgent.indexOf("iPod")!=-1) {
+			document.write('<meta name="viewport" content="width=device-width,initial-scale=0.67,user-scalable=no">');
+		} else {
+			document.write('<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes">');
+		}
+	</script>
 <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
 <script type="text/javascript" src="common.js"></script>
 <link rel="stylesheet" type="text/css" href="common.css">
@@ -14,9 +20,8 @@
 	table { border-collapse:collapse; border:none; line-height:1.1em; margin:auto; }
 	td { background-color:#fff; border:none; padding:0.2em; }
 	#braille circle{cursor:pointer}
-	#qkan{display:none;cursor:pointer}
+	#quiz{display:none;cursor:pointer}
 	#scores{font-size:1.5em}
-	footer{height:30em}
 	div#char, div#ckan{font-size:5em}
 	.que{color:#777;background-color:#777}
 	.ans{color:#000;background-color:#ffe}
@@ -24,15 +29,8 @@
 <title>Braille</title>
 <script>
 var braille = [0,0,0,0,0,0,0,0,0,0,0,0]; // 点字の状態を2進数で保持
-function touch(i){
-	var id=['a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'b1', 'b2', 'b3', 'b4', 'b5', 'b6'];
-	braille[i] = 1 - Number(braille[i]);
-	document.getElementById(id[i]).setAttribute('fill',(braille[i] == 0 ? '#fff' : '#000'));
-	var a=0, b=0;
-	for (j=0; j<6; j++) {
-		a += braille[j] * Math.pow(2,j);
-		b += braille[j+6] * Math.pow(2,j);
-	}
+var mode = 'all';
+function b2s(a,b){
 	var num=['数符',1,'.',2,'’','','','','',3,9,6,'','','','','',5,'',8,'','','','','',4,0,7,'','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''];
 	var abc=['、','a',',','b','＜ ’','k',';','l','','c','i','f','/','m','s','p %','','e',':','h','','o','!','r','','d','j','g','','n','t','q','CAP','*','','','『 -','u','“ ?','v','','#','','','','x','','&','','','.','','”','z','《','','','','w','','','y','',''];
 	var dak=['・','','','','','','','','','ゔ','','','','','','','','','','','','だ','','ぢ','','','','','','づ','ど','で','','が','','ぎ','','ば','','び','','ぐ','ご','げ','ゆ','ぶ','ぼ','べ','','ざ','','じ','','○','［','△','','ず','ぞ','ぜ','','□','','×'];
@@ -44,85 +42,93 @@ function touch(i){
 	var vii=['。','','','','','','','','','','','','','','','','','','','','','','','','','','','','','ドゥ','','','','グァ','','グィ','','ヴァ','','ヴィ','','','グォ','グェ','','','ヴォ','ヴェ','','','','','','','','','','','','','','','',''];
 	var dhy=['詩行符／','','','','','','','','','','','','','','','','','','','','','','','','','','','','ヴョ','デュ','','','','','','','','','','','','','','','ヴュ','','','','','','','','','','','','','','','','','','',''];
 	var kan=['　','あ','っ','い','わ','な','ゐ','に','拗音符','う','お','え','や','ぬ','の','ね','・','ら','ー','り','を','た','ゑ ！','ち','拗濁音符','る','ろ','れ','よ','つ','と','て','半濁音符','か','？','き','「','は','“','ひ','拗半濁音符','く','こ','け','ゆ','ふ','ほ','へ','、','さ','。','し','ん','ま','（','み','詩行符／','す','そ','せ','数符','む','も','め'];
-	document.getElementById('code').innerHTML = "" + a + ", " + b;
-	if (a==60) document.getElementById('char').innerHTML = num[b];
-	else if (a==54 && b==54) document.getElementById('char').innerHTML = '（）';
-	else if (a==54 && b==2) document.getElementById('char').innerHTML = '］';
-	else if (a==54 && b==6) document.getElementById('char').innerHTML = '》';
-	else if (a==36 && b==36) document.getElementById('char').innerHTML = '〜';
-	else if (a==36 && b==6) document.getElementById('char').innerHTML = '』';
-	else if (a==38 && b==52) document.getElementById('char').innerHTML = '“”';
-	else if (a==18 && b==18) document.getElementById('char').innerHTML = '−';
-	else if (a==20 && b==20) document.getElementById('char').innerHTML = '★';
-	else if (a==34 && b==34) document.getElementById('char').innerHTML = '☆';
-	else if (a==8) document.getElementById('char').innerHTML = you[b];
-	else if (a==16) document.getElementById('char').innerHTML = dak[b];
-	else if (a==24) document.getElementById('char').innerHTML = yda[b];
-	else if (a==32) document.getElementById('char').innerHTML = han[b];
-	else if (a==34) document.getElementById('char').innerHTML = wii[b];
-	else if (a==40) document.getElementById('char').innerHTML = yhd[b];
-	else if (a==48) document.getElementById('char').innerHTML = abc[b];
-	else if (a==50) document.getElementById('char').innerHTML = vii[b];
-	else if (a==56) document.getElementById('char').innerHTML = dhy[b];
-	else document.getElementById('char').innerHTML = kan[a] + kan[b];
+	document.getElementById('code').innerHTML = a + ", " + b;
+	if (a==54 && b==54) return '（）';
+	else if (a==54 && b==2) return '］';
+	else if (a==54 && b==6) return '》';
+	else if (a==36 && b==36) return '〜';
+	else if (a==36 && b==6) return '』';
+	else if (a==38 && b==52) return '“”';
+	else if (a==18 && b==18) return '−';
+	else if (a==20 && b==20) return '★';
+	else if (a==34 && b==34) return '☆';
+	else if (a==8) return you[b];
+	else if (a==16) return dak[b];
+	else if (a==24) return yda[b];
+	else if (a==32) return han[b];
+	else if (a==34) return wii[b];
+	else if (a==40) return yhd[b];
+	else if (a==48) return abc[b];
+	else if (a==50) return vii[b];
+	else if (a==56) return dhy[b];
+	else if (a==60) return num[b];
+	else return kan[a] + kan[b];
 }
-function qKan(){ // 乱数を発生させて対応する点字と文字を表示
+function touch(i){
+	var id=['a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'b1', 'b2', 'b3', 'b4', 'b5', 'b6'];
+	braille[i] = 1 - Number(braille[i]);
+	document.getElementById(id[i]).setAttribute('fill',(braille[i] == 0 ? '#fff' : '#000'));
+	var a=0, b=0;
+	for (j=0; j<6; j++) {
+		a += braille[j] * Math.pow(2,j);
+		b += braille[j+6] * Math.pow(2,j);
+	}
+	document.getElementById('char').innerHTML = b2s(a,b);
+}
+function quiz(){ // 乱数を発生させて対応する点字と文字を表示
 	var ckan = document.getElementById('ckan');
 	if (ckan.className != 'que') {
 		ckan.className = 'que';
-		var ci=['c6', 'c5', 'c4', 'c3', 'c2', 'c1'];
-		var di=['d6', 'd5', 'd4', 'd3', 'd2', 'd1'];
-		var kan=['　','あ','っ','い','わ','な','ゐ','に','拗音符','う','お','え','や','ぬ','の','ね','・','ら','ー','り','を','た','ゑ ！','ち','拗濁音符','る','ろ','れ','よ','つ','と','て','半濁音符','か','？','き','「','は','“','ひ','拗半濁音符','く','こ','け','ゆ','ふ','ほ','へ','、','さ','。','し','ん','ま','（','み','詩行符／','す','そ','せ','数符','む','も','め'];
 		var c = Math.ceil(Math.random()*63);
 		var d = Math.ceil(Math.random()*63);
-		if(c==8){
-			var you=['拗音符','','','','','にゃ','','','','','','イェ','','にゅ','にょ','','','りゃ','','','','ちゃ','','ティ','','りゅ','りょ','リェ','','ちゅ','ちょ','チェ','','きゃ','','','','ひゃ','','','','きゅ','きょ','キェ','','ひゅ','ひょ','ヒェ','','しゃ','','スィ','','みゃ','','','','しゅ','しょ','シェ','','みゅ','みょ','ミェ'];
-			while(you[d]=='') d = Math.ceil(Math.random()*63);
-			ckan.innerHTML = you[d];
-		} else if(c==16) {
-			var dak=['・','','','','','','','','','ゔ','','','','','','','','','','','','だ','','ぢ','','','','','','づ','ど','で','','が','','ぎ','','ば','','び','','ぐ','ご','げ','ゆ','ぶ','ぼ','べ','','ざ','','じ','','○','［','△','','ず','ぞ','ぜ','','□','','×'];
-			while(dak[d]=='') d = Math.ceil(Math.random()*63);
-			ckan.innerHTML = dak[d];
-		} else if(c==24) {
-			var yda=['小文字符','ぁ','','ぃ','ゎ','','','','','ぅ','ぉ','ぇ','ゃ','','','','','','','','','ぢゃ','','ディ','','','','','ょ','ぢゅ','ぢょ','ヂェ','','ぎゃ','','','','びゃ','','','','ぎゅ','ぎょ','ギェ','ゅ','びゅ','びょ','ビェ','','じゃ','','ズィ','','','','','','じゅ','じょ','ジェ','','','',''];
-			while(yda[d]=='') d = Math.ceil(Math.random()*59);
-			ckan.innerHTML = yda[d];
-		} else if(c==32) {
-			var han=['゜','','','','','','＞','','','','','','','','','','','','','','','','','','','','','','','','','','CAPS','','※','','','ぱ','','ぴ','','','','','','ぷ','ぽ','ぺ','','','','','','','','','','','','','','','',''];
-			while(han[d]=='') d = Math.ceil(Math.random()*47);
-			ckan.innerHTML = han[d];
-		} else if(c==34) {
-			var wii=['？','','','ウィ','','','','','','','ウォ','ウェ','','','','','','','','','','ツァ','','ツィ','','','','','','トゥ','ツォ','ツェ','','クァ','','クィ','','ファ','','フィ','','','クォ','クェ','','','フォ','フェ','','','','','','','','','','','','','','','',''];
-			while(wii[d]=='') d = Math.ceil(Math.random()*47);
-			ckan.innerHTML = wii[d];
-		} else if(c==40) {
-			var yhd=['拗半濁音符','','','','','','','','','','','','','','','','','','','','','','','','','','','','フョ','テュ','','','','','','','','ぴゃ','','','','','','','フュ','ぴゅ','ぴょ','ピェ','','','','','','','','','','','','','','','',''];
-			while(yhd[d]=='') d = Math.ceil(Math.random()*47);
-			ckan.innerHTML = yhd[d];
-		} else if(c==48) {
-			var abc=['、','a',',','b','＜ ’','k',';','l','','c','i','f','/','m','s','p %','','e',':','h','','o','!','r','','d','j','g','','n','t','q','CAP','*','','','『 -','u','“ ?','v','','#','','','','x','','&','','','.','','”','z','《','','','','w','','','y','',''];
-			while(abc[d]=='') d = Math.ceil(Math.random()*61);
-			ckan.innerHTML = abc[d];
-		} else if(c==50) {
-			var vii=['。','','','','','','','','','','','','','','','','','','','','','','','','','','','','','ドゥ','','','','グァ','','グィ','','ヴァ','','ヴィ','','','グォ','グェ','','','ヴォ','ヴェ','','','','','','','','','','','','','','','',''];
-			while(vii[d]=='') d = Math.ceil(Math.random()*47);
-			ckan.innerHTML = vii[d];
-		} else if(c==56) {
-			var dhy=['詩行符／','','','','','','','','','','','','','','','','','','','','','','','','','','','','ヴョ','デュ','','','','','','','','','','','','','','','ヴュ','','','','','','','','','','','','','','','','','','',''];
-			while(dhy[d]=='') d = Math.ceil(Math.random()*44);
-			ckan.innerHTML = dhy[d];
-		} else if(c==60) {
-			var num=['数符',1,'.',2,'’','','','','',3,9,6,'','','','','',5,'',8,'','','','','',4,0,7,'','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''];
-			while(num[d]=='') d = Math.ceil(Math.random()*27);
-			ckan.innerHTML = num[d];
-		} else {
-			ckan.innerHTML = kan[c] + kan[d];
+		if(mode=='num') c=60;
+		else if(mode=='abc') c=48;
+		else if(mode=='dhy') c=[8,16,24,32,34,40,50,56][Math.floor(Math.random()*8)];
+		if(c==8){ //you:拗音
+			d=[5,11,13,14,17,21,23,25,26,27,29,30,31,33,37,41,42,43,45,46,47,49,51,53,57,58,59,61,62,63][Math.floor(Math.random()*30)];
+		} else if(c==16) { //dak:・濁音
+			d=[9,21,23,29,30,31,33,35,37,39,41,42,43,44,45,46,47,49,51,57,58,59][Math.floor(Math.random()*22)];
+		} else if(c==24) { //yda:小文字、拗濁音
+			d=[1,3,4,9,10,11,12,21,23,28,29,30,31,33,37,41,42,43,44,45,46,47,49,51,57,58,59][Math.floor(Math.random()*27)];
+		} else if(c==32) { //han:半濁音
+			d=[37,39,45,46,47][Math.floor(Math.random()*5)];
+		} else if(c==34) { //wii:？ウィ
+			d=[3,10,11,21,23,29,30,31,33,35,37,39,42,43,46,47][Math.floor(Math.random()*16)];
+		} else if(c==40) { //yhd:拗半濁音
+			d=[28,29,37,44,45,46,47][Math.floor(Math.random()*7)];
+		} else if(c==48) { //abc:、アルファベット
+			d=[1,2,3,4,5,6,7,9,10,11,12,13,14,15,17,18,19,21,22,23,25,26,27,29,30,31,32,33,36,37,38,39,41,45,47,50,52,53,58,61][Math.floor(Math.random()*40)];
+		} else if(c==50) { //vii:。ドゥ
+			d=[29,33,35,37,39,42,43,46,47][Math.floor(Math.random()*9)];
+		} else if(c==56) { //dhy:／デュ
+			d=[28,29,44][Math.floor(Math.random()*3)];
+		} else if(c==60) { //num:数字
+			d=[1,2,3,4,9,10,11,17,19,25,26,27][Math.floor(Math.random()*12)];
 		}
-		document.getElementById('code').innerHTML = c + ", " + d;
+		if(mode=='kan'){
+			c=[1,3,4,5,7,9,10,11,12,13,14,15,17,19,20,21,23,25,26,27,28,29,30,31,33,35,37,39,41,42,43,44,45,46,47,49,51,52,53,55,57,58,59,61,62,63][Math.floor(Math.random()*46)];
+			d=0;
+		}
+		else if(mode=='sym'){
+			c=[2,6,16,18,22,34,36,38,48,50,54][Math.floor(Math.random()*11)];
+			if(c==16) d=[0,53,54,55,61,63][Math.floor(Math.random()*6)]; //・○［△□×
+			else if(c==18) d=[0,18][Math.floor(Math.random()*2)]; //ー−
+			else if(c==20) d=20; //★
+			else if(c==32) d=[0,6,34][Math.floor(Math.random()*3)]; //゜＞※
+			else if(c==34) d=[0,34][Math.floor(Math.random()*2)]; //？☆
+			else if(c==36) d=[0,6,36][Math.floor(Math.random()*3)]; //「〜』
+			else if(c==38) d=[0,52][Math.floor(Math.random()*2)]; //“”
+			else if(c==48) d=[0,4,36,54][Math.floor(Math.random()*4)]; //、＜『《
+			else if(c==54) d=[0,2,6,54][Math.floor(Math.random()*4)]; //（）］》
+			else d=0; //っゐ・ゑ！、。
+		}
+		ckan.innerHTML = b2s(c,d);
 		var cb = (64+c).toString(2).split('');
 		var db = (64+d).toString(2).split('');
 		cb.shift();
 		db.shift();
+		var ci=['c6', 'c5', 'c4', 'c3', 'c2', 'c1'];
+		var di=['d6', 'd5', 'd4', 'd3', 'd2', 'd1'];
 		for(i=0; i<6; i++){
 			document.getElementById(ci[i]).setAttribute('fill',(cb[i] == 0 ? '#fff' : '#000'));
 			document.getElementById(di[i]).setAttribute('fill',(db[i] == 0 ? '#fff' : '#000'));
@@ -142,25 +148,18 @@ function qKan(){ // 乱数を発生させて対応する点字と文字を表示
 		</div>
 		<div id="toc" class="ac">
 			<div onclick="chgView(this)" title="braille">Braille</div>
-			<div onclick="chgView(this)" title="qkan">⠡⠅→かな</div>
+			<div onclick="chgView(this); mode='kan'; quiz();" title="quiz">かな</div>
+			<div onclick="chgView(this); mode='abc'; quiz();" title="quiz">alphabet (abc…)</div>
+			<div onclick="chgView(this); mode='num'; quiz();" title="quiz">数字 (012…)</div>
+			<div onclick="chgView(this); mode='dhy'; quiz();" title="quiz">濁音・拗音（ぎゃ…）</div>
+			<div onclick="chgView(this); mode='sym'; quiz();" title="quiz">記号</div>
+			<div onclick="chgView(this); mode='all'; quiz();" title="quiz">Quiz</div>
 			<div onclick="location.href='index.html'" title="home"><img src="images/home.svg"></div>
 			<div onclick="chgView()" class="hidetoc">dummy</div>
 		</div>
 	</nav>
 </header>
 <section id="braille">
-<!--
-<form name="control">
-	mode:
-	<select onchange="chgclef(this.value)">
-		<option value=0 selected="selected">⠡⠅→かな</option>
-		<option value=1>⠼⠁⠃⠉→123</option>
-		<option value=2>かな→⠡⠅</option>
-		<option value=3>123→⠼⠁⠃⠉</option>
-	</select>
-</form>
-<span id="scores"></span>
--->
 <svg xmlns="http://www.w3.org/2000/svg" width="400" height="300">
 <g stroke="#000" stroke-width="3">
 <circle id="a1" fill="#fff" cx="33"  cy="50"  r="30" onclick="touch(0);"/>
@@ -180,7 +179,7 @@ function qKan(){ // 乱数を発生させて対応する点字と文字を表示
 <div id="char">　</div>
 </section>
 
-<section id="qkan" onclick="qKan()">
+<section id="quiz" onclick="quiz()">
 <div id="bkan">
 <svg xmlns="http://www.w3.org/2000/svg" width="400" height="300">
 <g stroke="#000" stroke-width="3">

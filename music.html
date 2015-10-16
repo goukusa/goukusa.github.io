@@ -2,18 +2,20 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<meta name="viewport" content="width=400,initial-scale=1,user-scalable=no">
+	<script type="text/javascript">
+		if (navigator.userAgent.indexOf("iPhone")!=-1 || navigator.userAgent.indexOf("iPod")!=-1) {
+			document.write('<meta name="viewport" content="width=device-width,initial-scale=0.67,user-scalable=no">');
+		} else {
+			document.write('<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes">');
+		}
+	</script>
+
 	<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
 	<link rel="stylesheet" type="text/css" href="common.css">
 	<style>
-		html,body{height:100%}
-		section{background:#ffe; padding:0 0 auto 0; }
-		/* #note{font-size:6em;} */
+		section{background:#ffe; margin:0; padding:0; }
+		/*
 		*{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
-		th { background-color:#000; }
-		td { background-color:#fff; }
-		td { border:1px #888 solid; padding:0.2em; }
-		table { border-collapse:collapse; border:none; line-height:1.1em; margin:auto; }
 		.kb {width:100%}
 		.bk {width: 9%; height:15%; position:absolute; bottom:20%; background-color:#000; border-radius:0 0 8px 8px}
 		.wk {width:12%; height:35%; position:absolute; bottom:0; background-color:#fff; border:3px #000 solid; border-radius:0 0 8px 8px}
@@ -32,8 +34,8 @@
 		#w6 {left:80%}
 		.red, .red:hover {background-color:#f55}
 		.green, .green:hover {background-color:#5f5}
+		*/
 		#scores{font-size:1.5em}
-		footer{height:30em}
 	</style>
 	<title>Musical Notes</title>
 	<!-- 参考にしたサイト
@@ -42,10 +44,6 @@
 	</a> -->
 <script type="text/javascript">
 var min = 7, max = 19, clef = 0, y=0, score=0, maxscore=0;
-var notes = ["ド C","レ D","ミ E","ファ F","ソ G","ラ A","シ B"];
-var clefs = ['<path d="M40,200c-19,-10 -6,-31 9,-29s17,16 16,21 -8,18 -23,17 -26,-11 -26,-28 15,-27 27,-37 15,-20 9,-26 -5,-9 -3,-10 9,9 9,20 -8,25 -16,30 -23,18 -21,32 16,17 23,17 15,-3 15,-14 -9,-12 -13,-12 -19,5 -6,19"/><path d="M32,235c5,0 8,-3 8,-7s-3,-8 -7,-8 -8,4 -8,10 5,10 15,10 14,-8 14,-12 -14,-80 -14,-88 5,-27 13,-21 0,-5 -1,-6 -1,-5 -3,-5 -7,6 -9,12 -3,15 -2,20 13,82 14,86 -3,12 -11,12 -7,-2 -9,-3"/>',
-	'<rect x="14" y="130" width="11" height="80"/><rect x="31" y="130" width="5" height="80"/><circle cx="45" cy="141" r="5"/><circle cx="45" cy="199" r="5"/><path d="M40,141c0,-2 1,-12 14,-12s 17,10 17,20 -8,17 -13,17 -6,-1 -11,-4c -3,5 -3,11 0,16 5,-3 6,-4 11,-4s 13,7 13,17 -4,20 -17,20 -14,-10 -14,-12 3,-3 3,1 2,8 10,8 9,-11 9,-16 -2,-15 -8,-15 -9,6 -9,10c 0,-3 -2,-13 -7,-17 5,-4 7,-14 7,-17 0,4 3,10 9,10s 8,-10 8,-15 -1,-16 -9,-16 -10,4 -10,8 -3,4 -3,1"/>',
-	'<circle cx="22" cy="150" r="8"/><circle cx="63" cy="140" r="4"/><circle cx="63" cy="160" r="4"/><path d="M14,150c0,-15 12,-20 20,-20s20,9 20,21 -9,32 -29,42 3,-5 5,-7 16,-15 15,-33 -11,-19 -16,-19 -10,3 -9,7 4,1 5,2z"/>']
 function chgmax(value) {
 	y = 0;
 	max = Number(value);
@@ -67,6 +65,7 @@ function chgmin(value) {
 function generateSelect() {
 	function options(selected) {
 		var i, note, octave, tag = "";
+		var notes = ["ド C","レ D","ミ E","ファ F","ソ G","ラ A","シ B"];
 		for(i=28; i>=0; i--) {
 			note = (i + clef) % 7;
 			octave = 3 - clef + (i + clef - note)/7;
@@ -84,37 +83,34 @@ function chgclef(value) {
 	drawNote();
 }
 
-function wk() {
-	var arr = document.getElementsByClassName('wk');
-	for(var i = 0; i < arr.length; i++) arr[i].className = 'wk';
-}
 function touch(k){
-	var sound, sounds = ['pc','pd','pe','pf','pg','pa','pb'];
+	var color, sound;
 	if(Number(k) == (28+clef-(y-20)/10) % 7) {
-		document.getElementById('w'+k).className = 'wk green';
+		color='#5f5';
 		score += 1;
 		if(maxscore < score) maxscore = score;
 		drawNote();
 		sound = document.getElementById('s'+k);
 	} else {
 		score = 0;
-		document.getElementById('w'+k).className = 'wk red';
+		color='#f55';
 		sound = document.getElementById('sx');
 	}
+	var key = document.getElementById('w'+k);
+	key.setAttribute('fill',color);
 	document.getElementById('scores').innerHTML = 'score: ' + score + '  max: ' + maxscore;
 	if(typeof(sound.currentTime)) sound.currentTime = 0;
 	sound.play();
-	setTimeout(wk,300);
+	setTimeout(function(){key.setAttribute('fill','#fff');},500);
 }
 
 function drawNote(){
-generateSelect();
-var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="330">';
-	//document.getElementById('note').innerHTML = notes[(28+clef-(y-20)/10) % 7];
+	generateSelect();
+	var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="320">';
+	var clefs = ['<path d="M40,200c-19,-10 -6,-31 9,-29s17,16 16,21 -8,18 -23,17 -26,-11 -26,-28 15,-27 27,-37 15,-20 9,-26 -5,-9 -3,-10 9,9 9,20 -8,25 -16,30 -23,18 -21,32 16,17 23,17 15,-3 15,-14 -9,-12 -13,-12 -19,5 -6,19"/><path d="M32,235c5,0 8,-3 8,-7s-3,-8 -7,-8 -8,4 -8,10 5,10 15,10 14,-8 14,-12 -14,-80 -14,-88 5,-27 13,-21 0,-5 -1,-6 -1,-5 -3,-5 -7,6 -9,12 -3,15 -2,20 13,82 14,86 -3,12 -11,12 -7,-2 -9,-3"/>',
+		'<rect x="14" y="130" width="11" height="80"/><rect x="31" y="130" width="5" height="80"/><circle cx="45" cy="141" r="5"/><circle cx="45" cy="199" r="5"/><path d="M40,141c0,-2 1,-12 14,-12s 17,10 17,20 -8,17 -13,17 -6,-1 -11,-4c -3,5 -3,11 0,16 5,-3 6,-4 11,-4s 13,7 13,17 -4,20 -17,20 -14,-10 -14,-12 3,-3 3,1 2,8 10,8 9,-11 9,-16 -2,-15 -8,-15 -9,6 -9,10c 0,-3 -2,-13 -7,-17 5,-4 7,-14 7,-17 0,4 3,10 9,10s 8,-10 8,-15 -1,-16 -9,-16 -10,4 -10,8 -3,4 -3,1"/>',
+		'<circle cx="22" cy="150" r="8"/><circle cx="63" cy="140" r="4"/><circle cx="63" cy="160" r="4"/><path d="M14,150c0,-15 12,-20 20,-20s20,9 20,21 -9,32 -29,42 3,-5 5,-7 16,-15 15,-33 -11,-19 -16,-19 -10,3 -9,7 4,1 5,2z"/>'];
 	y = 300 - 10 * min - 10 * Math.floor( Math.random() * (max - min + 1) );
-	//clef = 3;
-	//if (!clef[0] && !clef[2]) {clef[0] = true; clef[2] = true;}
-	//while(!clef[clef]) clef = Math.floor( Math.random() * 3 );
 	svg += '<g stroke="black">' + clefs[clef] + '</g>';
 	svg += '<path stroke="black" fill="none" stroke-width="2" d="';
 	//upper ledger, staff (stave), lower ledger
@@ -126,7 +122,6 @@ var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="330">';
 	else svg += 'M228,' + y + 'v-70"/>';
 	svg += '<ellipse cx="216" cy="' + y + '" rx="14" ry="10" transform="rotate(330,216,' + y + ')"/></svg>';
 	//display SVG
-	//document.getElementById('note').innerHTML = '　';
 	document.getElementById('draw').innerHTML = svg;
 }
 window.onload = drawNote;
@@ -148,23 +143,31 @@ window.onload = drawNote;
 	max:
 	<select onchange="chgmax(this.value)" id="selmax"></select>
 </form>
-<span id="scores"></span>
-<div id="draw"></div>
-<!-- <div id="note"></div> -->
-<div class="kb" style="display:block">
-<div class="wk" id="w0" onclick="touch(0);"></div>
-<div class="wk" id="w1" onclick="touch(1);"></div>
-<div class="wk" id="w2" onclick="touch(2);"></div>
-<div class="wk" id="w3" onclick="touch(3);"></div>
-<div class="wk" id="w4" onclick="touch(4);"></div>
-<div class="wk" id="w5" onclick="touch(5);"></div>
-<div class="wk" id="w6" onclick="touch(6);"></div>
-<div class="bk" id="b0"></div>
-<div class="bk" id="b1"></div>
-<div class="bk" id="b2"></div>
-<div class="bk" id="b3"></div>
-<div class="bk" id="b4"></div>
+<span id="scores">score: 0 max: 0</span>
+<div id="draw">
+	<svg xmlns="http://www.w3.org/2000/svg" width="400" height="320">
+	</svg>
 </div>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 10 424 192" width="424" height="192">
+<g stroke="black" stroke-width="3">
+<g fill="#fff">
+<rect id="w0" x="000" y="0" rx="10" ry="10" width="60" height="200" onclick="touch(0);"/>
+<rect id="w1" x="060" y="0" rx="10" ry="10" width="60" height="200" onclick="touch(1);"/>
+<rect id="w2" x="120" y="0" rx="10" ry="10" width="60" height="200" onclick="touch(2);"/>
+<rect id="w3" x="180" y="0" rx="10" ry="10" width="60" height="200" onclick="touch(3);"/>
+<rect id="w4" x="240" y="0" rx="10" ry="10" width="60" height="200" onclick="touch(4);"/>
+<rect id="w5" x="300" y="0" rx="10" ry="10" width="60" height="200" onclick="touch(5);"/>
+<rect id="w6" x="360" y="0" rx="10" ry="10" width="60" height="200" onclick="touch(6);"/>
+</g>
+<g fill="#000">
+<rect id="b0" x="036" y="0" rx="10" ry="10" width="40" height="80"/>
+<rect id="b1" x="104" y="0" rx="10" ry="10" width="40" height="80"/>
+<rect id="b2" x="212" y="0" rx="10" ry="10" width="40" height="80"/>
+<rect id="b3" x="280" y="0" rx="10" ry="10" width="40" height="80"/>
+<rect id="b4" x="348" y="0" rx="10" ry="10" width="40" height="80"/>
+</g>
+</g>
+</svg>
 <audio id="s0" preload="auto"> <source src="sounds/c.mp3" type="audio/mp3"> </audio>
 <audio id="s1" preload="auto"> <source src="sounds/d.mp3" type="audio/mp3"> </audio>
 <audio id="s2" preload="auto"> <source src="sounds/e.mp3" type="audio/mp3"> </audio>
@@ -176,8 +179,5 @@ window.onload = drawNote;
 <!-- Piano sounds are from http://maoudamashii.jokersounds.com -->
 <!-- x.mp3 is from "Music is VFR" http://musicisvfr.com -->
 </section>
-
-<footer>
-</footer>
 </body>
 </html>
