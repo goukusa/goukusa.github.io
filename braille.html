@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta charset="utf-8">
-	<script type="text/javascript">
-		if (navigator.userAgent.indexOf("iPhone")!=-1 || navigator.userAgent.indexOf("iPod")!=-1) {
-			document.write('<meta name="viewport" content="width=device-width,initial-scale=0.67,user-scalable=no">');
-		} else {
-			document.write('<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes">');
-		}
-	</script>
+<script type="text/javascript">
+	if (navigator.userAgent.indexOf("iPhone")!=-1 || navigator.userAgent.indexOf("iPod")!=-1) {
+		document.write('<meta name="viewport" content="width=device-width,initial-scale=0.67,user-scalable=no">');
+	} else {
+		document.write('<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes">');
+	}
+</script>
 <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
 <script type="text/javascript" src="common.js"></script>
 <link rel="stylesheet" type="text/css" href="common.css">
@@ -147,7 +147,7 @@ function quiz(){ // 乱数を発生させて対応する点字と文字を表示
 			Braille
 		</div>
 		<div id="toc" class="ac">
-			<div onclick="chgView(this)" title="braille">Braille</div>
+			<div onclick="chgView(this)" title="braille" class="checked">Braille</div>
 			<div onclick="chgView(this); mode='kan'; quiz();" title="quiz">かな</div>
 			<div onclick="chgView(this); mode='abc'; quiz();" title="quiz">alphabet (abc…)</div>
 			<div onclick="chgView(this); mode='num'; quiz();" title="quiz">数字 (012…)</div>

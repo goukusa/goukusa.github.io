@@ -11,34 +11,16 @@
 	</script>
 
 	<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
+	<script type="text/javascript" src="common.js"></script>
 	<link rel="stylesheet" type="text/css" href="common.css">
 	<style>
 		section{background:#ffe; margin:0; padding:0; }
-		/*
-		*{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
-		.kb {width:100%}
-		.bk {width: 9%; height:15%; position:absolute; bottom:20%; background-color:#000; border-radius:0 0 8px 8px}
-		.wk {width:12%; height:35%; position:absolute; bottom:0; background-color:#fff; border:3px #000 solid; border-radius:0 0 8px 8px}
-		.wk:hover{background-color:#eee}
-		#b0 {left:15%}
-		#b1 {left:28%}
-		#b2 {left:50%}
-		#b3 {left:63%}
-		#b4 {left:76%}
-		#w0 {left:8%}
-		#w1 {left:20%}
-		#w2 {left:32%}
-		#w3 {left:44%}
-		#w4 {left:56%}
-		#w5 {left:68%}
-		#w6 {left:80%}
-		.red, .red:hover {background-color:#f55}
-		.green, .green:hover {background-color:#5f5}
-		*/
-		#scores{font-size:1.5em}
+		#scores{margin-left:1em}
 	</style>
 	<title>Musical Notes</title>
-	<!-- 参考にしたサイト
+	<!--
+	TODO: シャープ、フラット、ナチュラル ♯♭♮
+	参考にしたサイト
 	<a href="http://achapi2718.blogspot.jp/2014/05/javascript_30.html">
 		あちゃぴーの自転車通勤: ギターで五線譜読譜トレーニング JavaScript
 	</a> -->
@@ -73,8 +55,8 @@ function generateSelect() {
 		}
 		return tag;
 	}
-	document.getElementById('selmin').innerHTML = options(min);
-	document.getElementById('selmax').innerHTML = options(max);
+	setI('selmin',options(min));
+	setI('selmax',options(max));
 }
 function chgclef(value) {
 	y = 0;
@@ -98,7 +80,7 @@ function touch(k){
 	}
 	var key = document.getElementById('w'+k);
 	key.setAttribute('fill',color);
-	document.getElementById('scores').innerHTML = 'score: ' + score + '  max: ' + maxscore;
+	setI('scores',score + ' [' + maxscore + ']');
 	if(typeof(sound.currentTime)) sound.currentTime = 0;
 	sound.play();
 	setTimeout(function(){key.setAttribute('fill','#fff');},500);
@@ -122,28 +104,34 @@ function drawNote(){
 	else svg += 'M228,' + y + 'v-70"/>';
 	svg += '<ellipse cx="216" cy="' + y + '" rx="14" ry="10" transform="rotate(330,216,' + y + ')"/></svg>';
 	//display SVG
-	document.getElementById('draw').innerHTML = svg;
+	setI('draw',svg);
 }
 window.onload = drawNote;
 </script>
 </head>
 
 <body class='loading'>
-<header></header>
-<section>
+<header>
+	<nav>
+		<div id="tool" onclick="document.getElementById('toc').style.display='block';">
+			ト音記号 G-clef
+		</div>
+		<div id="toc" class="ac">
+			<div onclick="chgView(this);chgclef(0);" title="music" class="checked">ト音記号 G-clef</div>
+			<div onclick="chgView(this);chgclef(1);" title="music">ハ音記号 C-clef</div>
+			<div onclick="chgView(this);chgclef(2);" title="music">ヘ音記号 F-clef</div>
+			<div onclick="location.href='index.html';" title="home"><img src="images/home.svg"></div>
+			<div onclick="chgView();" class="hidetoc">dummy</div>
+		</div>
+	</nav>
+</header>
+<section id="music">
 <form name="control">
-	clef:
-	<select onchange="chgclef(this.value)">
-		<option value=0 selected="selected">ト音記号 G-clef</option>
-		<option value=1>ハ音記号 C-clef</option>
-		<option value=2>ヘ音記号 F-clef</option>
-	</select>
-	min:
 	<select onchange="chgmin(this.value)" id="selmin"></select>
-	max:
+	—
 	<select onchange="chgmax(this.value)" id="selmax"></select>
+			<span id="scores">0 [0]</span>
 </form>
-<span id="scores">score: 0 max: 0</span>
 <div id="draw">
 	<svg xmlns="http://www.w3.org/2000/svg" width="400" height="320">
 	</svg>
