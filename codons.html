@@ -206,13 +206,26 @@
 				<span class="aa" id="aa_0">Stop codons (*/Term)<br>TAA (Ochre),<br>TAG (Amber),<br>TGA (Opal)</span>
 			</section>
 			<section id="codontable">
-				ref: <a href="http://en.wikipedia.org/wiki/Genetic_code#RNA_codon_table" target="_blank">Wikipedia</a> and
-				<a href="http://www.ncbi.nlm.nih.gov/Taxonomy/Utils/wprintgc.cgi" target="_blank">NCBI</a>
-				<!--
-				https://en.wikipedia.org/wiki/Stop_codon
-				<a href="http://www.ncbi.nlm.nih.gov/Taxonomy/taxonomyhome.html/index.cgi?chapter=cgencodes" target="_blank">NCBI</a>. 
-				-->
-				<br>
+				genetic code:
+				<select onChange="switchCode(this.value)" title="Select a genetic code.">
+					<option value="1" selected>Standard</option>
+					<option value="2">Vertebrate Mitochondrial</option>
+					<option value="3">Yeast Mitochondrial (mt)</option>
+					<option value="4">Mycoplasma etc.</option>
+					<option value="5">Invertebrate mt</option>
+					<option value="6">Ciliate etc. Nuclear</option>
+					<option value="9">Echinoderm etc. mt</option>
+					<option value="10">Euplotid Nuclear</option>
+					<option value="12">Alternative Yeast Nuclear</option>
+					<option value="13">Ascidian mt</option>
+					<option value="14">Alternative Flatworm mt</option>
+					<option value="16">Chlorophycean mt</option>
+					<option value="21">Trematode mt</option>
+					<option value="22">Scenedesmus obliquus mt</option>
+					<option value="23">Thraustochytrium mt</option>
+					<option value="24">Pterobranchia mt</option>
+					<option value="25">Gracilibacteria etc.</option>
+				</select>
 				<table class="codont">
 					<tr>
 						<!-- <th rowspan="2" colspan="2"> </th> -->
@@ -231,17 +244,14 @@
 					</tr>
 					<tr>
 						<th rowspan="4">t</th>
-						<td class="aromatic">F/Phe</td>
+						<td class="aromatic" rowspan="2">F/Phe</td>
 						<td class="polar">S/Ser</td>
-						<td class="aromatic">Y/Tyr</td>
-						<td class="cysteine">C/Cys</td>
+						<td class="aromatic" rowspan="2">Y/Tyr</td>
+						<td class="cysteine" rowspan="2">C/Cys</td>
 						<th>t</th>
 					</tr>
 					<tr>
-						<td class="aromatic">F/Phe</td>
 						<td class="polar">S/Ser</td>
-						<td class="aromatic">Y/Tyr</td>
-						<td class="cysteine">C/Cys</td>
 						<th>c</th>
 					</tr>
 					<tr>
@@ -267,30 +277,22 @@
 					<tr>
 						<th rowspan="4">c</th>
 						<td class="nonpolar" id="ctt">L/Leu</td>
-						<td class="polar">P/Pro</td>
-						<td class="basic">H/His</td>
-						<td class="basic">R/Arg</td>
+						<td class="polar" rowspan="4">P/Pro</td>
+						<td class="basic" rowspan="2">H/His</td>
+						<td class="basic" rowspan="4">R/Arg</td>
 						<th>t</th>
 					</tr>
 					<tr>
 						<td class="nonpolar" id="ctc">L/Leu</td>
-						<td class="polar">P/Pro</td>
-						<td class="basic">H/His</td>
-						<td class="basic">R/Arg</td>
 						<th>c</th>
 					</tr>
 					<tr>
 						<td class="nonpolar" id="cta">L/Leu</td>
-						<td class="polar">P/Pro</td>
-						<td class="amide">Q/Gln</td>
-						<td class="basic">R/Arg</td>
+						<td class="amide" rowspan="2">Q/Gln</td>
 						<th>a</th>
 					</tr>
 					<tr>
 						<td class="nonpolar" id="ctg">L/Leu</td>
-						<td class="polar">P/Pro</td>
-						<td class="amide">Q/Gln</td>
-						<td class="basic">R/Arg</td>
 						<th>g</th>
 					</tr>
 					<tr>
@@ -302,28 +304,23 @@
 					<tr>
 						<th rowspan="4">a</th>
 						<td class="nonpolar">I/Ile</td>
-						<td class="polar">T/Thr</td>
-						<td class="amide">N/Asn</td>
-						<td class="polar">S/Ser</td>
+						<td class="polar" rowspan="4">T/Thr</td>
+						<td class="amide" rowspan="2">N/Asn</td>
+						<td class="polar" rowspan="2">S/Ser</td>
 						<th>t</th>
 					</tr>
 					<tr>
 						<td class="nonpolar">I/Ile</td>
-						<td class="polar">T/Thr</td>
-						<td class="amide">N/Asn</td>
-						<td class="polar">S/Ser</td>
 						<th>c</th>
 					</tr>
 					<tr>
 						<td class="nonpolar" id="ata">I/Ile</td>
-						<td class="polar">T/Thr</td>
 						<td class="basic" id="aaa">K/Lys</td>
 						<td class="basic" id="aga">R/Arg</td>
 						<th>a</th>
 					</tr>
 					<tr>
 						<td class="nonpolar">M/Met</td>
-						<td class="polar">T/Thr</td>
 						<td class="basic">K/Lys</td>
 						<td class="basic" id="agg">R/Arg</td>
 						<th>g</th>
@@ -336,54 +333,29 @@
 					</tr>
 					<tr>
 						<th rowspan="4">g</th>
-						<td class="nonpolar">V/Val</td>
-						<td class="polar">A/Ala</td>
-						<td class="acidic">D/Asp</td>
-						<td class="polar">G/Gly</td>
+						<td class="nonpolar" rowspan="4">V/Val</td>
+						<td class="polar" rowspan="4">A/Ala</td>
+						<td class="acidic" rowspan="2">D/Asp</td>
+						<td class="polar" rowspan="4">G/Gly</td>
 						<th>t</th>
 					</tr>
 					<tr>
-						<td class="nonpolar">V/Val</td>
-						<td class="polar">A/Ala</td>
-						<td class="acidic">D/Asp</td>
-						<td class="polar">G/Gly</td>
 						<th>c</th>
 					</tr>
 					<tr>
-						<td class="nonpolar">V/Val</td>
-						<td class="polar">A/Ala</td>
-						<td class="acidic">E/Glu</td>
-						<td class="polar">G/Gly</td>
+						<td class="acidic" rowspan="2">E/Glu</td>
 						<th>a</th>
 					</tr>
 					<tr>
-						<td class="nonpolar">V/Val</td>
-						<td class="polar">A/Ala</td>
-						<td class="acidic">E/Glu</td>
-						<td class="polar">G/Gly</td>
 						<th>g</th>
 					</tr>
 				</table>
-				genetic code:
-				<select onChange="switchCode(this.value)" title="Select a genetic code.">
-					<option value="1" selected>Standard</option>
-					<option value="2">Vertebrate Mitochondrial</option>
-					<option value="3">Yeast Mitochondrial (mt)</option>
-					<option value="4">Mycoplasma etc.</option>
-					<option value="5">Invertebrate mt</option>
-					<option value="6">Ciliate etc. Nuclear</option>
-					<option value="9">Echinoderm etc. mt</option>
-					<option value="10">Euplotid Nuclear</option>
-					<option value="12">Alternative Yeast Nuclear</option>
-					<option value="13">Ascidian mt</option>
-					<option value="14">Alternative Flatworm mt</option>
-					<option value="16">Chlorophycean mt</option>
-					<option value="21">Trematode mt</option>
-					<option value="22">Scenedesmus obliquus mt</option>
-					<option value="23">Thraustochytrium mt</option>
-					<option value="24">Pterobranchia mt</option>
-					<option value="25">Gracilibacteria etc.</option>
-				</select>
+				ref: <a href="http://en.wikipedia.org/wiki/Genetic_code#RNA_codon_table" target="_blank">Wikipedia</a> and
+				<a href="http://www.ncbi.nlm.nih.gov/Taxonomy/Utils/wprintgc.cgi" target="_blank">NCBI</a>
+				<!--
+				https://en.wikipedia.org/wiki/Stop_codon
+				<a href="http://www.ncbi.nlm.nih.gov/Taxonomy/taxonomyhome.html/index.cgi?chapter=cgencodes" target="_blank">NCBI</a>. 
+				-->
 			</section>
 			<section id="iubtable">
 				<table>

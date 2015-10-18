@@ -30,11 +30,11 @@
 			Illusions
 		</div>
 		<div id="toc" class="ac">
-			<div onclick="chgView(this)" title="barber">Sliding Stripes</div>
-			<div onclick="chgView(this)" title="kanizsa">Kanizsa’s Triangle</div>
+			<div onclick="chgView(this)" title="barber">Aperture Problem</div>
 			<div onclick="chgView(this)" title="brightness">Brightness contrast</div>
 			<div onclick="chgView(this)" title="ske">Stereokinetic effect</div>
-			<div onclick="chgView(this)" title="quartet">Quartet symmetry</div>
+			<div onclick="chgView(this)" title="kanizsa">Subjective contours</div>
+			<div onclick="chgView(this)" title="quartet">Symmetry vs. Coherence</div>
 			<div onclick="location.href='index.html'" title="home"><img src="images/home.svg"></div>
 			<div onclick="chgView()" class="hidetoc">dummy</div>
 		</div>
@@ -205,14 +205,6 @@
 			Sliding Stripes (Scientific American Mind June/July 2008)
 		</p>
 	</section>
-	<section id="kanizsa">
-		<img src="images/kanizsa.svg">
-		<p>主観的輪郭（白い三角形）が手前に浮き上がって、周囲よりもさらに白く見える。</p>
-		<img src="images/kanizsa2.svg">
-		<p>白黒反転すると黒い三角形の主観的輪郭が見える。</p>
-		<img src="images/kanizsa3.svg">
-		<p>長方形の主観的輪郭が、複数の黒い丸テーブルの上に置いた半透明な板に見えたり、丸い穴の向こう側にある不透明な長方形のテーブルに見えたりする。</p>
-	</section>
 	<section id="brightness">
 		<p>Koffka ring: 均一な灰色のリングが、左右に分断されるだけで明るさが違って見える。縦にずらすと同様の効果と透明視もみられる。</p>
 		<svg xmlns="http://www.w3.org/2000/svg" width="320" height="360">
@@ -251,10 +243,8 @@
 		<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300">
 		<g stroke-width="2" stroke="#000" fill="none">
 		<circle cx="150" cy="150" r="140"/>
-		<g transform="rotate(45,50,150)">
-		<ellipse cx="50" cy="150" rx="20" ry="30"/>
-		<ellipse fill="#000" stroke="none" cx="50" cy="150" rx="30" ry="20"/>
-		</g>
+		<ellipse cx="80" cy="80" rx="20" ry="30"/>
+		<ellipse fill="#000" stroke="none" cx="80" cy="80" rx="30" ry="20"/>
 		<animateTransform attributeName="transform" type="rotate" begin="0s" dur="4s" fill="freeze" from="0,150,150" to="360,150,150" repeatCount="indefinite"/>
 		</g>
 		</svg>
@@ -295,6 +285,13 @@
 		</g>
 		</svg>
 	</section>
+	<section id="kanizsa">
+		<img src="images/kanizsa.svg">
+		<img src="images/kanizsa2.svg">
+		<p>白よりも白い（黒よりも黒い）三角形が手前に浮き上がって、主観的輪郭と呼ばれる輪郭線が知覚される。(Kanizsa’s Triangle)</p>
+		<img src="images/kanizsa3.svg">
+		<p>長方形の主観的輪郭が、複数の黒い丸テーブルの上に置いた半透明な板に見えたり、丸い穴の向こう側にある不透明な長方形のテーブルに見えたりする。</p>
+	</section>
 	<section id="quartet">
 		<svg viewBox="-200 0 400 400" width="400" height="400" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 		<rect x="-200" y="0" width="400" height="400"/>
@@ -321,11 +318,11 @@
 		<use xlink:href="#g0" transform="translate(-60,250)"/>
 		<use xlink:href="#g0" transform="translate(-120,330)"/>
 		</svg>
-		<p></p>
+		<p>点滅する点は斜めに往復するように見える。「左上←→右下」か「右上←→左下」かは全体で統一され、バラバラにはならない。</p>
 		<svg viewBox="-200 0 400 400" width="400" height="400" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 		<rect x="-200" y="0" width="400" height="400"/>
 		<defs>
-		<g id="g0">
+		<g id="g1">
 		<g>
 		<circle cx="0" cy="0" r="5"/><circle cx="0" cy="40" r="5"/>
 		<animate calcMode="discrete" attributeName="fill" from="#fff" to="#000" begin="0s" dur="1s" repeatCount="indefinite"/>
@@ -336,17 +333,18 @@
 		</g>
 		</g>
 		</defs>
-		<use xlink:href="#g0" transform="translate(100,30)"/>
-		<use xlink:href="#g0" transform="translate(50,130)"/>
-		<use xlink:href="#g0" transform="translate(150,130)"/>
-		<use xlink:href="#g0" transform="translate(130,230)"/>
-		<use xlink:href="#g0" transform="translate(70,330)"/>
-		<use xlink:href="#g0" transform="translate(-100,30)"/>
-		<use xlink:href="#g0" transform="translate(-50,130)"/>
-		<use xlink:href="#g0" transform="translate(-150,130)"/>
-		<use xlink:href="#g0" transform="translate(-130,230)"/>
-		<use xlink:href="#g0" transform="translate(-70,330)"/>
+		<use xlink:href="#g1" transform="translate(100,30)"/>
+		<use xlink:href="#g1" transform="translate(50,130)"/>
+		<use xlink:href="#g1" transform="translate(150,130)"/>
+		<use xlink:href="#g1" transform="translate(130,230)"/>
+		<use xlink:href="#g1" transform="translate(70,330)"/>
+		<use xlink:href="#g1" transform="translate(-100,30)"/>
+		<use xlink:href="#g1" transform="translate(-50,130)"/>
+		<use xlink:href="#g1" transform="translate(-150,130)"/>
+		<use xlink:href="#g1" transform="translate(-130,230)"/>
+		<use xlink:href="#g1" transform="translate(-70,330)"/>
 		</svg>
+		<p>点の配置を左右対称にすると左半分と右半分とで動き方が逆になり、鏡写しに見える（統一性よりも対称性が優先される）。</p>
 	</section>
 </article>
 </body>
