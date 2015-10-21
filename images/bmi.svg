@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="30">
+<g stroke="#000" stroke-width="4" fill="none" stroke-linecap="round">
+<path d="M11,5v20"/>
+<path d="M2,5v5m4,-5v5m10,-5v5m4,-5v5" stroke-width="2.5"/>
+</g>
+</svg>

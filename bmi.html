@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<!-- html manifest="./cache.manifest" -->
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=400, initial-scale=1, user-scalable=no">
+	<script type="text/javascript" src="common.js"></script>
+	<link rel="stylesheet" type="text/css" href="common.css">
+	<style>
+		td, input { font-size:1.2rem }
+		p {text-align:left;margin:1em}
+		table {margin:auto}
+		td {width:50%}
+		input { font-family: scp, 'Andale Mono', Menlo, Courier, monospace; font-size:medium; }
+	</style>
+	<title>
+		Body Mass Index
+	</title>
+</head>
+
+<body>
+	<header id="header">
+		<nav>
+			<div id="tool" onclick="document.getElementById('toc').style.display='block';">
+				Body Mass Index
+			</div>
+			<div id="toc" class="ac">
+				<div onclick="chgView(this)" title="bmi" class="checked">BMI: Body Mass Index</div>
+				<div onclick="location.href='index.html'" title="home"><img src="images/home.svg"></div>
+				<div onclick="chgView()" class="hidetoc">dummy</div>
+			</div>
+		</nav>
+	</header>
+	<noscript>
+		このWebサイトの全ての機能を利用するためにはJavaScriptを有効にする必要があります。
+		<a href="http://www.enable-javascript.com/ja/" target="_blank">あなたのWebブラウザーでJavaScriptを有効にする方法</a>
+		を参照してください。
+	</noscript>
+
+	<article>
+		<section id="bmi">
+			<p>
+				理想体重、肥満度は成人用です。乳幼児・小児は成長曲線の作成をお勧めします。
+			</p>
+			<table>
+				<tr>
+					<td align="right">
+						<input type="text" id="height" size="5" maxlength="5" placeholder="身長" onkeyup="calcBMI()">cm
+					</td>
+					<td align="left">
+						<input type="text" id="weight" size="5" maxlength="5" placeholder="体重" onkeyup="calcBMI()">kg
+					</td>
+				</tr>
+				<tr><td align="right">BMI:</td>     <td align="left" id="showbmi"> </td></tr>
+				<tr><td align="right">理想体重:</td><td align="left" id="ideal"> </td></tr>
+				<tr><td align="right">正常体重:</td><td align="left" id="normal"> </td></tr>
+			</table>
+		</section>
+	</article>
+
+	<footer>
+	</footer>
+</body>
+</html>
+
+<script>
+function calcBMI() {
+	var height = Number(document.getElementById("height").value);
+	var weight = Number(document.getElementById("weight").value);
+	var idealWeight = Math.round(220 * Math.pow(height/100,2))/10;
+	var minWeight = Math.round(185 * Math.pow(height/100,2))/10;
+	var maxWeight = Math.round(250 * Math.pow(height/100,2))/10;
+	if (height > 0) {
+		setI("ideal", idealWeight + " kg");
+		setI("normal", minWeight + "–" + maxWeight + " kg");
+		} else {
+		setI("ideal", '');
+		setI("normal", '');
+	}
+	if (height > 0 && weight > 0) {
+		var bmi = Math.round(10 * weight * Math.pow(height/100,-2))/10;
+		var msg;
+		if (bmi < 18.5) msg = "（低体重）";
+		else if (bmi >= 40) msg = "（肥満 4度）";
+		else if (bmi >= 35) msg = "（肥満 3度）";
+		else if (bmi >= 30) msg = "（肥満 2度）";
+		else if (bmi >= 25) msg = "（肥満 1度）";
+		else msg = "（正常体重）";
+		setI("showbmi", bmi + msg);
+	} else {
+		setI("showbmi", '');
+	}
+
+}
+</script>

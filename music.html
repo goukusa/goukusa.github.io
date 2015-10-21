@@ -100,9 +100,9 @@ function drawNote(){
 	for(var i = 130; i<230; i+=20) svg += 'M0,' + i + 'h400';
 	for(var i = 230; i<y+10; i+=20) svg += 'M194,' + i + 'h44';
 	//note
-	if(y<175) svg += 'M204,' + y + 'v70"/>';
-	else svg += 'M228,' + y + 'v-70"/>';
-	svg += '<ellipse cx="216" cy="' + y + '" rx="14" ry="10" transform="rotate(330,216,' + y + ')"/></svg>';
+	if(y<175) svg += 'M204,' + (y+2) + 'v70"/>';
+	else svg += 'M228,' + (y-2) + 'v-70"/>';
+	svg += '<circle cx="0" cy="0" r="10.4" transform="matrix(1.25,-.3,0,1,216,' + y + ')"/></svg>';
 	//display SVG
 	setI('draw',svg);
 }

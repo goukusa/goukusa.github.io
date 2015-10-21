@@ -34,15 +34,37 @@ license: SIL OFL 1.1 */
 	src: local('SourceSansPro-Bold'),
 	url('fonts/SourceSansPro-Bold.ttf.woff') format('woff');
 }
-body {
+/* Route159 1.00 by http://dotcolon.net */
+@font-face {
+	font-family: 'route159';
+	font-weight: normal;
+	src: local('Route159-Regular'),
+		url('fonts/Route159-Regular.woff') format('woff');
+}
+@font-face {
+	font-family: 'route159l';
+	font-weight: 300;
+	src: local('Route159-Light'),
+		url('fonts/Route159-Light.woff') format('woff');
+}
+@font-face {
+	font-family: 'route159';
+	font-weight: bold;
+	src: local('Route159-Bold'),
+		url('fonts/Route159-Bold.woff') format('woff');
+}
+body, nav a span.small, #toc div.checked {
 	font-family: ssp, 'Avenir Next', 'YuGothic', 'Yu Gothic', '游ゴシック', '游ゴシック体', 'HiraKakuProN-W3', 'Meiryo', sans-serif;
+}
+header { font-family: sspl, Optima, 'Source Han Sans JP', 'Noto Sans Japanese', 'YuGothic', 'Yu Gothic', '游ゴシック', '游ゴシック体', '.HiraKakuInterface-W1', 'HiraKakuProN-W3', 'Meiryo', sans-serif; }
+body {
 	background-color: #ffc;
 	margin: 0;
 	padding: 0;
 	max-width: 30em;
 	margin: auto;
 }
-header { font-size: 1.5em; line-height:1.5em; font-family: sspl, Optima, 'Source Han Sans JP', 'Noto Sans Japanese', 'YuGothic', 'Yu Gothic', '游ゴシック', '游ゴシック体', '.HiraKakuInterface-W1', 'HiraKakuProN-W3', 'Meiryo', sans-serif; font-weight:300; }
+header { font-size: 1.5em; line-height:1.5em; font-weight:300; }
 header, section {text-align:center;}
 h1 { padding:0; margin:5px; font-weight: normal; font-size: 1.5em; }
 h2,h3 { padding: 0 1em; font-weight: normal; }
@@ -59,13 +81,13 @@ nav a {
 }
 nav a:hover { background: #edb; }
 nav a span { margin-left: 1rem; vertical-align:6px }
-nav a span.small { font-size:0.9rem; font-family: ssp, Optima, sans-serif; }
+nav a span.small { font-size:0.9rem; }
 #tool {background:#14b url(images/select.svg) no-repeat right center; color:#fff; cursor:pointer; }
 #tool:hover, #toc div:hover {color:#fff; background-color:#25c}
 div#toc {display:none;}
-#toc {width:100%; position:absolute; top:0; left:0; bottom:0; margin:auto; opacity:.95}
-#toc div { color:#000; background-color:#eef; cursor:pointer; }
-#toc div.checked {background:#eef url(images/checkb.svg) no-repeat left center; }
+#toc {width:100%; position:absolute; top:0; left:0; bottom:0; margin:auto;}
+#toc div { color:#000; background-color:#eef; cursor:pointer; opacity:.95}
+#toc div.checked {background:#ffe url(images/checkb.svg) no-repeat left center; }
 #toc div.checked:hover {background:#25c url(images/checkw.svg) no-repeat left center; color:#fff; }
 #toc div.hidetoc { height:100%; position:relative; top:0; bottom:0; color:#000; background-color:#000; opacity:.5; cursor:auto; }
 #init div {margin:2.5em .5em;}
