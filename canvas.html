@@ -3,7 +3,13 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<meta name="viewport" content="width=400, initial-scale=1, user-scalable=no">
+	<script type="text/javascript">
+		if (navigator.userAgent.indexOf("iPhone")!=-1 || navigator.userAgent.indexOf("iPod")!=-1) {
+			document.write('<meta name="viewport" content="width=device-width,initial-scale=0.67,user-scalable=no">');
+		} else {
+			document.write('<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">');
+		}
+	</script>
 		<!-- 参考サイト
 		http://www.htmq.com/html5/
 		http://www.html5.jp
