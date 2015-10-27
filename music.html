@@ -1,29 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<script type="text/javascript">
-		if (navigator.userAgent.indexOf("iPhone")!=-1 || navigator.userAgent.indexOf("iPod")!=-1) {
-			document.write('<meta name="viewport" content="width=device-width,initial-scale=0.67,user-scalable=no">');
-		} else {
-			document.write('<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes">');
-		}
-	</script>
+<meta charset="utf-8">
+<script type="text/javascript">
+	if (window.parent.screen.width < 340) {
+		document.write('<meta name="viewport" content="width=device-width,initial-scale=0.67,user-scalable=no">');
+	} else if (window.parent.screen.width < 380) {
+		document.write('<meta name="viewport" content="width=device-width,initial-scale=0.8,user-scalable=no">');
+	} else if (window.parent.screen.width < 420) {
+		document.write('<meta name="viewport" content="width=device-width,initial-scale=0.9,user-scalable=no">');
+	} else {
+		document.write('<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes">');
+	}
+</script>
 
-	<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
-	<script type="text/javascript" src="common.js"></script>
-	<link rel="stylesheet" type="text/css" href="common.css">
-	<style>
-		section{background:#ffe; margin:0; padding:0; }
-		#scores{margin-left:1em}
-	</style>
-	<title>Musical Notes</title>
-	<!--
-	TODO: シャープ、フラット、ナチュラル ♯♭♮
-	参考にしたサイト
-	<a href="http://achapi2718.blogspot.jp/2014/05/javascript_30.html">
-		あちゃぴーの自転車通勤: ギターで五線譜読譜トレーニング JavaScript
-	</a> -->
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
+<script type="text/javascript" src="common.js"></script>
+<link rel="stylesheet" type="text/css" href="common.css">
+<style>
+	section{background:#ffe; margin:0; padding:0; }
+	#scores{margin-left:1em}
+</style>
+<title>Musical Notes</title>
+<!--
+TODO: シャープ、フラット、ナチュラル ♯♭♮
+参考にしたサイト
+<a href="http://achapi2718.blogspot.jp/2014/05/javascript_30.html">
+	あちゃぴーの自転車通勤: ギターで五線譜読譜トレーニング JavaScript
+</a> -->
 <script type="text/javascript">
 var min = 7, max = 19, clef = 0, y=0, score=0, maxscore=0;
 function chgmax(value) {

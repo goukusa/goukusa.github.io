@@ -1,81 +1,83 @@
 <!DOCTYPE html>
 <!-- html manifest="./cache.manifest" -->
 <html>
-	<head>
-		<meta charset="UTF-8">
-	<script type="text/javascript">
-		if (navigator.userAgent.indexOf("iPhone")!=-1 || navigator.userAgent.indexOf("iPod")!=-1) {
-			document.write('<meta name="viewport" content="width=device-width,initial-scale=0.67,user-scalable=no">');
-		} else {
-			document.write('<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">');
-		}
-	</script>
-		<!-- 参考サイト
-		http://www.htmq.com/html5/
-		http://www.html5.jp
-		http://tmlife.net/programming/javascript/javascript-mouse-pos.html
-		http://1ka2ka.com/archives/201006/12_002842.html
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript">
+	if (window.parent.screen.width < 340) {
+		document.write('<meta name="viewport" content="width=device-width,initial-scale=0.67,user-scalable=no">');
+	} else if (window.parent.screen.width < 380) {
+		document.write('<meta name="viewport" content="width=device-width,initial-scale=0.8,user-scalable=no">');
+	} else if (window.parent.screen.width < 420) {
+		document.write('<meta name="viewport" content="width=device-width,initial-scale=0.9,user-scalable=no">');
+	} else {
+		document.write('<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes">');
+	}
+</script>
+<!-- 参考サイト
+http://www.htmq.com/html5/
+http://www.html5.jp
+http://tmlife.net/programming/javascript/javascript-mouse-pos.html
+http://1ka2ka.com/archives/201006/12_002842.html
+-->
+<script type="text/javascript" src="common.js"></script>
+<script type="text/javascript" src="ball.js"></script>
+<link rel="stylesheet" type="text/css" href="common.css">
+<style>
+	*{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
+</style>
+<title>Canvas Animation</title>
+</head>
+
+<body>
+	<header id="header">
+		<nav>
+			<div id="tool" onclick="document.getElementById('toc').style.display='block';">
+				Coulomb’s law
+			</div>
+			<div id="toc" class="ac">
+				<div onclick="chgView(this)" title="coulomb" class="checked">Coulomb’s law</div>
+				<div onclick="location.href='index.html'" title="home"><img src="images/home.svg"></div>
+				<div onclick="chgView()" class="hidetoc">dummy</div>
+			</div>
+		</nav>
+	</header>
+	<noscript>
+		このWebサイトの全ての機能を利用するためにはJavaScriptを有効にする必要があります。
+		<a href="http://www.enable-javascript.com/ja/" target="_blank">あなたのWebブラウザーでJavaScriptを有効にする方法</a>
+		を参照してください。
+	</noscript>
+
+	<article>
+	<section id="coulomb">
+		Click or tap to invert the direction of force.<br>
+		<canvas id="can" width="400" height="400"></canvas>
+		<br>
+		<input id="pp" type="button" value="start" onClick="togglePlay()" />
+		<input id="reset" type="button" value="reset" onClick="reset()" />
+		&nbsp;
+		charge:
+		<!--
+		<input id="q" type="range" min="1" max="256" value="20" style="width:256px">
+		<label id="kqq" for="q">20</label>
 		-->
-		<script type="text/javascript" src="common.js"></script>
-		<script type="text/javascript" src="ball.js"></script>
-		<link rel="stylesheet" type="text/css" href="common.css">
-		<style>
-			*{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
-		</style>
-		<title>
-			Canvas Animation
-		</title>
-	</head>
+		<input name="kval" type="radio" value="1" id="k1" onClick="chk(1)" /><label for="k1">1</label>
+		<input name="kval" type="radio" value="5" id="k5" onClick="chk(5)" /><label for="k5">5</label>
+		<input name="kval" type="radio" value="20" id="k20" onClick="chk(20)" checked /><label for="k20">20</label>
+		<input name="kval" type="radio" value="50" id="k50" onClick="chk(50)" /><label for="k50">50</label>
+		<input name="kval" type="radio" value="100" id="k100" onClick="chk(100)" /><label for="k100">100</label>
+		<input name="kval" type="radio" value="500" id="k500" onClick="chk(500)" /><label for="k500">500</label>
+	</section>
+	<section style="display:none;">
+		<h2>Color space</h2>
+		<p class="ac">
+			<canvas id="can2" width="640" height="480"></canvas>
+		</p>
+	</section>
+	</article>
 
-	<body>
-		<header id="header">
-	<nav>
-		<div id="tool" onclick="document.getElementById('toc').style.display='block';">
-					Coulomb’s law
-		</div>
-		<div id="toc" class="ac">
-			<div onclick="chgView(this)" title="coulomb" class="checked">Coulomb’s law</div>
-			<div onclick="location.href='index.html'" title="home"><img src="images/home.svg"></div>
-			<div onclick="chgView()" class="hidetoc">dummy</div>
-		</div>
-	</nav>
-		</header>
-		<noscript>
-			このWebサイトの全ての機能を利用するためにはJavaScriptを有効にする必要があります。
-			<a href="http://www.enable-javascript.com/ja/" target="_blank">あなたのWebブラウザーでJavaScriptを有効にする方法</a>
-			を参照してください。
-		</noscript>
-
-		<article>
-		<section id="coulomb">
-			Click or tap to invert the direction of force.<br>
-			<canvas id="can" width="400" height="400"></canvas>
-			<br>
-			<input id="pp" type="button" value="start" onClick="togglePlay()" />
-			<input id="reset" type="button" value="reset" onClick="reset()" />
-			&nbsp;
-			charge:
-			<!--
-			<input id="q" type="range" min="1" max="256" value="20" style="width:256px">
-			<label id="kqq" for="q">20</label>
-			-->
-			<input name="kval" type="radio" value="1" id="k1" onClick="chk(1)" /><label for="k1">1</label>
-			<input name="kval" type="radio" value="5" id="k5" onClick="chk(5)" /><label for="k5">5</label>
-			<input name="kval" type="radio" value="20" id="k20" onClick="chk(20)" checked /><label for="k20">20</label>
-			<input name="kval" type="radio" value="50" id="k50" onClick="chk(50)" /><label for="k50">50</label>
-			<input name="kval" type="radio" value="100" id="k100" onClick="chk(100)" /><label for="k100">100</label>
-			<input name="kval" type="radio" value="500" id="k500" onClick="chk(500)" /><label for="k500">500</label>
-		</section>
-		<section style="display:none;">
-			<h2>Color space</h2>
-			<p class="ac">
-				<canvas id="can2" width="640" height="480"></canvas>
-			</p>
-		</section>
-		</article>
-
-		<footer>
-			&copy; 2013 Goh Sasaki
-		</footer>
-	</body>
+	<footer>
+		&copy; 2013 Goh Sasaki
+	</footer>
+</body>
 </html>

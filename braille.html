@@ -3,8 +3,12 @@
 <head>
 <meta charset="utf-8">
 <script type="text/javascript">
-	if (navigator.userAgent.indexOf("iPhone")!=-1 || navigator.userAgent.indexOf("iPod")!=-1) {
+	if (window.parent.screen.width < 340) {
 		document.write('<meta name="viewport" content="width=device-width,initial-scale=0.67,user-scalable=no">');
+	} else if (window.parent.screen.width < 380) {
+		document.write('<meta name="viewport" content="width=device-width,initial-scale=0.8,user-scalable=no">');
+	} else if (window.parent.screen.width < 420) {
+		document.write('<meta name="viewport" content="width=device-width,initial-scale=0.9,user-scalable=no">');
 	} else {
 		document.write('<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes">');
 	}
