@@ -1,50 +1,96 @@
 <!DOCTYPE html>
-<!-- html manifest="./cache.manifest" -->
-<html>
+<html manifest="cache.manifest">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+<link rel="icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
 <link rel="stylesheet" type="text/css" href="common.css">
 <title>Pieces</title>
+<script>
+function about() {
+	var e = document.getElementById('about');
+	if(e.style.display == 'block') e.style.display='none';
+	else e.style.display='block';
+}
+</script>
+<style>
+	#about {
+		width:100%;
+		position:absolute;
+		top:0;
+		left:0;
+		bottom:0;
+		padding:0;
+		color:#fff;
+		background-color:#000;
+		cursor:pointer;
+		opacity:.75;
+	}
+</style>
 </head>
 
 <body>
-	<header id="header">
-		<h1>Pieces</h1>
-		<nav id="navi"> <!-- TODO: shops/places, therapeutic antibodies, … -->
-			<a href="codons.html"><img src="images/dna.svg"><span>Codons</span><span class="small">genetic code, Tm, …</span></a>
-			<a href="illusions.html"><img src="images/box.svg"><span>Optical</span><span class="small">effects &amp; illusions.</span></a>
-			<a href="music.html"><img src="images/note.svg"><span>Music</span><span class="small">reading practice.</span></a>
-			<a href="braille.html"><img src="images/braille.svg"><span>Braille</span><span class="small">character conversion.</span></a>
-			<a href="bmi.html"><img src="images/bmi.svg"><span>BMI</span><span class="small">for your health.</span></a>
-			<a href="canvas.html"><img src="images/dot.svg"><span>Canvas</span><span class="small">interactive animation.</span></a>
-		</nav>
-	</header>
-	<noscript>
-		このWebサイトの全ての機能を利用するためにはJavaScriptを有効にする必要があります。
-		<a href="http://www.enable-javascript.com/ja/" target="_blank">あなたのWebブラウザーでJavaScriptを有効にする方法</a>
-		を参照してください。
-		<br>
-		<a href="http://www.enable-javascript.com/" target="_blank">How to enable JavaScript in your browser</a>
-	</noscript>
-
-	<!--
-	<article>
-		<h2>TODO list</h2>
-		<ul>
-			<li>Places (Restaurant, …)</li>
-			<li>Growth Curve</li>
-			<li>BMI</li>
-			<li>Web Fonts</li> dotcolon, …
-			<li>元素の周期表</li>
-			<li>抗体配列解析ツール</li>
-			<li>アクセスカウンター (CGI: PHP/Perl/Ruby)</li>
-			<li>色見本</li>
+<header id="header">
+	<h1>
+		<!-- Pieces -->
+		<img title="About" src=images/go.svg width="50" onclick="about()">
+	</h1>
+	<div id="about" style="display:none;text-align:left" onclick="about()">
+		<h3>History:</h3>
+		<ul style="list-style-type:none">
+			<li>2015-11-07 cache.manifest added</li>
+			<li>2015-11-06 About added</li>
+			<li>2015-10-28 goukusa.github.io opened</li>
 		</ul>
-	</article>
-	<footer>
-		&copy; 2013-2015 Goh Sasaki
-	</footer>
-	-->
+		<h3>TODO:</h3>
+		<ul type="square">
+			<li>Places (Restaurant, …)</li>
+			<li>Growth Curve 乳幼児・小児の成長曲線</li>
+			<li>Periodic table 元素の周期表</li>
+			<li>Antibodies 抗体医薬の命名規則</li>
+			<li>SVG path generator</li>
+			<li>Colors</li>
+			<!--
+			<li>Web Fonts</li>
+			<li>アクセスカウンター (CGI: PHP/Perl/Ruby)</li>
+			-->
+		</ul>
+	</div>
+	<nav id="navi"> <!-- TODO: shops/places, therapeutic antibodies, … -->
+		<a href="codons.html"><img src="images/dna.svg"><span>Codons</span> <span class="small">genetic code, Tm, …</span></a>
+		<a href="illusions.html"><img src="images/box.svg"><span>Optical</span> <span class="small">effects &amp; illusions.</span></a>
+		<a href="music.html"><img src="images/note.svg"><span>Music</span> <span class="small">reading practice.</span></a>
+		<a href="braille.html"><img src="images/braille.svg"><span>Braille</span> <span class="small">character conversion.</span></a>
+		<a href="bmi.html"><img src="images/bmi.svg"><span>BMI</span> <span class="small">for your health.</span></a>
+		<a href="canvas.html"><img src="images/dot.svg"><span>Canvas</span> <span class="small">interactive animation.</span></a>
+	</nav>
+</header>
+<noscript>
+	このWebサイトの全ての機能を利用するためにはJavaScriptを有効にする必要があります。
+	<a href="http://www.enable-javascript.com/ja/" target="_blank">あなたのWebブラウザーでJavaScriptを有効にする方法</a>
+	を参照してください。
+	<br>
+	<a href="http://www.enable-javascript.com/" target="_blank">How to enable JavaScript in your browser</a>
+</noscript>
+
+<!--
+<article>
+	<h2>TODO list</h2>
+	<ul>
+		<li>Places (Restaurant, …)</li>
+		<li>Growth Curve</li>
+		<li>BMI</li>
+		<li>Web Fonts</li> dotcolon, …
+		<li>元素の周期表</li>
+		<li>抗体配列解析ツール</li>
+		<li>アクセスカウンター (CGI: PHP/Perl/Ruby)</li>
+		<li>色見本</li>
+	</ul>
+</article>
+-->
+<footer>
+	&copy; 2015 Goh Sasaki
+</footer>
 </body>
 </html>

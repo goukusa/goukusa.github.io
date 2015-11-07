@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<!-- html manifest="./cache.manifest" -->
-<html>
+<html manifest="cache.manifest">
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
@@ -16,7 +15,7 @@
 		</script>
 		<link rel="stylesheet" type="text/css" href="common.css">
 		<style media="all">
-			input, textarea, .codons td, #codontable table { font-family: scp, 'Andale Mono', Menlo, Courier, monospace; font-size:medium; }
+			input, textarea, .codons td, #codontable table { font-family: scp, Menlo, 'Andale Mono', Courier, monospace; font-size:medium; }
 			#codons, #aatable, #aa, #codontable, #iubtable, #translator, #untranslator, #tmcalc, div#toc { display:none; }
 			th, td { border:1px #888 solid; padding:0.2em; }
 			th { background-color:#eee; font-weight:normal; }
@@ -82,11 +81,11 @@
 					</g>
 					</svg>
 					-->
-					<svg xmlns="http://www.w3.org/2000/svg" width="120" height="89" onmouseover="this.unpauseAnimations();" onmouseout="this.pauseAnimations();">
+					<svg xmlns="http://www.w3.org/2000/svg" width="120" height="87" onmouseover="this.unpauseAnimations();" onmouseout="this.pauseAnimations();">
 					<g>
-					<path d="M30,-15c0,18 60,30 60,48s-60,30 -60,48 60,30 60,48 -60,30 -60,48v15c0,-18 60,-30 60,-48s-60,-30 -60,-48 60,-30 60,-48 -60,-30 -60,-48"/>
-					<path d="M30,42v15h3.3v-15zm60,-9v15h-3.3v-15zm-60,48v15h3.3v-15zm60,9v15h-3.3v-15zm-60,48v15h3.3v-15zm60,-9v15h-3.3v-15z"/>
-					<path d="M90,-6c0,18 -60,30 -60,48s60,30 60,48 -60,30 -60,48 60,30 60,48v15c0,-18 -60,-30 -60,-48s60,-30 60,-48 -60,-30 -60,-48 60,-30 60,-48"/>
+					<path d="M30,-16.5c0,18 60,30 60,48s-60,30 -60,48 60,30 60,48 -60,30 -60,48v15c0,-18 60,-30 60,-48s-60,-30 -60,-48 60,-30 60,-48 -60,-30 -60,-48"/>
+					<path d="M30,40.5v15h3.4v-15zm60,-9v15h-3.4v-15zm-60,48v15h3.4v-15zm60,9v15h-3.4v-15zm-60,48v15h3.4v-15zm60,-9v15h-3.4v-15z"/>
+					<path d="M90,-7.5c0,18 -60,30 -60,48s60,30 60,48 -60,30 -60,48 60,30 60,48v15c0,-18 -60,-30 -60,-48s60,-30 60,-48 -60,-30 -60,-48 60,-30 60,-48"/>
 					<animateTransform attributeName="transform" type="translate" begin="0s" dur="5s" fill="freeze" from="0,0" to="0,-96" repeatCount="indefinite"/>
 					</g>
 					</svg>
@@ -454,7 +453,9 @@
 			</section>
 		</article>
 		<footer>
+			<!--
 			<span onclick="chgView(this)" title="init">Molecular Biology Tools</span>
+			-->
 			&copy; 2013–2015 Goh Sasaki
 		</footer>
 	</body>

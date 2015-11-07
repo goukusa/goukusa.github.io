@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<!-- html manifest="./cache.manifest" -->
-<html>
+<html manifest="cache.manifest">
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=400, initial-scale=1, user-scalable=no">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 	<script type="text/javascript" src="common.js"></script>
 	<link rel="stylesheet" type="text/css" href="common.css">
 	<style>
@@ -40,7 +39,7 @@
 	<article>
 		<section id="bmi">
 			<p>
-				理想体重、肥満度は成人用です。乳幼児・小児は成長曲線の作成をお勧めします。
+				理想体重、肥満度は成人用です。乳幼児・学童期は成長曲線の作成をお勧めします。
 			</p>
 			<table>
 				<tr>
@@ -56,9 +55,17 @@
 				<tr><td align="right">正常体重:</td><td align="left" id="normal"> </td></tr>
 			</table>
 		</section>
+		<section id="dpc" style="display:none">
+			<input type="text" id="dpccode" size="6" maxlength="6" placeholder="DPCコード（2 or 6桁）" onkeyup="showDPC()">
+			<table>
+				<tr><td align="right">MDC:</td>     <td align="left" id="mdc"> </td></tr>
+				<tr><td align="right">疾病名:</td><td align="left" id="disease"> </td></tr>
+			</table>
+		</section>
 	</article>
 
 	<footer>
+		&copy; 2015 Goh Sasaki
 	</footer>
 </body>
 </html>
@@ -91,5 +98,14 @@ function calcBMI() {
 		setI("showbmi", '');
 	}
 
+}
+function showDPC() {
+	var dpc = document.getElementById("dpccode").value;
+	var mdccode = Number(dpc.substring(0,2));
+	if(mdccode > 0 && mdccode < 19) {
+		var mdc = ['',"神経系疾患", "眼科系疾患", "耳鼻咽喉科系疾患", "呼吸器疾患", "循環器疾患", "消化器疾患　肝臓・胆道・膵臓疾患", "筋骨格系疾患", "皮膚・皮下組織の疾患", "乳房の疾患", "内分泌・栄養・代謝に関する疾患", "腎・尿路系疾患及び男性生殖器系疾患", "女性生殖器系疾患及び産褥期疾患・異常妊娠分娩", "血液・造血器・免疫臓器の疾患", "新生児疾患、先天奇形", "小児疾患", "外傷・熱傷・中毒", "精神疾患", "その他の疾患"][mdccode];
+		var diag = Number(dpc.substring(2,6));
+		setI('mdc', mdc);
+	}
 }
 </script>

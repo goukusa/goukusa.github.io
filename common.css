@@ -38,29 +38,30 @@ body, nav a span.small, #toc div.checked { font-family: ssp, 'Avenir Next', 'Sou
 header { font-family: sspl, Optima, 'Source Han Sans JP', 'Noto Sans Japanese', 'YuGothic', 'Yu Gothic', '游ゴシック', '游ゴシック体', '.HiraKakuInterface-W1', 'HiraKakuProN-W3', 'Meiryo', sans-serif; font-weight:300; }
 body {
 	background-color: #ffc;
-	margin: 0;
 	padding: 0;
 	max-width: 30em;
-	margin: auto;
+	margin: 0 auto;
 }
-header, h1 { font-size: 1.6em; line-height:1.6em; font-weight:300; }
+header { font-size: 1.6em; font-weight:300; }
+h1 { font-size: 1.6em; margin:10px}
 header, section {text-align:center;}
-h1 { margin:.5em 0 0 0 }
 h3 { padding: 0 1em; font-size: 1.5em; font-weight: normal; }
+header h1 img{margin:0 1em; vertical-align:-10px; cursor:pointer }
 nav a {
 	text-align: left;
 	text-decoration: none;
 	display: block;
 	line-height: 1rem;
-	padding:10px 0 10px 20px;
-	margin: 0.5em;
+	padding:10px 0 10px 0;
+	margin: 10px;
 	color: #000;
 	background: #dca;
 	border-radius: .5em;
 }
-nav a:hover { background: #edb; }
-nav a span { margin-left: 1rem; vertical-align:6px }
-nav a span.small { font-size:0.9rem; }
+nav a:hover { background:#edb; }
+nav a span { vertical-align:6px }
+nav a img { margin:0 16px }
+nav a span.small { margin-left:10px; font-size:0.9rem; }
 #tool {background:#14b url(images/select.svg) no-repeat right center; color:#fff; cursor:pointer; }
 #tool:hover, #toc div:hover {color:#fff; background-color:#25c}
 div#toc {display:none;}
@@ -73,6 +74,7 @@ div#toc {display:none;}
 article { margin:0; padding:.5em 0; background-color:#fff; overflow:auto; }
 section { background-color:#fff; overflow:auto; }
 footer {
+	color: #999;
 	text-align: right;
 	font-size: .5em;
 	margin:0 1em;
