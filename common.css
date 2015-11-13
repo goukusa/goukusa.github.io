@@ -37,7 +37,8 @@ license: SIL OFL 1.1 */
 body, nav a span.small, #toc div.checked { font-family: ssp, 'Avenir Next', 'Source Han Sans JP', 'Noto Sans Japanese', 'YuGothic', 'Yu Gothic', '游ゴシック', '游ゴシック体', 'HiraKakuProN-W3', 'Meiryo', sans-serif; font-weight:400; }
 header { font-family: sspl, Optima, 'Source Han Sans JP', 'Noto Sans Japanese', 'YuGothic', 'Yu Gothic', '游ゴシック', '游ゴシック体', '.HiraKakuInterface-W1', 'HiraKakuProN-W3', 'Meiryo', sans-serif; font-weight:300; }
 body {
-	background-color: #ffc;
+	/* background-color: #ffc; */
+	background-color: #f5efdc;
 	padding: 0;
 	max-width: 30em;
 	margin: 0 auto;
