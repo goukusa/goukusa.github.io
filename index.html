@@ -7,13 +7,6 @@
 <link rel="icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
 <link rel="stylesheet" type="text/css" href="common.css">
 <title>Pieces</title>
-<script>
-function about() {
-	var e = document.getElementById('about');
-	if(e.style.display == 'none') e.style.display='block';
-	else e.style.display='none';
-}
-</script>
 <style>
 	#about {
 		width:100%;
@@ -81,3 +74,17 @@ function about() {
 </footer>
 </body>
 </html>
+<script>
+function about() {
+	var e = document.getElementById('about');
+	if(e.style.display == 'none') e.style.display='block';
+	else e.style.display='none';
+}
+(function(){
+	var tags = document.getElementsByTagName('h1');
+	for(var i=0; i<tags.length; i++) {
+		tags[i].addEventListener('touchstart', function(){this.className = 'hover';}, false);
+		tags[i].addEventListener('touchend', function(){this.className = '';}, false);
+	}
+}());
+</script>

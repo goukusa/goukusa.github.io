@@ -251,12 +251,12 @@ function drawbox () {
 function posX(e) {
 	var rect = e.target.getBoundingClientRect();
 	var p = (e.touches ? e.touches[0] : e);
-	return Math.min(255, p.clientX-Math.floor(rect.left));
+	return Math.max(0, Math.min(255, p.clientX-Math.floor(rect.left)));
 }
 function posY(e) {
 	var rect = e.target.getBoundingClientRect();
 	var p = (e.touches ? e.touches[0] : e);
-	return Math.min(255, p.clientY-Math.floor(rect.top));
+	return Math.max(0, Math.min(255, p.clientY-Math.floor(rect.top)));
 }
 function planedown(e) { downstart = true; planemove(e) }
 function mouseup() { downstart = false; }

@@ -7,12 +7,6 @@
 		<meta http-equiv="Content-Script-Type" content="text/javascript">
 		<script type="text/javascript" src="common.js"></script>
 		<script type="text/javascript" src="codons.js"></script>
-		<script>
-			window.onload = function() {
-				var svgs = document.getElementsByTagName('svg');
-				for (var i=0; i<svgs.length; i++) svgs[i].pauseAnimations();
-			}
-		</script>
 		<link rel="stylesheet" type="text/css" href="common.css">
 		<style media="all">
 			body {max-width:40em}
@@ -71,17 +65,7 @@
 		<article>
 			<section id="init">
 				<div>
-					<!--
-					<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" onmouseover="this.unpauseAnimations();" onmouseout="this.pauseAnimations();">
-					<g>
-					<path d="M5,-5c0,6 20,10 20,16s-20,10 -20,16 20,10 20,16 -20,10 -20,16v5c0,-6 20,-10 20,-16s-20,-10 -20,-16 20,-10 20,-16 -20,-10 -20,-16"/>
-					<path d="M5,14v5h1.1v-5zm20,-3v5h-1.1v-5zm-20,16v5h1.1v-5zm20,3v5h-1.1v-5zm-20,16v5h1.1v-5zm20,-3v5h-1.1v-5z"/>
-					<path d="M25,-2c0,6 -20,10 -20,16s20,10 20,16 -20,10 -20,16 20,10 20,16v5c0,-6 -20,-10 -20,-16s20,-10 20,-16 -20,-10 -20,-16 20,-10 20,-16"/>
-					<animateTransform attributeName="transform" type="translate" begin="0s" dur="2s" fill="freeze" from="0,0" to="0,-32" repeatCount="indefinite"/>
-					</g>
-					</svg>
-					-->
-					<svg xmlns="http://www.w3.org/2000/svg" width="120" height="87" onmouseover="this.unpauseAnimations();" onmouseout="this.pauseAnimations();">
+					<svg xmlns="http://www.w3.org/2000/svg" width="120" height="87">
 					<g>
 					<path d="M30,-16.5c0,18 60,30 60,48s-60,30 -60,48 60,30 60,48 -60,30 -60,48v15c0,-18 60,-30 60,-48s-60,-30 -60,-48 60,-30 60,-48 -60,-30 -60,-48"/>
 					<path d="M30,40.5v15h3.4v-15zm60,-9v15h-3.4v-15zm-60,48v15h3.4v-15zm60,9v15h-3.4v-15zm-60,48v15h3.4v-15zm60,-9v15h-3.4v-15z"/>
@@ -459,7 +443,6 @@
 			</section>
 			<section id="tmcalc">
 				<div>
-					<!-- <input type="text" id="tmseq" size="40" maxlength="200" placeholder="塩基配列を入力" onkeyup="javascript:tmcalc()"> -->
 					<textarea id="tmseq" cols="30" rows="3" placeholder="Enter nucleotide sequence." onkeyup="tmcalc()"></textarea>
 					<br>
 					<span id="tmresult">
@@ -469,10 +452,8 @@
 			</section>
 		</article>
 		<footer>
-			<!--
-			<span onclick="chgView(this)" title="init">Molecular Biology Tools</span>
-			-->
 			&copy; 2013–2015 Goh Sasaki
 		</footer>
 	</body>
 </html>
+<script> svgAnim(); </script>

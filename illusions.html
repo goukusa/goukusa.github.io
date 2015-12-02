@@ -11,16 +11,6 @@
 		#barber, #kanizsa, #brightness, #ske, #quartet { display:none; }
 		p{text-align:left;margin:1em}
 	</style>
-	<script>
-		window.onload = function() {
-			var svgs = document.getElementsByTagName('svg');
-			for (var i=0; i<svgs.length; i++){
-				svgs[i].onmouseover = function(){this.unpauseAnimations();}
-				svgs[i].onmouseout = function(){this.pauseAnimations();}
-				svgs[i].pauseAnimations();
-			}
-		}
-	</script>
 	<title>Illusions</title>
 </head>
 <body>
@@ -366,3 +356,4 @@
 </footer>
 </body>
 </html>
+<script> svgAnim(); </script>

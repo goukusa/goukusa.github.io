@@ -13,3 +13,11 @@ function chgView(e) {
 	}
 	document.getElementById('toc').style.display = 'none' ;
 }
+function svgAnim() {
+	var svgs = document.getElementsByTagName('svg');
+	for (var i=0; i<svgs.length; i++){
+		svgs[i].onmouseover = function(){this.unpauseAnimations();}
+		svgs[i].onmouseout = function(){this.pauseAnimations();}
+		svgs[i].pauseAnimations();
+	}
+};
