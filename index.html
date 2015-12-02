@@ -39,17 +39,16 @@
 			<li>2015-11-14 New: Canvas – Color picker</li>
 			<li>2015-11-07 New: cache.manifest for off-line</li>
 			<li>2015-11-06 New: About</li>
-			<li>2015-10-28 goukusa.github.io opened</li>
+			<li>2015-10-28 goukusa.github.io</li>
 		</ul>
 		<ul type="circle">
 			<h3>TODO:</h3>
-			<li>touchに対するhoverの処理</li>
 			<li>Places/Shops</li>
 			<li>Growth Curve 乳幼児・小児の成長曲線</li>
 			<li>Canvas: SVG path generator</li>
 			<li>Periodic table 元素の周期表</li>
 			<li>Antibodies 抗体医薬の命名規則</li>
-			<li>楽譜生成、点字楽譜</li>
+			<!-- <li>楽譜生成、点字楽譜</li> -->
 		</ul>
 	</div>
 	<nav id="navi">
@@ -77,8 +76,7 @@
 <script>
 function about() {
 	var e = document.getElementById('about');
-	if(e.style.display == 'none') e.style.display='block';
-	else e.style.display='none';
+	e.style.display = (e.style.display == 'none' ? 'block' : 'none');
 }
 (function(){
 	var tags = document.getElementsByTagName('h1');
