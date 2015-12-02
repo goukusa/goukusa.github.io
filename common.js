@@ -1,3 +1,4 @@
+var $ = function (id) { return document.getElementById(id) };
 function setI(id,i) { document.getElementById(id).innerHTML = i; }
 function chgView(e) {
 	if(e){

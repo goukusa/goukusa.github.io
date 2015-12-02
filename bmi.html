@@ -2,15 +2,17 @@
 <html manifest="cache.manifest">
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
 	<script type="text/javascript" src="common.js"></script>
 	<link rel="stylesheet" type="text/css" href="common.css">
 	<style>
+		body {max-width:100%}
 		td, input { font-size:1.2rem }
 		p {text-align:left;margin:1em}
 		table {margin:auto}
 		td {width:50%}
 		input { font-family: scp, 'Andale Mono', Menlo, Courier, monospace; font-size:medium; }
+		#zoom, #dpc {display:none}
 	</style>
 	<title>
 		Body Mass Index
@@ -25,6 +27,7 @@
 			</div>
 			<div id="toc" class="ac">
 				<div onclick="chgView(this)" title="bmi" class="checked">BMI: Body Mass Index</div>
+				<div onclick="chgView(this)" title="zoom">Zoom characters</div>
 				<div onclick="location.href='index.html'" title="home"><img src="images/home.svg"></div>
 				<div onclick="chgView()" class="hidetoc">dummy</div>
 			</div>
@@ -37,7 +40,7 @@
 	</noscript>
 
 	<article>
-		<section id="bmi">
+		<section id="bmi" style="max-width:30em; margin:auto">
 			<p>
 				理想体重、肥満度は成人用です。乳幼児・学童期は成長曲線の作成をお勧めします。
 			</p>
@@ -61,6 +64,16 @@
 				<tr><td align="right">MDC:</td>     <td align="left" id="mdc"> </td></tr>
 				<tr><td align="right">疾病名:</td><td align="left" id="disease"> </td></tr>
 			</table>
+		</section>
+		<section id="zoom">
+			<input type="text" size="10" maxlength="10" style="font-size:5em" placeholder="文字列" onkeyup="setI('zoomed',this.value);">
+			<!--
+			<select>
+				<option value="serif">明朝体</option>
+				<option value="sans-serif">ゴシック体</option>
+			</select>
+			-->
+			<div id="zoomed" style="font:15em serif;"></div>
 		</section>
 	</article>
 

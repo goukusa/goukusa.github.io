@@ -219,35 +219,85 @@ function mass(prot) {
 		return Math.round(m*100)/100;
 	}
 }
-function translate(fr) {
-	function tran(seq) {
-		var prot = "";
-		for(var i=0; i<=seq.length/3-1; i++) prot += codonaa(seq.substr(3*i,3));
-		return "MW=" + mass(prot) + "\n" + prot;
+function tl() {
+	var width = Number(document.getElementById('tlwidth').value);
+	function tran(seq, fr) {
+		var prot = "", text="";
+		seq = seq.slice(fr-1);
+		for(var i=0; i<Math.floor(seq.length/3); i++) prot += codonaa(seq.substr(3*i,3));
+		setI('translated','frame=' + fr + ', length=' + prot.replace(/[\*\.].*$/,'').length + ', MW=' + mass(prot));
+		setI('protein',prot.replace(/[\*\.].*$/,''));
+		if(width && width>0) {
+			for(var i=0; i<seq.length/width; i++)
+				text += seq.substr(width*i,width) + '\n' + prot.substr(i*width/3,width/3).replace(/(.)/g,'$1  ') + '\n\n';
+		} else {
+			text = seq + '\n' + prot.replace(/(.)/g,'$1  ') + '\n\n';
+		}
+		return text;
 	}
+	function tran3(seq) {
+		var p = ["", "", ""], text = "", k=0;
+		for(var i=0, j=0; i<seq.length-2; i++) {
+			p[j] += codonaa(seq.substr(i,3));
+			j++;
+			if(j>2)j=0;
+		}
+		if(width && width>0) {
+			for(i=0; i<seq.length/width; i++) {
+				text += seq.substr(width*i,width) + '\n'
+					+ p[0].substr(i*width/3,width/3).replace(/(.)/g,'$1  ') + '\n'
+					+ p[1].substr(i*width/3,width/3).replace(/(.)/g,' $1 ') + '\n'
+					+ p[2].substr(i*width/3,width/3).replace(/(.)/g,'  $1') + '\n\n';
+			}
+		} else {
+				text = seq + '\n'
+					+ p[0].replace(/(.)/g,'$1  ') + '\n'
+					+ p[1].replace(/(.)/g,' $1 ') + '\n'
+					+ p[2].replace(/(.)/g,'  $1') + '\n\n';
+		}
+		return text;
+	}
+	var fr = (function(){
+		var frames = document.getElementsByName('frame');
+		for(var i=0; i<frames.length; i++) {
+			if(frames[i].checked) return Number(frames[i].value);
+		}
+		return 0;
+	}());
 	var text = document.getElementById("seq");
 	var seq = text.value.replace(/[^a-z]/gi,"").toLowerCase().replace(/u/gi,'t');
 	text.value = seq;
+	setI('dnalength','length=' + seq.length);
+	if(seq.length<3 || seq.length<2+fr) setI('translated','translated protein(s):');
 	setI("translation",
 			(fr && seq.length<2+fr) ?  "Input at least " + (2+fr) + " nucleotides." :
 			seq.length<3 ?  "Input at least 3 nucleotides." :
-			fr==1 ? ">" + tran(seq) : 
-			fr==2 ? ">" + tran(seq.substring(1)) :
-			fr==3 ? ">" + tran(seq.substring(2)) :
-			">fr_1 " + tran(seq) + "\n>fr_2 " + tran(seq.substring(1)) + "\n>fr_3 " + tran(seq.substring(2)));
+			fr>0 ? tran(seq, fr) : 
+			tran3(seq));
+			//">fr_1 " + tran(seq) + "\n>fr_2 " + tran(seq.substring(1)) + "\n>fr_3 " + tran(seq.substring(2)));
 }
 function untranslate() {
+	var width = Number(document.getElementById('utwidth').value);
 	function untran(prot) {
 		var inverse = {"A":"gcn", "B":"ray", "C":"tgy", "D":"gay", "E":"gar", "F":"tty", "G":"ggn",
 			"H":"cay", "I":"ath", "J":"nnn", "K":"aar", "L":"ytn", "M":"atg", "N":"aay",
 			"O":"nnn", "P":"ccn", "Q":"car", "R":"mgn", "S":"wsn", "T":"acn", "U":"nnn",
 			"V":"gtn", "W":"tgg", "X":"nnn", "Y":"tay", "Z":"sar", "*":"trr", ".":"trr"};
-		var seq = "";
-		for(var i=0; i<prot.length; i++) seq += inverse[prot.substr(i,1)] + ' ';
-		return seq.replace(/ $/,'');
+		var seq = "", text = "";
+		for(var i=0; i<prot.length; i++) seq += inverse[prot.substr(i,1)];
+		setI('untranslated', seq.length);
+		if(width && width>0) {
+			for(var i=0; i<prot.length*3/width; i++)
+				text += prot.substr(i*width/3,width/3).replace(/(.)/g,'$1  ') + '\n' + seq.substr(width*i,width) + '\n\n';
+		} else {
+			text = prot.replace(/(.)/g,'$1  ') + '\n' + seq + '\n\n';
+		}
+		return text;
 	}
 	var text = document.getElementById("prot");
 	var prot = text.value.replace(/\(.*\)/,"").replace(/[^A-Z\*\.]/gi,"").toUpperCase();
-	text.value = prot + "\n(MW=" + mass(prot) + ")";
+	text.value = prot;
+	setI('protlength', 'length=' + prot.length + ', MW=' + mass(prot));
 	setI("untranslation", (prot.length < 1 ? "Input aa sequence." : untran(prot)));
+	if(prot.length<1) setI('untranslated', '');
 }

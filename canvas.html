@@ -27,17 +27,17 @@ http://1ka2ka.com/archives/201006/12_002842.html
 	#coulomb{display:none;}
 	canvas{cursor:crosshair;}
 </style>
-<title>Canvas Animation</title>
+<title>Canvas</title>
 </head>
 
 <body>
 	<header id="header">
 		<nav>
-			<div id="tool" onclick="document.getElementById('toc').style.display='block';">
-				Colors
+			<div id="tool" onclick="if(play){togglePlay()}; document.getElementById('toc').style.display='block';">
+				Color picker
 			</div>
 			<div id="toc" class="ac">
-				<div onclick="chgView(this)" title="colors" class="checked">Colors</div>
+				<div onclick="chgView(this)" title="colors" class="checked">Color picker</div>
 				<div onclick="chgView(this)" title="coulomb">Coulomb’s law</div>
 				<div onclick="location.href='index.html'" title="home"><img src="images/home.svg"></div>
 				<div onclick="chgView()" class="hidetoc">dummy</div>
@@ -53,279 +53,76 @@ http://1ka2ka.com/archives/201006/12_002842.html
 	<article>
 	<section id="coulomb">
 		Click or tap to invert the direction of force.<br>
-		<canvas id="can" width="400" height="400"></canvas>
+		<canvas id="ball" width="400" height="400"></canvas>
 		<br>
-		<input id="pp" type="button" value="start" onClick="togglePlay()" />
-		<input id="reset" type="button" value="reset" onClick="reset()" />
+		<input id="toggleplay" type="button" value="start" />
+		<input id="reset" type="button" value="reset" />
 		&nbsp;
 		charge:
-		<!--
-		<input id="q" type="range" min="1" max="256" value="20" style="width:256px">
-		<label id="kqq" for="q">20</label>
-		-->
-		<input name="kval" type="radio" value="1" id="k1" onClick="chk(1)" /><label for="k1">1</label>
-		<input name="kval" type="radio" value="5" id="k5" onClick="chk(5)" /><label for="k5">5</label>
-		<input name="kval" type="radio" value="20" id="k20" onClick="chk(20)" checked /><label for="k20">20</label>
-		<input name="kval" type="radio" value="50" id="k50" onClick="chk(50)" /><label for="k50">50</label>
-		<input name="kval" type="radio" value="100" id="k100" onClick="chk(100)" /><label for="k100">100</label>
-		<input name="kval" type="radio" value="500" id="k500" onClick="chk(500)" /><label for="k500">500</label>
+		<select id="kval">
+			<option>1</option>
+			<option>5</option>
+			<option selected="selected">20</option>
+			<option>50</option>
+			<option>100</option>
+			<option>200</option>
+		</select>
 	</section>
 	<section id="colors">
 		Pick, enter, or select a color on RGB color space.
 
-<!-- http://blog.livedoor.jp/dankogai/archives/51823642.html -->
-<table style="margin:auto">
-<tr>
-<td>↓<br>B</td>
-<td style="border:none; width:256px; padding:0; display:table-cell">
-	→ G
-	<canvas id="gbplane" width="256" height="256"></canvas>
-</td>
-</tr>
-<tr>
-	<td>R:</td>
-	<td><canvas id="barr" width="256" height="10"></canvas></td>
-	<td><input type="text" id="rgbr" size="3" maxlength="3" value="0" placeholder="red"></td>
-</tr>
-<tr>
-	<td>G:</td>
-	<td><canvas id="barg" width="256" height="10"></canvas></td>
-	<td><input type="text" id="rgbg" size="3" maxlength="3" value="0" placeholder="green"></td>
-</tr>
-<tr>
-	<td>B:</td>
-	<td><canvas id="barb" width="256" height="10"></canvas></td>
-	<td><input type="text" id="rgbb" size="3" maxlength="3" value="0" placeholder="blue"></td>
-</tr>
-</table>
-color:<input type="text" id="color" size="20" maxlength="20" value="#000000" placeholder="color"> <!-- onkeyup="colordraw(this.value)" -->
-<select id="colorname" onchange="changecolor(this);">black</select>
-<br>
-<svg xmlns="http://www.w3.org/2000/svg" width="400" height="100">
-<rect id="box" fill="#000" width="400"  height="100"/>
-</svg>
-
-<script>
-	'use strict';
-	var $ = function (id) {
-		return document.getElementById(id)
-	};
-	var names = { black:'#000000', aliceblue:'#f0f8ff', darkcyan:'#008b8b', lightyellow:'#ffffe0', coral:'#ff7f50', dimgray:'#696969', dimgrey:'#696969', lavender:'#e6e6fa', teal:'#008080', lightgoldenrodyellow:'#fafad2', tomato:'#ff6347', gray:'#808080', grey:'#808080', lightsteelblue:'#b0c4de', darkslategray:'#2f4f4f', darkslategrey:'#2f4f4f', lemonchiffon:'#fffacd', orangered:'#ff4500', darkgray:'#a9a9a9', darkgrey:'#a9a9a9', lightslategray:'#778899', lightslategrey:'#778899', darkgreen:'#006400', wheat:'#f5deb3', red:'#ff0000', silver:'#c0c0c0', slategray:'#708090', slategrey:'#708090', green:'#008000', burlywood:'#deb887', crimson:'#dc143c', lightgray:'#d3d3d3', lightgrey:'#d3d3d3', steelblue:'#4682b4', forestgreen:'#228b22', tan:'#d2b48c', mediumvioletred:'#c71585', gainsboro:'#dcdcdc', royalblue:'#4169e1', seagreen:'#2e8b57', khaki:'#f0e68c', deeppink:'#ff1493', whitesmoke:'#f5f5f5', midnightblue:'#191970', mediumseagreen:'#3cb371', yellow:'#ffff00', hotpink:'#ff69b4', white:'#ffffff', navy:'#000080', mediumaquamarine:'#66cdaa', gold:'#ffd700', palevioletred:'#db7093', snow:'#fffafa', darkblue:'#00008b', darkseagreen:'#8fbc8f', orange:'#ffa500', pink:'#ffc0cb', ghostwhite:'#f8f8ff', mediumblue:'#0000cd', aquamarine:'#7fffd4', sandybrown:'#f4a460', lightpink:'#ffb6c1', floralwhite:'#fffaf0', blue:'#0000ff', palegreen:'#98fb98', darkorange:'#ff8c00', thistle:'#d8bfd8', linen:'#faf0e6', dodgerblue:'#1e90ff', lightgreen:'#90ee90', goldenrod:'#daa520', magenta:'#ff00ff', antiquewhite:'#faebd7', cornflowerblue:'#6495ed', springgreen:'#00ff7f', peru:'#cd853f', fuchsia:'#ff00ff', papayawhip:'#ffefd5', deepskyblue:'#00bfff', mediumspringgreen:'#00fa9a', darkgoldenrod:'#b8860b', violet:'#ee82ee', blanchedalmond:'#ffebcd', lightskyblue:'#87cefa', lawngreen:'#7cfc00', chocolate:'#d2691e', plum:'#dda0dd', bisque:'#ffe4c4', skyblue:'#87ceeb', chartreuse:'#7fff00', sienna:'#a0522d', orchid:'#da70d6', moccasin:'#ffe4b5', lightblue:'#add8e6', greenyellow:'#adff2f', saddlebrown:'#8b4513', mediumorchid:'#ba55d3', navajowhite:'#ffdead', powderblue:'#b0e0e6', lime:'#00ff00', maroon:'#800000', darkorchid:'#9932cc', peachpuff:'#ffdab9', paleturquoise:'#afeeee', limegreen:'#32cd32', darkred:'#8b0000', darkviolet:'#9400d3', mistyrose:'#ffe4e1', lightcyan:'#e0ffff', yellowgreen:'#9acd32', brown:'#a52a2a', darkmagenta:'#8b008b', lavenderblush:'#fff0f5', cyan:'#00ffff', darkolivegreen:'#556b2f', firebrick:'#b22222', purple:'#800080', seashell:'#fff5ee', aqua:'#00ffff', olivedrab:'#6b8e23', indianred:'#cd5c5c', indigo:'#4b0082', oldlace:'#fdf5e6', turquoise:'#40e0d0', olive:'#808000', rosybrown:'#bc8f8f', darkslateblue:'#483d8b', ivory:'#fffff0', mediumturquoise:'#48d1cc', darkkhaki:'#bdb76b', darksalmon:'#e9967a', blueviolet:'#8a2be2', honeydew:'#f0fff0', darkturquoise:'#00ced1', palegoldenrod:'#eee8aa', lightcoral:'#f08080', mediumpurple:'#9370db', mintcream:'#f5fffa', lightseagreen:'#20b2aa', cornsilk:'#fff8dc', salmon:'#fa8072', slateblue:'#6a5acd', azure:'#f0ffff', cadetblue:'#5f9ea0', beige:'#f5f5dc', lightsalmon:'#ffa07a', mediumslateblue:'#7b68ee' };
-	var gbplane = $('gbplane');
-	var barr = $('barr');
-	var barg = $('barg');
-	var barb = $('barb');
-	//var red = $('red');
-	//var green = $('green');
-	//var blue = $('blue');
-	var box = $('box');
-	var colorname = $('colorname');
-	var rgbr = $('rgbr');
-	var rgbg = $('rgbg');
-	var rgbb = $('rgbb');
-	var color = $('color');
-	function target (c,x,y) {
-		c.lineWidth = 1.5;
-		c.strokeStyle = 'rgba(0,0,0,1)';
-		c.beginPath();
-		c.arc(x,y,3,0,Math.PI*2.0,true);
-		c.closePath();
-		c.stroke();
-		c.strokeStyle = 'rgba(255,255,255,1)';
-		c.beginPath();
-		c.arc(x,y,4,0,Math.PI*2.0,true);
-		c.closePath();
-		c.stroke();
-	}
-	function rgbdraw (r,g,b) {
-		var ctx = gbplane.getContext("2d");
-		var imgdata = ctx.createImageData(256, 256);
-		var data = imgdata.data;
-		var pxl = 0;
-		for (var y = 0; y < 256; y++) {
-			for (var x = 0; x < 256; x++) {
-				data[pxl + 0] = r;
-				data[pxl + 1] = x;
-				data[pxl + 2] = y;
-				data[pxl + 3] = 255;
-				pxl += 4;
-			}
-		}
-		ctx.putImageData(imgdata, 0, 0);
-		target(ctx,g,b);
-		// bar R
-		ctx = barr.getContext("2d");
-		imgdata = ctx.createImageData(256, 10);
-		data = imgdata.data;
-		pxl = 0;
-		for (y = 0; y < 10; y++) {
-			for (x = 0; x < 256; x++) {
-				data[pxl + 0] = x;
-				data[pxl + 1] = g;
-				data[pxl + 2] = b;
-				data[pxl + 3] = 255;
-				pxl += 4;
-			}
-		}
-		ctx.putImageData(imgdata, 0, 0);
-		target(ctx,r,5);
-		//bar G
-		ctx = barg.getContext("2d");
-		imgdata = ctx.createImageData(256, 10);
-		data = imgdata.data;
-		pxl = 0;
-		for (y = 0; y < 10; y++) {
-			for (x = 0; x < 256; x++) {
-				data[pxl + 0] = r;
-				data[pxl + 1] = x;
-				data[pxl + 2] = b;
-				data[pxl + 3] = 255;
-				pxl += 4;
-			}
-		}
-		ctx.putImageData(imgdata, 0, 0);
-		target(ctx,g,5);
-		//bar B
-		ctx = barb.getContext("2d");
-		imgdata = ctx.createImageData(256, 10);
-		data = imgdata.data;
-		pxl = 0;
-		for (y = 0; y < 10; y++) {
-			for (x = 0; x < 256; x++) {
-				data[pxl + 0] = r;
-				data[pxl + 1] = g;
-				data[pxl + 2] = x;
-				data[pxl + 3] = 255;
-				pxl += 4;
-			}
-		}
-		ctx.putImageData(imgdata, 0, 0);
-		target(ctx,b,5);
-	}
-	var rgbset = function(r,g,b) {
-		rgbr.value = r;
-		rgbg.value = g;
-		rgbb.value = b;
-		//red.value = r;
-		//green.value = g;
-		//blue.value = b;
-		rgbdraw(r,g,b);
-		color.value = '#' + ('0'+r.toString(16)).slice(-2) + ('0'+g.toString(16)).slice(-2) + ('0'+b.toString(16)).slice(-2);
-	}
-	var drawbox = function() {
-		box.setAttribute('fill', color.value);
-		colorname.value = '';
-		for (var key in names) {
-			if (color.value == names[key] || color.value == key) {
-				colorname.value = key;
-				color.value = names[key];
-				break;
-			}
-		}
-	}
-	gbplane.addEventListener('click', function (e) {
-		var rect = e.target.getBoundingClientRect();
-		rgbset( Number(rgbr.value),
-			Math.min(255, e.clientX-Math.floor(rect.left)),
-			Math.min(255, e.clientY-Math.floor(rect.top)));
-		drawbox();
-	}, false);
-	barr.addEventListener('click', function (e) {
-		var rect = e.target.getBoundingClientRect();
-		rgbset( Math.min(255, e.clientX-Math.floor(rect.left)),
-			Number(rgbg.value),
-			Number(rgbb.value));
-		drawbox();
-	}, false);
-	barg.addEventListener('click', function (e) {
-		var rect = e.target.getBoundingClientRect();
-		rgbset( Number(rgbr.value),
-			Math.min(255, e.clientX-Math.floor(rect.left)),
-			Number(rgbb.value));
-		drawbox();
-	}, false);
-	barb.addEventListener('click', function (e) {
-		var rect = e.target.getBoundingClientRect();
-		rgbset( Number(rgbr.value),
-			Number(rgbg.value),
-			Math.min(255, e.clientX-Math.floor(rect.left)));
-		drawbox();
-	}, false);
-	/*
-	red.addEventListener('change', function () {
-		rgbset( Number(this.value), Number(rgbg.value), Number(rgbb.value));
-		drawbox();
-	}, false);
-	green.addEventListener('change', function () {
-		rgbset( Number(rgbr.value), Number(this.value), Number(rgbb.value));
-		drawbox();
-	}, false);
-	blue.addEventListener('change', function () {
-		rgbset( Number(rgbr.value), Number(rgbg.value), Number(this.value));
-		drawbox();
-	}, false);
-	*/
-	rgbr.addEventListener('change', function () {
-		rgbset( Number(this.value), Number(rgbg.value), Number(rgbb.value));
-		drawbox();
-	}, false);
-	rgbg.addEventListener('change', function () {
-		rgbset( Number(rgbr.value), Number(this.value), Number(rgbb.value));
-		drawbox();
-	}, false);
-	rgbb.addEventListener('change', function () {
-		rgbset( Number(rgbr.value), Number(rgbg.value), Number(this.value));
-		drawbox();
-	}, false);
-	function changecolor(c) {
-		color.value = c.value
-		var rgb = color.value.toLowerCase();
-		var r, g, b;
-		if (/^#[0-9a-f]{3}$/.test(rgb)) {
-			r = rgb.slice(1,2)
-			g = rgb.slice(2,3)
-			b = rgb.slice(3,4)
-			rgb = '#' + r + r + g + g + b + b;
-		}
-		color.value = rgb;
-		drawbox();
-		rgb = color.value;
-		if (/^#[0-9a-f]{6}$/.test(rgb)) {
-			rgbset( parseInt(rgb.slice(1,3), 16), parseInt(rgb.slice(3,5), 16), parseInt(rgb.slice(5,7), 16));
-		}
-	}
-	color.addEventListener('change', function () {
-		var rgb = color.value.toLowerCase();
-		var r, g, b;
-		if (/^#[0-9a-f]{3}$/.test(rgb)) {
-			r = rgb.slice(1,2)
-			g = rgb.slice(2,3)
-			b = rgb.slice(3,4)
-			rgb = '#' + r + r + g + g + b + b;
-		}
-		color.value = rgb;
-		drawbox();
-		rgb = color.value;
-		if (/^#[0-9a-f]{6}$/.test(rgb)) {
-			rgbset( parseInt(rgb.slice(1,3), 16), parseInt(rgb.slice(3,5), 16), parseInt(rgb.slice(5,7), 16));
-		}
-	}, false);
-	rgbdraw(0,0,0);
-	var tag = "";
-	for (var key in names) {
-		tag += '<option value="' + key + (key=='black' ? '" selected="selected"' : '"') + '>' + key + '</option>';
-	}
-	setI('colorname',tag);
-
-</script>
-<!-- end -->
-
-
+		<!-- http://blog.livedoor.jp/dankogai/archives/51823642.html -->
+		<!-- http://www.colordic.org -->
+		<table style="margin:auto">
+			<tr>
+				<td style="text-align:right">↓<br><span id="ylabel">B</span></td>
+				<td style="border:none; width:256px; padding:0; display:table-cell">
+					→ <span id="xlabel">G</span>
+					<canvas id="rgbplane" width="256" height="256"></canvas>
+				</td>
+			</tr>
+			<tr>
+				<td><input name="axis" type="radio" id="axisr" checked="checked"/><label for="axisr"> R</label></td>
+				<td><canvas id="barr" width="256" height="12"></canvas></td>
+				<td style="text-align:left"><input type="text" id="rgbr" size="3" maxlength="3" value="0" placeholder="red">(0–255)</td>
+			</tr>
+			<tr>
+				<td><input name="axis" type="radio" id="axisg"/><label for="axisg"> G</label></td>
+				<td><canvas id="barg" width="256" height="12"></canvas></td>
+				<td style="text-align:left"><input type="text" id="rgbg" size="3" maxlength="3" value="0" placeholder="green">(0–255)</td>
+			</tr>
+			<tr>
+				<td><input name="axis" type="radio" id="axisb"/><label for="axisb"> B</label></td>
+				<td><canvas id="barb" width="256" height="12"></canvas></td>
+				<td style="text-align:left"><input type="text" id="rgbb" size="3" maxlength="3" value="0" placeholder="blue">(0–255)</td>
+			</tr>
+			<tr>
+				<td style="text-align:right">V</td>
+				<td><canvas id="barv" width="256" height="12"></canvas></td>
+				<td style="text-align:left"><input type="text" id="brightness" size="3" maxlength="3" value="0" placeholder="brightness">(0–255)</td>
+			</tr>
+			<tr>
+				<td style="text-align:right">S</td>
+				<td><canvas id="bars" width="256" height="12"></canvas></td>
+				<td><input type="text" id="saturation" size="6" maxlength="6" value="0" placeholder="saturation">(0–1)</td>
+			</tr>
+		</table>
+		color:<input type="text" id="color" size="20" maxlength="20" value="#000000" placeholder="color">
+		<select id="colorname">black</select>
+		<br>
+		<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256">
+		<circle stroke="gray" stroke-width="1" id="sample" fill="#000" cx="128" cy="128" r="127.5"/>
+		<g font-family="Verdana" font-size="20" stroke="none" fill="white" id="boxnames">
+		<text x="40" y="118" id="boxname1">black</text>
+		<text x="40" y="148" id="boxname2">#000000</text>
+		</g>
+		</svg>
 	</section>
 	</article>
 
 	<footer>
-		&copy; 2013 Goh Sasaki
+		&copy; 2013–2015 Goh Sasaki
 	</footer>
 </body>
 </html>
+<script type="text/javascript" src="color.js"></script>

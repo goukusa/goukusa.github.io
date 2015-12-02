@@ -1,184 +1,142 @@
-var ctx, cW, cH, mouse;
-var play = 0;
-var p = {x:0,y:0};//座標
-var v = {x:0,y:0};//変化量
-var r = 15;//ボールの半径
-var mr = 4;//マウス点の半径
-var k = 20;//定数
+// 定数
+var BALL_R = 15;//ボールの半径
+var MOUSE_R = 4;//マウス点の半径
+var DELAY = 15;//タイマーを実行する間隔
+var C0 = 'rgba(255,255,255,1)';//マウス色
+var C1 = 'rgba(0,255,255,1)';//ボール色1
+var C2 = 'rgba(255,0,255,1)';//ボール色2
+var cW, cH;
+// 変数
+var mouse;
+var play = false;
+var position = {x:0,y:0};//ボールの座標
+var velocity = {x:0,y:0};//変化量
+var kvalue = 20;//定数
 var timer;//タイマー
-var delay = 15;//タイマーを実行する間隔
-var c0 = 'rgba(255,255,255,1)';//マウス色
-var c1 = 'rgba(0,255,255,1)';//ボール色1
-var c2 = 'rgba(255,0,255,1)';//ボール色2
-var color = c1;
+var ballcolor = C1;
 var touch = {x:0,y:0};//タッチ座標
 
 window.onload = function(){
-	init();
-	loop();
-}
-function init(){
-	//コンテキストの取得
-	var canvas = document.getElementById("can");
+	//初期設定
+	var canvas = document.getElementById("ball");
 	if(!canvas || !canvas.getContext) return false;
-	ctx = canvas.getContext("2d");
 	cW = canvas.width;
 	cH = canvas.height;
-	play = 0;
-	p = {x:cW/2,y:cH/2};
-	v = {x:0,y:0};
-	mouse = {x:cW/2,y:cH/2};
 	canvas.addEventListener("mousemove", mouseMoveListener, false);
+	canvas.addEventListener("touchmove", mouseMoveListener, false);
 	canvas.addEventListener("mouseout", mouseOutListener, false);
+	canvas.addEventListener("touchcancel", mouseOutListener, false);
 	canvas.addEventListener("mousedown", mouseDownListener, false);
+	canvas.addEventListener("touchstart", mouseDownListener, false);
 	canvas.addEventListener("mouseup", mouseUpListener, false);
-	canvas.addEventListener("touchstart", touchDownListener, false);
-	canvas.addEventListener("touchmove", touchMoveListener, false);
-	canvas.addEventListener("touchend", touchEndListener, false);
-	//canvas.addEventListener("touchcancel", mouseUpListener, false);
-	//q = document.getElementById('q');
-	//q.addEventListener('change', function () {k = this.value * 1; kqq.innerHTML = k;}, false);
-	pp = document.getElementById('pp');
-
+	canvas.addEventListener("touchend", mouseUpListener, false);
+	document.getElementById('toggleplay').addEventListener('click', togglePlay, false);
+	document.getElementById('reset').addEventListener('click', init, false);
+	document.getElementById('kval').addEventListener('change', function(){kvalue = Number(this.value);}, false);
+	init();
 }
-//マウスイベント
-//canvas.onmousemove = mouseMoveListener;
-function mouseMoveListener(e) {
-	if (play == 1) {
-		var rect = e.target.getBoundingClientRect();
-		mouse.x = e.clientX - rect.left;
-		mouse.y = e.clientY - rect.top;
-	}
-	//return mouse;
+function init(){
+	play = false;
+	position = {x:cW/2,y:cH/2};
+	velocity = {x:0,y:0};
+	mouse = {x:cW/2,y:cH/2};
+	var ctx = document.getElementById("ball").getContext("2d");
+	ctx.fillStyle = 'rgba(0,0,0,1)';
+	ctx.fillRect(0,0,cW,cH);
+	loop();
 }
-function touchMoveListener(e) {
-	if (play == 1) {
-		var rect = e.target.getBoundingClientRect();
-		e.preventDefault();
-		mouse.x = e.touches[0].clientX - rect.left;
-		mouse.y = e.touches[0].clientY - rect.top;
-	}
-	//return mouse;
+function mousepos(e) {
+	e.preventDefault();
+	var rect = e.target.getBoundingClientRect();
+	var p = (e.touches ? e.touches[0] : e);
+	mouse.x = p.clientX - rect.left;
+	mouse.y = p.clientY - rect.top;
 }
+function mouseMoveListener(e) {if(play) mousepos(e);}
 function mouseOutListener(e) {
-	if (play == 1) {
+	if (play) {
 		mouse.x = -1;
 		mouse.y = -1;
-		pp.value="restart";
-		play = 0;
+		togglePlay();
 	}
-	//return mouse;
 }
 function mouseDownListener(e) {
-	var rect = e.target.getBoundingClientRect();
-	e.preventDefault();
-	mouse.x = e.clientX - rect.left;
-	mouse.y = e.clientY - rect.top;
-	var d = Math.pow(mouse.x - p.x, 2) + Math.pow(mouse.y - p.y, 2);
-	if (d < r*r && (v.x != 0 || v.y != 0)) {
-		if (play == 1) {k = -1 * k;}
-		v.x = 0;
-		v.y = 0;
-	}
-	if (play == 0) {
-		k = -1 * k;
-		resume();
-	}
-}
-function touchDownListener(e) {
-	var rect = e.target.getBoundingClientRect();
-	e.preventDefault();
-	mouse.x = e.touches[0].clientX - rect.left;
-	mouse.y = e.touches[0].clientY - rect.top;
+	mousepos(e);
 	touch.x = mouse.x
 	touch.y = mouse.y
-	var d = Math.pow(mouse.x - p.x, 2) + Math.pow(mouse.y - p.y, 2);
-	if (d < r*r && (v.x != 0 || v.y != 0)) {
-		k = -1 * k;
-		v.x = 0;
-		v.y = 0;
+	var d = Math.pow(mouse.x - position.x, 2) + Math.pow(mouse.y - position.y, 2);
+	if (d < BALL_R*BALL_R && (velocity.x != 0 || velocity.y != 0)) {
+		velocity.x = 0;
+		velocity.y = 0;
 	}
-	if (play == 0) {
-		resume();
+	if (!play) {
+		togglePlay();
 	}
 }
 function mouseUpListener(e) {
-	k = -1 * k;
-	if(k > 0) {color = c1;} else {color = c2;}
-}
-function touchEndListener(e) {
 	if (mouse.x == touch.x && mouse.y == touch.y) {
-		k = -1 * k;
-		if(k > 0) {color = c1;} else {color = c2;}
-	}
-}
-
-//描画処理を行う関数。loop()関数の中で呼び出す。
-function draw(){
-	//一度canvasをクリア
-	//ctx.clearRect(0,0,cW,cH);
-	//残像をつける
-	//ctx.beginPath();
-	ctx.fillStyle = 'rgba(0,0,0,0.75)';
-	ctx.fillRect(0,0,cW,cH);
-	//ctx.closePath();
-	//ボールを描画
-	ctx.beginPath();
-	ctx.arc(p.x,p.y,r,0,Math.PI*2.0,true);
-	ctx.closePath();
-	ctx.fillStyle = color;
-	ctx.fill();
-	//マウス位置に点を描く
-	if (mouse.x >= 0 && mouse.x <= cW && mouse.y >= 0 && mouse.y <= cH){
-		ctx.beginPath();
-		ctx.arc(mouse.x,mouse.y,mr,0,Math.PI*2.0,true);
-		ctx.closePath();
-		ctx.fillStyle = c0;
-		ctx.fill();
+		kvalue = -1 * kvalue;
+		if(kvalue > 0) {ballcolor = C1;} else {ballcolor = C2;}
 	}
 }
 
 //繰り返し描画を行う関数。
 function loop(){
-	//加速度を計算してvを変化させる
+	//加速度を計算してvelocityを変化させる
 	if (mouse.x >= 0 && mouse.x <= cW && mouse.y >= 0 && mouse.y <= cH){
-		var d = (mouse.x - p.x) * (mouse.x - p.x) + (mouse.y - p.y) * (mouse.y - p.y);
-		if (d > r*r){
-		//if (d>Math.pow(mr-1,2)) {
-			v.x = v.x + (mouse.x - p.x) * k/d;
-			v.y = v.y + (mouse.y - p.y) * k/d;
-		} else if (d>Math.pow(mr-1,2)) {
-			v.x = v.x * (1-1/d);
-			v.y = v.y * (1-1/d);
+		var d = (mouse.x - position.x) * (mouse.x - position.x) + (mouse.y - position.y) * (mouse.y - position.y);
+		if (d > BALL_R*BALL_R){
+			velocity.x = velocity.x + (mouse.x - position.x) * kvalue/d;
+			velocity.y = velocity.y + (mouse.y - position.y) * kvalue/d;
+		} else if (d>Math.pow(MOUSE_R-1,2)) {
+			velocity.x = velocity.x * (1-1/d);
+			velocity.y = velocity.y * (1-1/d);
 		} else { //ボールの中心に当てたら止める
-			v.x = 0;
-			v.y = 0;
+			velocity.x = 0;
+			velocity.y = 0;
 		}
 	}
-	//pの数値をvの分だけ増やす
-	p.x = p.x + v.x;
-	p.y = p.y + v.y;
+	//positionの数値をvelocityの分だけ増やす
+	position.x = position.x + velocity.x;
+	position.y = position.y + velocity.y;
 	//境界で反射させる
-	if (p.x > cW - r) {
-		v.x = -1 * v.x;
-		p.x = cW - r;
-	} else if (p.x < r) {
-		v.x = -1 * v.x;
-		p.x = r;
+	if (position.x > cW - BALL_R) {
+		velocity.x = -1 * velocity.x;
+		position.x = cW - BALL_R;
+	} else if (position.x < BALL_R) {
+		velocity.x = -1 * velocity.x;
+		position.x = BALL_R;
 	}
-	if (p.y > cH - r) {
-		v.y = -1 * v.y;
-		p.y = cH - r;
-	} else if (p.y < r) {
-		v.y = -1 * v.y;
-		p.y = r;
+	if (position.y > cH - BALL_R) {
+		velocity.y = -1 * velocity.y;
+		position.y = cH - BALL_R;
+	} else if (position.y < BALL_R) {
+		velocity.y = -1 * velocity.y;
+		position.y = BALL_R;
 	}
-	//描画処理を呼び出す
-	draw();
+	//描画処理
+	var ctx = document.getElementById("ball").getContext("2d");
+	//残像をつける
+	ctx.fillStyle = 'rgba(0,0,0,0.75)';
+	ctx.fillRect(0,0,cW,cH);
+	//ボールを描画
+	ctx.beginPath();
+	ctx.arc(position.x,position.y,BALL_R,0,Math.PI*2.0,true);
+	ctx.closePath();
+	ctx.fillStyle = ballcolor;
+	ctx.fill();
+	//マウス位置に点を描く
+	if (mouse.x >= 0 && mouse.x <= cW && mouse.y >= 0 && mouse.y <= cH){
+		ctx.beginPath();
+		ctx.arc(mouse.x,mouse.y,MOUSE_R,0,Math.PI*2.0,true);
+		ctx.closePath();
+		ctx.fillStyle = C0;
+		ctx.fill();
+	}
 	//タイマー(一度クリアしてから再設定。)
-	if (play == 1) {
+	if (play) {
 		clearTimeout(timer);
-		timer = setTimeout(loop,delay);
+		timer = setTimeout(loop,DELAY);
 	} else {
 		ctx.fillStyle = 'rgba(127,127,127,0.6)';
 		ctx.fillRect(0,0,cW,cH);
@@ -186,31 +144,7 @@ function loop(){
 }
 
 function togglePlay(){
-	if (play == 0) {
-		resume();
-	} else {
-		pause();
-	}
-}
-
-function chk(n){
-	k = n * 1;
-}
-
-function pause(){
-	pp.value="restart";
-	play = 0;
-}
-
-function resume(){
-	pp.value="stop";
-	play = 1;
-	loop();
-}
-
-function reset(){
-	ctx.fillStyle = 'rgba(0,0,0,1)';
-	ctx.fillRect(0,0,cW,cH);
-	init();
-	loop();
+	play = !play;
+	document.getElementById('toggleplay').value = (play ? 'pause' : 'resume');
+	if (play) loop();
 }

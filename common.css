@@ -36,44 +36,48 @@ license: SIL OFL 1.1 */
 }
 body, nav a span.small, #toc div.checked { font-family: ssp, 'Avenir Next', 'Source Han Sans JP', 'Noto Sans Japanese', 'YuGothic', 'Yu Gothic', '游ゴシック', '游ゴシック体', 'HiraKakuProN-W3', 'Meiryo', sans-serif; font-weight:400; }
 header { font-family: sspl, Optima, 'Source Han Sans JP', 'Noto Sans Japanese', 'YuGothic', 'Yu Gothic', '游ゴシック', '游ゴシック体', '.HiraKakuInterface-W1', 'HiraKakuProN-W3', 'Meiryo', sans-serif; font-weight:300; }
-body {
+body { padding: 0; max-width: 30em; margin: 0 auto; }
+body, article, section {
 	/* background-color: #ffc; */
-	background-color: #f5efdc;
-	padding: 0;
-	max-width: 30em;
-	margin: 0 auto;
+	/* background-color: #f5efdc; //iBooks’ sepia */
+	background-color: #fffff0; /* ivory */
 }
 header { font-size: 1.6em; font-weight:300; }
 h1 { font-size: 1.6em; margin:10px}
 header, section {text-align:center;}
-h3 { padding: 0 1em; font-size: 1.5em; font-weight: normal; }
-header h1 img{margin:0 1em; vertical-align:-10px; cursor:pointer }
+header h1 img{margin:0 1em; vertical-align:-10px; border-radius:25px; cursor:pointer }
+header h1 img:hover{ background:#a9a9a9; }
 nav a {
 	text-align: left;
 	text-decoration: none;
 	display: block;
 	line-height: 1rem;
-	padding:10px 0 10px 0;
+	padding:9px 0;
 	margin: 10px;
 	color: #000;
-	background: #dca;
-	border-radius: .5em;
+	/* background: #ddccaa; */
+	/* background: #eed0b0; */
+	/* background: #f5dfac; */
+	/* background: #f5e5c0; */
+	background: #f5deb3; /* wheat; */
+	border: 1px solid #f5deb3;
+	border-radius: .8rem;
 }
-nav a:hover { background:#edb; }
-nav a span { vertical-align:6px }
-nav a img { margin:0 16px }
+nav a:hover { background: #fffff0; /* lightsteelblue; powderblue; lightblue; paleturquoise; lightskyblue; #fceccb; #faebd7; antiquewhite; */ }
+nav a img { vertical-align:-6px; margin:0 16px }
 nav a span.small { margin-left:10px; font-size:0.9rem; }
-#tool {background:#14b url(images/select.svg) no-repeat right center; color:#fff; cursor:pointer; }
+#tool {background:#14b url(images/select.svg) no-repeat right center; color:#fff; line-height:1.5em; cursor:pointer; border-radius: .4rem }
 #tool:hover, #toc div:hover {color:#fff; background-color:#25c}
 div#toc {display:none;}
 #toc {width:100%; position:absolute; top:0; left:0; bottom:0; margin:auto;}
 #toc div { color:#000; background-color:#eef; cursor:pointer; opacity:.95}
-#toc div.checked {background:#ffe url(images/checkb.svg) no-repeat left center; }
+#toc div.checked {background:#fffff0 url(images/checkb.svg) no-repeat left center; }
 #toc div.checked:hover {background:#25c url(images/checkw.svg) no-repeat left center; color:#fff; }
 #toc div.hidetoc { height:100%; position:relative; top:0; bottom:0; color:#000; background-color:#000; opacity:.5; cursor:auto; }
+#toc div img { vertical-align:-4px }
 #init div {margin:2.5em .5em;}
-article { margin:0; padding:.5em 0; background-color:#fff; overflow:auto; }
-section { background-color:#fff; overflow:auto; }
+article { margin:0; padding:.5em 0; overflow:auto; }
+section { overflow:auto; }
 footer {
 	color: #999;
 	text-align: right;

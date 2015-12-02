@@ -15,10 +15,12 @@
 		</script>
 		<link rel="stylesheet" type="text/css" href="common.css">
 		<style media="all">
-			input, textarea, .codons td, #codontable table { font-family: scp, Menlo, 'Andale Mono', Courier, monospace; font-size:medium; }
+			body {max-width:40em}
+			input, textarea, .codons td, #codontable table, pre { font-family: scp, Menlo, 'Andale Mono', Courier, monospace; font-size:medium; }
+			pre { overflow:auto; background:#fafffa; text-align:left; border:1px #808080 solid; padding:.2em; }
 			#codons, #aatable, #aa, #codontable, #iubtable, #translator, #untranslator, #tmcalc, div#toc { display:none; }
 			th, td { border:1px #888 solid; padding:0.2em; }
-			th { background-color:#eee; font-weight:normal; }
+			th { background-color:#f0f0f0; font-weight:normal; }
 			td { background-color:#fff; }
 			table { border-collapse:collapse; border:none; white-space:nowrap; line-height:1.1em; margin:auto; }
 			#codontable th, #codontable td, td#mcodon { padding:.15em; }
@@ -30,7 +32,7 @@
 			#aa img { max-width:21em; max-height:7em; margin-top:.5em; }
 			.mOn { background-color:#fa5; font-weight:bold; cursor:pointer; }
 			.mOn:hover { background-color:#fc7; }
-			.mOff { background-color:#ddd; font-weight:normal; cursor:pointer; }
+			.mOff { background-color:#d3d3d3; font-weight:normal; cursor:pointer; }
 			.mOff:hover { background-color:#fff; }
 			.aromatic { background-color:#f66; }
 			.nonpolar { background-color:#f6f; }
@@ -40,10 +42,8 @@
 			.basic { background-color:#6f6; }
 			.cysteine { background-color:#ff6; }
 			.stop { background-color:#fff; }
-			.futo { font-weight:700; }
-			b { font-weight:600; }
-			#mode { color:#00d; cursor:pointer; text-decoration:underline; margin:0; padding:.4em .2em; }
-			#mode:hover { background-color:#ffa; text-decoration:none; }
+			.futo, b { font-weight:700; }
+			#mode { padding:.4em .2em; }
 		</style>
 		<title> Codons </title>
 	</head>
@@ -93,27 +93,22 @@
 				<div>Select a tool from the menu.</div>
 			</section>
 			<section id="codons">
+				<p>Toggle “Single” and “Multiple” to change codon selection mode.</p>
 				<table class="codons">
 					<thead>
 						<tr>
-							<th colspan="3" id="mode" title="codon selection mode" onclick="
-								single = !single;
-								this.innerHTML = (single ? 'Single Codon' : 'Multi Codons');
-								">Single Codon</th>
+							<th>1</th>
+							<th>2</th>
+							<th>3</th>
 							<th>amino acid(s)</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
-							<th>1</th>
-							<th>2</th>
-							<th>3</th>
-							<td id="aas" rowspan="6">AAs</td>
-						</tr>
-						<tr>
 							<td class="mOff" id="m1t" onClick="togglePB(0,0)">t</td>
 							<td class="mOff" id="m2t" onClick="togglePB(1,0)">t</td>
 							<td class="mOff" id="m3t" onClick="togglePB(2,0)">t</td>
+							<td id="aas" rowspan="6">AAs</td>
 						</tr>
 						<tr>
 							<td class="mOff" id="m1c" onClick="togglePB(0,1)">c</td>
@@ -129,6 +124,13 @@
 							<td class="mOff" id="m1g" onClick="togglePB(0,3)">g</td>
 							<td class="mOff" id="m2g" onClick="togglePB(1,3)">g</td>
 							<td class="mOff" id="m3g" onClick="togglePB(2,3)">g</td>
+						</tr>
+						<tr>
+							<th colspan="3" id="mode" class="mOff" title="codon selection mode" onclick="
+								single = !single;
+								this.innerHTML = (single ? 'Single' : 'Multiple');
+								this.className = (single ? 'mOff' : 'mOff futo');
+								">Single</th>
 						</tr>
 						<tr>
 							<td id="mcodon" colspan="3">nnn</td>
@@ -412,39 +414,53 @@
 				</table>
 			</section>
 			<section id="translator">
-				<form action="javascript:;">
-					<div>DNA:<br>
-						<textarea id="seq" cols="30" rows="4" placeholder="nucleotide sequence"></textarea>
-						<br>
-						frame:
-						<input id="tr1" type="submit" value="1" formaction="javascript:translate(1)">
-						<input id="tr2" type="submit" value="2" formaction="javascript:translate(2)">
-						<input id="tr3" type="submit" value="3" formaction="javascript:translate(3)">
-						<input id="tr0" type="submit" value="all" formaction="javascript:translate(0)">
-					</div>
+				<div>DNA: <span id="dnalength"></span><br>
+					<textarea id="seq" cols="30" rows="4" placeholder="nucleotide sequence" onkeyup="tl()"></textarea>
 					<br>
-					<div>translated protein(s):<br>
-						<textarea id="translation" cols="30" rows="9" placeholder="Translation result" readonly></textarea>
-					</div>
-				</form>
+					frame:
+					<input name="frame" id="tr1" type="radio" value="1" onclick="tl()" checked="checked"><label for="tr1">1</label>
+					<input name="frame" id="tr2" type="radio" value="2" onclick="tl()"><label for="tr2">2</label>
+					<input name="frame" id="tr3" type="radio" value="3" onclick="tl()"><label for="tr3">3</label>
+					<input name="frame" id="tr0" type="radio" value="0" onclick="tl()"><label for="tr0">all</label>
+				</div>
+				<br>
+				<div>
+					protein: <span id="translated"></span><br>
+					<textarea id="protein" cols="30" rows="2" placeholder="protein sequence" readonly></textarea>
+					<br>
+					alignment &nbsp; line-width:
+					<select id="tlwidth" onchange="tl()">
+						<option selected="selected">30</option>
+						<option>60</option>
+						<option>90</option>
+						<option>120</option>
+						<option>∞</option>
+					</select>
+					<pre id="translation">Translation alignment</pre>
+				</div>
 			</section>
 			<section id="untranslator">
-				<form action="javascript:untranslate()">
-					<div>protein:<br>
-						<textarea id="prot" cols="30" rows="4" placeholder="amino acid sequence"></textarea>
-						<br>
-						<input type="submit" value="Untranslate">
-					</div>
+				<div>protein: <span id="protlength"></span><br>
+					<textarea id="prot" cols="30" rows="4" placeholder="amino acid sequence" onkeyup="untranslate()"></textarea>
 					<br>
-					<div>untranslated DNA:<br>
-						<textarea id="untranslation" cols="30" rows="9" placeholder="Untranslation result" readonly></textarea>
-					</div>
-				</form>
+					line-width:
+					<select id="utwidth" onchange="untranslate()">
+						<option selected="selected">30</option>
+						<option>60</option>
+						<option>90</option>
+						<option>120</option>
+						<option>∞</option>
+					</select>
+				</div>
+				<br>
+				<div>untranslated DNA: <span id="untranslated"></span><br>
+					<pre id="untranslation">Untranslation result</pre>
+				</div>
 			</section>
 			<section id="tmcalc">
 				<div>
 					<!-- <input type="text" id="tmseq" size="40" maxlength="200" placeholder="塩基配列を入力" onkeyup="javascript:tmcalc()"> -->
-					<textarea id="tmseq" cols="30" rows="3" placeholder="Enter nucleotide sequence." onkeyup="javascript:tmcalc()"></textarea>
+					<textarea id="tmseq" cols="30" rows="3" placeholder="Enter nucleotide sequence." onkeyup="tmcalc()"></textarea>
 					<br>
 					<span id="tmresult">
 						Tm value will be shown here.
