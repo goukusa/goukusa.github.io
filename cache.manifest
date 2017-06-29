@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# 2017-06-29 11:27
+# 2017-06-29 11:30
 #apps.html
 common.css
 common.js
@@ -41,6 +41,7 @@ images/X.svg
 images/Y.svg
 images/Z.svg
 images/go.svg
+images/apps.svg
 images/bmi.svg
 images/box.svg
 images/braille.svg
