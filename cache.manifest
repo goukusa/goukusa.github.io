@@ -1,7 +1,7 @@
 CACHE MANIFEST
-# 2017-06-29 11:19
+# 2017-06-29 11:27
 #apps.html
-#common.css
+common.css
 common.js
 ball.js
 codons.js
@@ -61,3 +61,6 @@ fonts/SourceSansPro-Bold.ttf.woff
 fonts/SourceSansPro-Light.ttf.woff
 fonts/SourceSansPro-Regular.ttf.woff
 images/Download_on_the_App_Store_Badge_US-UK_135x40.svg
+images/Download_on_the_App_Store_JP_135x40.svg
+images/Codons_icon.png
+images/GrowthCurve_icon.png
