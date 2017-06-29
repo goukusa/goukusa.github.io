@@ -76,6 +76,7 @@ div#toc {display:none;}
 #toc div.hidetoc { height:100%; position:relative; top:0; bottom:0; color:#000; background-color:#000; opacity:.5; cursor:auto; }
 #toc div img { vertical-align:-4px }
 #init div {margin:2.5em .5em;}
+.border_radius {border-radius: 35px; -webkit-border-radius: 35px; -moz-border-radius: 35px}
 article { margin:0; padding:.5em 0; overflow:auto; }
 section { overflow:auto; }
 footer {

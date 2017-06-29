@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html manifest="cache.manifest">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+	<meta name="apple-itunes-app" content="app-id=1230940809">
+	<script type="text/javascript" src="common.js"></script>
+	<link rel="stylesheet" type="text/css" href="common.css">
+	<style>
+		body {max-width:100%}
+		td, input { font-size:1.2rem }
+		p {text-align:left;margin:1em}
+		table {margin:auto}
+		td {width:50%}
+		input { font-family: scp, 'Andale Mono', Menlo, Courier, monospace; font-size:medium; }
+		#zoom, #dpc {display:none}
+	</style>
+	<title>
+		Body Mass Index
+	</title>
+</head>
+
+<body>
+	<header id="header">
+		<nav>
+			<div id="tool" onclick="document.getElementById('toc').style.display='block';">
+				iOS Apps
+			</div>
+			<div id="toc" class="ac">
+				<div onclick="chgView(this)" title="apps" class="checked">iOS Apps</div>
+				<div onclick="location.href='index.html'" title="home"><img src="images/home.svg"></div>
+				<div onclick="chgView()" class="hidetoc">dummy</div>
+			</div>
+		</nav>
+	</header>
+	<noscript>
+		このWebサイトの全ての機能を利用するためにはJavaScriptを有効にする必要があります。
+		<a href="http://www.enable-javascript.com/ja/" target="_blank">あなたのWebブラウザーでJavaScriptを有効にする方法</a>
+		を参照してください。
+	</noscript>
+
+	<article>
+		<section id="apps" style="max-width:30em; margin:auto">
+			<p>App Store で公開している iPhone/iPad/iPod touch 用アプリです。</p>
+			<p>Apps for iPhone/iPad/iPod touch on the App Store.  </p>
+			<br>
+			<table>
+				<tr><td align="center">
+						<img class="border_radius" src="images/GrowthCurve_icon.png" width="135" height="135"><br>
+						成長曲線2016<br><br>
+						<a href="https://itunes.apple.com/jp/app/multicodons/id1230940809?mt=8"><img src="images/Download_on_the_App_Store_JP_135x40.svg"></a>
+					</td>
+					<td><p>
+							体重と身長を記録し、成長曲線（日本人用・新 SD 曲線）、BMI、肥満度をグラフに表示できます。
+					</p></td>
+				<tr><td><br></td></tr>
+				<tr>
+					<td align="center">
+						<img class="border_radius" src="images/Codons_icon.png" width="135" height="135"><br>
+						MultiCodons<br><br>
+						<a href="https://itunes.apple.com/jp/app/multicodons/id1230342430?mt=8"><img src="images/Download_on_the_App_Store_Badge_US-UK_135x40.svg"></a>
+					</td>
+					<td>
+						<p>
+							コドンや対応するアミノ酸を表示します。
+							標準以外の遺伝暗号を選択することもできます。<br>
+							MultiCodons shows codons and amino acids. You can also select a genetic code other than the standard code.
+						</p>
+				</td></tr>
+			</table>
+		</section>
+	</article>
+
+	<footer>
+		&copy; 2017 Goh Sasaki
+	</footer>
+</body>
+</html>
