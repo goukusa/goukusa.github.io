@@ -36,7 +36,7 @@ license: SIL OFL 1.1 */
 }
 body, nav a span.small, #toc div.checked { font-family: ssp, 'Avenir Next', 'Source Han Sans JP', 'Noto Sans Japanese', 'YuGothic', 'Yu Gothic', '游ゴシック', '游ゴシック体', 'HiraKakuProN-W3', 'Meiryo', sans-serif; font-weight:400; }
 header { font-family: sspl, Optima, 'Source Han Sans JP', 'Noto Sans Japanese', 'YuGothic', 'Yu Gothic', '游ゴシック', '游ゴシック体', '.HiraKakuInterface-W1', 'HiraKakuProN-W3', 'Meiryo', sans-serif; font-weight:300; }
-body { padding: 0; max-width: 30em; margin: 0 auto; }
+body { padding: 0; max-width: 40em; margin: 0 auto; }
 body, article, section {
 	/* background-color: #ffc; */
 	/* background-color: #f5efdc; //iBooks’ sepia */
@@ -52,8 +52,8 @@ nav a {
 	text-decoration: none;
 	display: block;
 	line-height: 1rem;
-	padding:9px 0;
-	margin: 10px;
+	padding:9px;
+	margin: 8px;
 	color: #000;
 	/* background: #ddccaa; */
 	/* background: #eed0b0; */
@@ -64,8 +64,8 @@ nav a {
 	border-radius: .8rem;
 }
 nav a:hover { background: #fffff0; /* lightsteelblue; powderblue; lightblue; paleturquoise; lightskyblue; #fceccb; #faebd7; antiquewhite; */ }
-nav a img { vertical-align:-6px; margin:0 16px }
-nav a span.small { margin-left:10px; font-size:0.9rem; }
+nav a img { vertical-align:-6px; margin:0 12px 0 6px}
+nav a span.small { margin-left:8px; font-size:0.95rem; }
 #tool {background:#14b url(images/select.svg) no-repeat right center; color:#fff; line-height:1.5em; cursor:pointer; border-radius: .4rem }
 #tool:hover, #toc div:hover {color:#fff; background-color:#25c}
 div#toc {display:none;}
